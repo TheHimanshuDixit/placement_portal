@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { initTE, Input } from "tw-elements";
+import { initTE, Input, Ripple } from "tw-elements";
 
 const Contact = () => {
   useEffect(() => {
-    initTE({ Input });
+    initTE({ Input, Ripple });
   }, []);
   return (
     <div>
