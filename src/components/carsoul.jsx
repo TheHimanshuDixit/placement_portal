@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { Carousel, initTE } from "tw-elements";
 
 const Carsoul = () => {
-
-    useEffect(() => {
-        initTE({Carousel});
-    }, []);
+  useEffect(() => {
+    initTE({ Carousel });
+  }, []);
 
   return (
     <>
@@ -43,14 +42,14 @@ const Carsoul = () => {
             data-te-carousel-item
             data-te-carousel-active>
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(19).webp"
+              src="./jiit-1.jpg"
               className="block w-full"
               alt="Motorbike Smoke"
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
-              <h5 className="text-xl">First slide label</h5>
+              <h5 className="text-xl"></h5>
               <p>
-                Some representative placeholder content for the first slide.
+                
               </p>
             </div>
           </div>
@@ -59,14 +58,14 @@ const Carsoul = () => {
             data-te-carousel-fade
             data-te-carousel-item>
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(35).webp"
+              src="./jiit-2.jpg"
               className="block w-full"
               alt="Mountaintop"
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
-              <h5 className="text-xl">Second slide label</h5>
+              <h5 className="text-xl"></h5>
               <p>
-                Some representative placeholder content for the second slide.
+                
               </p>
             </div>
           </div>
@@ -75,14 +74,14 @@ const Carsoul = () => {
             data-te-carousel-fade
             data-te-carousel-item>
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(40).webp"
+              src="./jiit-3.jpg"
               className="block w-full"
               alt="Woman Reading a Book"
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
-              <h5 className="text-xl">Third slide label</h5>
+              <h5 className="text-xl"></h5>
               <p>
-                Some representative placeholder content for the third slide.
+                
               </p>
             </div>
           </div>

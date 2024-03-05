@@ -17,17 +17,17 @@ const Testimonial = () => {
                 className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
                 data-te-carousel-active
                 data-te-carousel-item
-                style={{backfaceVisibility: "hidden"}}>
+                style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(10).jpg"
+                  src="./Srishti.jpg"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full shrink-0 grow-0 basis-auto px-3 lg:w-8/12">
-                    <h5 className="mb-2 text-lg font-bold">Maria Kate</h5>
+                    <h5 className="mb-2 text-lg font-bold">Srishti Garg</h5>
                     <p className="mb-4 font-medium text-neutral-700 dark:text-neutral-400">
-                      Photographer
+                      Google
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
                       In ac turpis justo. Vivamus auctor quam vitae odio feugiat
@@ -107,17 +107,17 @@ const Testimonial = () => {
               <div
                 className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
                 data-te-carousel-item
-                style={{backfaceVisibility: "hidden"}}>
+                style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).jpg"
+                  src="./Himanshu.jpg"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full shrink-0 grow-0 basis-auto px-3 lg:w-8/12">
-                    <h5 className="mb-2 text-lg font-bold">John Doe</h5>
+                    <h5 className="mb-2 text-lg font-bold">Himanshu Dixit</h5>
                     <p className="mb-4 font-medium text-neutral-700 dark:text-neutral-400">
-                      Web Developer
+                      Microsoft
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
                       Maecenas auctor, quam eget tincidunt pretium, felis diam
@@ -197,17 +197,17 @@ const Testimonial = () => {
               <div
                 className="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
                 data-te-carousel-item
-                style={{backfaceVisibility: "hidden"}}>
+                style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).jpg"
+                  src="./Kamal2.png"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full shrink-0 grow-0 basis-auto px-3 lg:w-8/12">
-                    <h5 className="mb-2 text-lg font-bold">Anna Deynah</h5>
+                    <h5 className="mb-2 text-lg font-bold">Kamal Garg</h5>
                     <p className="mb-4 font-medium text-neutral-700 dark:text-neutral-400">
-                      UX Designer
+                      Amazon
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
                       Duis sagittis, turpis in ullamcorper venenatis, ligula
