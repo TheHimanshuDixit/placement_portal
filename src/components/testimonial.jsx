@@ -200,7 +200,7 @@ const Testimonial = () => {
                 style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="./Kamal2.png"
+                  src="./Kamal.png"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">
