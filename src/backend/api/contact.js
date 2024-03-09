@@ -6,7 +6,6 @@ const nodemailer = require("nodemailer");
 router.post("/send", async (req, res) => {
 
     const { name, email, message } = req.body;
-    console.log(name, email, message);
     const output = `
                     <h4>You have a message</h4>
                     <h3>Contact Details : </h3>
@@ -30,17 +29,17 @@ router.post("/send", async (req, res) => {
     // Specify what the email will look like
     var mailOption = {
       from: 'harshhimanshudixit@gmail.com', //Sender mail
-      to: 'anirudhdixitsaf@gmail.com', // Recever mail
-      subject: 'subject',
+      to: 'himanshuharshdixit@gmail.com', // Recever mail
+      subject: 'Message',
       html: output,
     };
 
     // Send mail with defined transport object
     transporter.sendMail(mailOption, function (error, info) {
       if (error) {
-        res.send('<h1 style="color:red" > Something Wrong. </h1>');
+        res.json({ message: "Error Occurs" });
       } else {
-        res.send('<h1 style="color: green" >Thank You, Message has been Sent.');
+        res.json({ message: "Email sent" });
       }
     });
 });
