@@ -12,9 +12,9 @@ import About from "./components/about";
 import Contribute from "./components/contribute";
 import Error from "./components/error";
 import ScrollToTop from "./components/scrollTotop";
-import Admin from "./admin/home";
-import Navbar from "./admin/navbar";
-import FooterAdmin from "./admin/footer";
+import Admin from "./components/admin/home";
+import Navbar from "./components/admin/navbar";
+import FooterAdmin from "./components/admin/footer";
 
 function App() {
   return (
@@ -110,7 +110,7 @@ function App() {
               </>
             }
           />
-          <Route path="*" element={<Error />} />
+          {/* <Route path="*" element={<Error />} /> */}
           <Route
             path="/admin"
             element={

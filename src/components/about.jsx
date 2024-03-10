@@ -9,7 +9,7 @@ const About = () => {
             <div className="mb-12 w-full shrink-0 grow-0 basis-auto lg:mb-0 lg:w-5/12">
               <div className="flex lg:py-24 lg:-mr-20">
                 <img
-                  src="./jiit.jpg"
+                  src="./Images/jiit.jpg"
                   className="z-[10] w-full rounded-lg shadow-lg dark:shadow-black/20 lg:ml-[50px]"
                   alt="About us"
                 />

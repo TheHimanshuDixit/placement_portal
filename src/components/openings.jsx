@@ -19,7 +19,7 @@ const Openings = () => {
       type: "Internship",
       mode: "Remote",
       duration: "2 Months",
-      logo: "./amazon.png",
+      logo: "./Images/amazon.png",
     },
     {
       id: 2,
@@ -29,7 +29,7 @@ const Openings = () => {
       type: "Job",
       mode: "Onsite",
       duration: "Full-time",
-      logo: "./amazon.png",
+      logo: "./Images/amazon.png",
     },
     {
       id: 3,
@@ -39,7 +39,7 @@ const Openings = () => {
       type: "Onsite",
       mode: "FTE",
       duration: "Full-time",
-      logo: "./amazon.png",
+      logo: "./Images/amazon.png",
     },
     {
       id: 4,
@@ -49,7 +49,7 @@ const Openings = () => {
       type: "Job",
       mode: "Remote",
       duration: "Full-time",
-      logo: "./amazon.png",
+      logo: "./Images/amazon.png",
     },
   ];
 
