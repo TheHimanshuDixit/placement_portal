@@ -12,6 +12,7 @@ import About from "./components/about";
 import Contribute from "./components/contribute";
 import Error from "./components/error";
 import ScrollToTop from "./components/scrollTotop";
+import Admin from "./admin/home";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route exact path="/about" element={<About />} />
           <Route exact path="/contribute" element={<Contribute />} />
           <Route path="*" element={<Error />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
         <Footer />
       </BrowserRouter>
