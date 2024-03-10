@@ -47,7 +47,7 @@ const Carsoul = () => {
               alt="Motorbike Smoke"
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
-              <h5 className="text-xl"></h5>
+              <h5 className="text-xl">1</h5>
               <p>
                 
               </p>
@@ -63,7 +63,7 @@ const Carsoul = () => {
               alt="Mountaintop"
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
-              <h5 className="text-xl"></h5>
+              <h5 className="text-xl">2</h5>
               <p>
                 
               </p>
@@ -79,7 +79,7 @@ const Carsoul = () => {
               alt="Woman Reading a Book"
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
-              <h5 className="text-xl"></h5>
+              <h5 className="text-xl">3</h5>
               <p>
                 
               </p>

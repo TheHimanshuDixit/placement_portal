@@ -5,7 +5,7 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/tw-elements/dist/js/**/*.js",
-    "node_modules/flowbite-react/lib/esm/**/*.js",
+    "./node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
     extend: {
@@ -63,5 +63,5 @@ module.exports = {
     },
   },
   darkMode: "class",
-  plugins: [require("tw-elements/dist/plugin.cjs"), require("flowbite/plugin")],
+  plugins: [require("tw-elements/dist/plugin.cjs")],
 };

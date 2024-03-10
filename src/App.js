@@ -9,6 +9,8 @@ import Footer from "./components/footer";
 import Contact from "./components/contact";
 import Team from "./components/team";
 import About from "./components/about";
+import Contribute from "./components/contribute";
+import Error from "./components/error";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route exact path="/contact" element={<Contact/>} />
           <Route exact path="/team" element={<Team/>} />
           <Route exact path="/about" element={<About/>} />
+          <Route exact path="/contribute" element={<Contribute/>} />
+          <Route path="*" element={<Error/>} />
         </Routes>
         <Footer />
       </BrowserRouter>
