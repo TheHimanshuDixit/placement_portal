@@ -42,7 +42,7 @@ const Carsoul = () => {
             data-te-carousel-item
             data-te-carousel-active>
             <img
-              src="./jiit-1.jpg"
+              src="./Images/jiit-1.jpg"
               className="block w-full"
               alt="Motorbike Smoke"
             />
@@ -58,7 +58,7 @@ const Carsoul = () => {
             data-te-carousel-fade
             data-te-carousel-item>
             <img
-              src="./jiit-2.jpg"
+              src="./Images/jiit-2.jpg"
               className="block w-full"
               alt="Mountaintop"
             />
@@ -74,7 +74,7 @@ const Carsoul = () => {
             data-te-carousel-fade
             data-te-carousel-item>
             <img
-              src="./jiit-3.jpg"
+              src="./Images/jiit-3.jpg"
               className="block w-full"
               alt="Woman Reading a Book"
             />

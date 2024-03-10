@@ -16,7 +16,7 @@ const Header = () => {
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
             <Link to="/" className="flex items-center">
               <img
-                src="./logo.png"
+                src="./Images/logo.png"
                 className="mr-3 h-6 sm:h-9"
                 alt="Flowbite Logo"
               />

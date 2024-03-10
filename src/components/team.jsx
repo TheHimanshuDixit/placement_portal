@@ -15,7 +15,7 @@ const Team = () => {
                 <div className="flex justify-center">
                   <div className="flex justify-center -mt-[75px]">
                     <img
-                      src="./Himanshu.jpg"
+                      src="./Images/Himanshu.jpg"
                       className="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
                       alt="Avatar"
                     />
@@ -68,7 +68,7 @@ const Team = () => {
                 <div className="flex justify-center">
                   <div className="flex justify-center -mt-[75px]">
                     <img
-                      src="./Srishti.jpg"
+                      src="./Images/Srishti.jpg"
                       className="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
                       alt="Avatar"
                     />
@@ -121,7 +121,7 @@ const Team = () => {
                 <div className="flex justify-center">
                   <div className="flex justify-center -mt-[75px]">
                     <img
-                      src="./Kamal.png"
+                      src="./Images/Kamal.png"
                       className="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
                       alt="Avatar"
                     />

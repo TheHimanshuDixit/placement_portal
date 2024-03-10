@@ -20,7 +20,7 @@ const Testimonial = () => {
                 style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="./Srishti.jpg"
+                  src="./Images/Srishti.jpg"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">
@@ -110,7 +110,7 @@ const Testimonial = () => {
                 style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="./Himanshu.jpg"
+                  src="./Images/Himanshu.jpg"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">
@@ -200,7 +200,7 @@ const Testimonial = () => {
                 style={{ backfaceVisibility: "hidden" }}>
                 <img
                   className="mx-auto mb-6 rounded-full shadow-lg dark:shadow-black/20 w-[150px]"
-                  src="./Kamal.png"
+                  src="./Images/Kamal.png"
                   alt="avatar"
                 />
                 <div className="flex flex-wrap justify-center">

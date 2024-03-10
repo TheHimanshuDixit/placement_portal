@@ -8,44 +8,44 @@ const Footer = () => {
         <nav className="flex flex-wrap justify-center -mx-5 -my-2">
           <div className="px-5 py-2">
             <Link
-              to="#"
+              to="/announcement"
               className="text-base leading-6 text-gray-500 hover:text-gray-900">
-              About
+              Announcement
             </Link>
           </div>
           <div className="px-5 py-2">
             <Link
-              to="#"
-              className="text-base leading-6 text-gray-500 hover:text-gray-900">
-              Blog
-            </Link>
-          </div>
-          <div className="px-5 py-2">
-            <Link
-              to="#"
+              to="/myteam"
               className="text-base leading-6 text-gray-500 hover:text-gray-900">
               Team
             </Link>
           </div>
           <div className="px-5 py-2">
             <Link
-              to="#"
+              to="/addopenings"
               className="text-base leading-6 text-gray-500 hover:text-gray-900">
-              Pricing
+              Internships/Jobs
             </Link>
           </div>
           <div className="px-5 py-2">
             <Link
-              to="#"
+              to="/highlights"
               className="text-base leading-6 text-gray-500 hover:text-gray-900">
-              Contact
+              Add Highlights
             </Link>
           </div>
           <div className="px-5 py-2">
             <Link
-              to="#"
+              to="/studdetails"
               className="text-base leading-6 text-gray-500 hover:text-gray-900">
-              Terms
+              Students Details
+            </Link>
+          </div>
+          <div className="px-5 py-2">
+            <Link
+              to="/feedbacks"
+              className="text-base leading-6 text-gray-500 hover:text-gray-900">
+              All feedbacks
             </Link>
           </div>
         </nav>
