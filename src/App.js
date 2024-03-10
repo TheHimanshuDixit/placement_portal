@@ -15,6 +15,8 @@ import ScrollToTop from "./components/students/scrollTotop";
 import Admin from "./components/admin/home";
 import Navbar from "./components/admin/navbar";
 import FooterAdmin from "./components/admin/footer";
+import Myapplications from "./components/students/myapplications";
+import Myprofile from "./components/students/myprofile";
 
 function App() {
   return (
@@ -106,6 +108,28 @@ function App() {
               <>
                 <Header />
                 <Contribute />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/myapplications"
+            element={
+              <>
+                <Header />
+                <Myapplications />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/myprofile"
+            element={
+              <>
+                <Header />
+                <Myprofile />
                 <Footer />
               </>
             }
