@@ -3,24 +3,24 @@ import React from "react";
 const About = () => {
   return (
     <div>
-      <div class="bg- max-w-screen-xl mx-auto my-24 md:px-6">
-        <section class="mb-32">
-          <div class="flex flex-wrap">
-            <div class="mb-12 w-full shrink-0 grow-0 basis-auto lg:mb-0 lg:w-5/12">
-              <div class="flex lg:py-24 lg:-mr-20">
+      <div className="bg- max-w-screen-xl mx-auto my-24 md:px-6">
+        <section className="mb-32">
+          <div className="flex flex-wrap">
+            <div className="mb-12 w-full shrink-0 grow-0 basis-auto lg:mb-0 lg:w-5/12">
+              <div className="flex lg:py-24 lg:-mr-20">
                 <img
                   src="./jiit.jpg"
-                  class="z-[10] w-full rounded-lg shadow-lg dark:shadow-black/20 lg:ml-[50px]"
+                  className="z-[10] w-full rounded-lg shadow-lg dark:shadow-black/20 lg:ml-[50px]"
                   alt="About us"
                 />
               </div>
             </div>
 
-            <div class="w-full shrink-0 grow-0 basis-auto lg:w-7/12">
-              <div class="flex h-full items-center rounded-lg bg-purple-600 p-6 text-center text-white lg:pl-12 lg:text-left">
-                <div class="lg:pl-12">
-                  <h2 class="mb-8 text-3xl font-bold">About JIIT T&P</h2>
-                  <p class="mb-8 pb-2 lg:pb-0">
+            <div className="w-full shrink-0 grow-0 basis-auto lg:w-7/12">
+              <div className="flex h-full items-center rounded-lg bg-purple-600 p-6 text-center text-white lg:pl-12 lg:text-left">
+                <div className="lg:pl-12">
+                  <h2 className="mb-8 text-3xl font-bold">About JIIT T&P</h2>
+                  <p className="mb-8 pb-2 lg:pb-0">
                     The Training and Placement Cell located at JIIT Noida,
                     centrally handles campus placement of the graduating
                     students of all our campuses, namely JIIT Noida (U.P.), JUIT
