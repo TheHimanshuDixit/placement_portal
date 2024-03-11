@@ -8,12 +8,12 @@ const Footer = () => {
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
           <div className="md:flex md:justify-between">
             <div className="mb-6 md:mb-0">
-              <Link to="https://flowbite.com/" className="flex items-center">
-              <img
-                src="./logo.png"
-                className="mr-3 h-6 sm:h-9"
-                alt="Flowbite Logo"
-              />
+              <Link to="/" className="flex items-center">
+                <img
+                  src="./Images/logo.png"
+                  className="mr-3 h-6 sm:h-9"
+                  alt="Flowbite Logo"
+                />
                 <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                   T&P Portal
                 </span>
@@ -26,12 +26,16 @@ const Footer = () => {
                 </h2>
                 <ul className="text-gray-500 dark:text-gray-400 font-medium">
                   <li className="mb-4">
-                    <Link to="https://flowbite.com/" className="hover:underline">
-                     T&P portal
+                    <Link
+                      to="https://flowbite.com/"
+                      className="hover:underline">
+                      T&P portal
                     </Link>
                   </li>
                   <li>
-                    <Link to="https://tailwindcss.com/" className="hover:underline">
+                    <Link
+                      to="https://tailwindcss.com/"
+                      className="hover:underline">
                       Tailwind CSS
                     </Link>
                   </li>
@@ -82,7 +86,7 @@ const Footer = () => {
             <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
               © 2024{" "}
               <Link to="https://flowbite.com/" className="hover:underline">
-               T&P Portal
+                T&P Portal
               </Link>
               . All Rights Reserved.
             </span>
