@@ -1,4 +1,5 @@
 const express = require("express");
+const run = require("./database");
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -8,6 +9,8 @@ app.use(express.json());
 app.use("/api/auth", require("./api/auth"));
 app.use("/api/contact", require("./api/contact"));
 app.use("/api/data", require("./api/data"));
+
+run();
 
 app.get("/", (req, res) => {
   res.send("API Working");
