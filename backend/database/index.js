@@ -1,6 +1,6 @@
 // const { MongoClient } = require("mongodb");
 const uri =
-  "mongodb+srv://himanshuharsh:jiit0207@cluster0.m8ubevh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://himanshuharsh:jiit0207@cluster0.m8ubevh.mongodb.net/portal?retryWrites=true&w=majority&appName=Cluster0";
 
 const { mongo } = require("mongoose");
 

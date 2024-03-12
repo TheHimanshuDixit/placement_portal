@@ -16,6 +16,10 @@ const StudentSchema = new Schema({
     required: true,
     unique: true,
   },
+  password: { 
+    type: String, 
+    required: true 
+  },
   phoneno: {
     type: String,
     required: true,

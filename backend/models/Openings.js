@@ -6,6 +6,10 @@ const OpeningSchema = new Schema({
     type: String,
     required: true,
   },
+  jobId: {
+    type: String,
+    required: true,
+  },
   stipend: {
     type: String,
     required: true,
