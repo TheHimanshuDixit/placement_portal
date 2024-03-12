@@ -12,6 +12,14 @@ const OpeningSchema = new Schema({
   },
   stipend: {
     type: String,
+    default: "0T",
+  },
+  ctc: {
+    type: String,
+    default: "0L",
+  },
+  location: {
+    type: Array,
     required: true,
   },
   type: {
@@ -35,7 +43,7 @@ const OpeningSchema = new Schema({
     required: true,
   },
   branch: {
-    type: Object,
+    type: Array,
     required: true,
   },
   gender: {
@@ -47,12 +55,12 @@ const OpeningSchema = new Schema({
     required: true,
   },
   applyby: {
-    type: String,
+    type: Date,
     required: true,
   },
   date: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 

@@ -2,10 +2,7 @@ const express = require("express");
 const Opening = require("../models/Openings");
 const router = express.Router();
 
-// POST /api/opening
-router.get("/getopenings", async (req, res) => {
-  res.json({ message: "success" });
-});
+// http://localhost:4000
 
 // POST /api/opening/add
 router.post("/add", async (req, res) => {
@@ -13,6 +10,8 @@ router.post("/add", async (req, res) => {
     name,
     jobId,
     stipend,
+    ctc,
+    location,
     type,
     mode,
     role,
@@ -33,6 +32,8 @@ router.post("/add", async (req, res) => {
     name,
     jobId,
     stipend,
+    ctc,
+    location,
     type,
     mode,
     role,
@@ -44,6 +45,51 @@ router.post("/add", async (req, res) => {
     applyby,
   });
   let resp = await opening.save();
+  res.json({ message: "success", data: resp });
+});
+
+// POST /api/opening/getall
+router.get("/getall", async (req, res) => {
+  let resp = await Opening.find();
+  res.json({ message: "success", data: resp });
+});
+
+// POST /api/opening/getbyid
+router.post("/getbyid/:oid", async (req, res) => {
+  let resp = await Opening.findOne({
+    jobId: req.params.oid,
+  });
+  res.json({ message: "success", data: resp });
+});
+
+// POST /api/opening/delete
+router.post("/delete/:oid", async (req, res) => {
+  let resp = await Opening.findById({
+    _id: req.params.oid,
+  });
+  if (!resp) {
+    return res.status(401).json({ message: "Opening does not exists" });
+  }
+  resp = await Opening.deleteOne({
+    _id: req.params.oid,
+  });
+  res.json({ message: "success", data: resp });
+});
+
+// POST /api/opening/update
+router.post("/update/:oid", async (req, res) => {
+  let resp = await Opening.findById({
+    _id: req.params.oid,
+  });
+  if (!resp) {
+    return res.status(401).json({ message: "Opening does not exists" });
+  }
+  resp = await Opening.updateOne(
+    { _id: req.params.oid },
+    {
+      $set: req.body,
+    }
+  );
   res.json({ message: "success", data: resp });
 });
 

@@ -16,7 +16,7 @@ const ContactSchema = new Schema({
   },
   date: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 

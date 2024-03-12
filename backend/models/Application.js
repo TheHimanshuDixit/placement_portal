@@ -19,7 +19,7 @@ const ApplicationSchema = new Schema({
     required: true,
   },
   branch: {
-    type: Object,
+    type: Array,
     required: true,
   },
   gender: {
@@ -28,7 +28,7 @@ const ApplicationSchema = new Schema({
   },
   date: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 

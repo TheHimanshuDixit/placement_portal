@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ContributeSchema = new Schema({
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "student",
+  },
+  name: {
+    type: String,
+    required: true,
+  },
   question: {
     type: String,
     required: true,
@@ -27,12 +35,12 @@ const ContributeSchema = new Schema({
     required: true,
   },
   topic: {
-    type: Object,
+    type: Array,
     required: true,
   },
   date: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 
