@@ -2,8 +2,6 @@
 const uri =
   "mongodb+srv://himanshuharsh:jiit0207@cluster0.m8ubevh.mongodb.net/portal?retryWrites=true&w=majority&appName=Cluster0";
 
-const { mongo } = require("mongoose");
-
 // const client = new MongoClient(uri);
 
 // async function run() {

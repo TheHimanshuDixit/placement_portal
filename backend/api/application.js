@@ -4,7 +4,7 @@ const router = express.Router();
 const fetchuser = require("../middleware");
 const Application = require("../models/Application");
 
-// POST /api/contribute/add/:oid
+// POST /api/application/add/:oid
 router.post("/add/:oid", fetchuser, async (req, res) => {
   let { name, email, enroll, branch, gender } = req.body;
   let application = new Application({
