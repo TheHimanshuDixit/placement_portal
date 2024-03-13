@@ -17,5 +17,5 @@ const CollegeSchema = new Schema({
   },
 });
 
-const College = mongoose.model("opening", CollegeSchema);
+const College = mongoose.model("college", CollegeSchema);
 module.exports = College;

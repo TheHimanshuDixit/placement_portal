@@ -1,5 +1,5 @@
 const express = require("express");
-const Opening = require("../models/Openings");
+const Opening = require("../models/Opening");
 const router = express.Router();
 
 // http://localhost:4000
@@ -28,7 +28,7 @@ router.post("/add", async (req, res) => {
   if (newOpening) {
     return res.status(401).json({ message: "Opening already exists" });
   }
-  let opening = new Opening({
+  newOpening = new Opening({
     name,
     jobId,
     stipend,
@@ -44,7 +44,7 @@ router.post("/add", async (req, res) => {
     duration,
     applyby,
   });
-  let resp = await opening.save();
+  let resp = await newOpening.save();
   res.json({ message: "success", data: resp });
 });
 
