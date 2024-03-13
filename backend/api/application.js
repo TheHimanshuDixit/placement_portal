@@ -18,3 +18,11 @@ router.post("/add/:oid", fetchuser, async (req, res) => {
   let resp = await application.save();
   res.json({ message: "success", data: resp });
 });
+
+// GET /api/application/get/:oid
+router.get("/get/:oid", fetchuser, async (req, res) => {
+  let applications = await Application.find({ company: req.params.oid });
+  res.json({ data: applications });
+});
+
+module.exports = router;

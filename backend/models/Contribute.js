@@ -44,5 +44,5 @@ const ContributeSchema = new Schema({
   },
 });
 
-const Contribute = mongoose.model("contact", ContributeSchema);
+const Contribute = mongoose.model("contribute", ContributeSchema);
 module.exports = Contribute;

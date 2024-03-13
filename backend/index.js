@@ -12,7 +12,7 @@ app.use("/api/opening", require("./api/opening"));
 app.use("/api/college", require("./api/college"));
 app.use("/api/contribute", require("./api/contribute"));
 app.use("/api/application", require("./api/application"));
-app.use("/api/team", require("./api/user"));
+app.use("/api/team", require("./api/team"));
 
 run();
 
