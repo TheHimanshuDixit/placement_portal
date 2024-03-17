@@ -33,7 +33,7 @@ router.get("/get", async (req, res) => {
 
 // GET /api/contribute/getbyid
 router.get("/getbyid", fetchuser, async (req, res) => {
-  let contribute = await Contribute.findOne({ student: req.id });
+  let contribute = await Contribute.findById({ student: req.id });
   res.json({ data: contribute });
 });
 
