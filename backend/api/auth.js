@@ -6,7 +6,7 @@ const router = express.Router();
 const fetchuser = require("../middleware");
 var jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const Student = require("../models/student");
+const Student = require("../models/Student");
 const College = require("../models/College");
 const token = "hello";
 

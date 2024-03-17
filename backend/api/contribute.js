@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Contribute = require("../models/Contribute");
-const fetchuser = require("../middleware");
 const Student = require("../models/Student");
+const fetchuser = require("../middleware");
 
 // POST /api/contribute/add
 router.post("/add", fetchuser, async (req, res) => {
@@ -33,7 +33,7 @@ router.get("/get", async (req, res) => {
 
 // GET /api/contribute/getbyid
 router.get("/getbyid", fetchuser, async (req, res) => {
-  let contribute = await Contribute.findOne({ _id: req.id });
+  let contribute = await Contribute.findOne({ student: req.id });
   res.json({ data: contribute });
 });
 
