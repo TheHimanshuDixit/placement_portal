@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Contribute = require("../models/Contribute");
 const fetchuser = require("../middleware");
+const Student = require("../models/Student");
 
 // POST /api/contribute/add
 router.post("/add", fetchuser, async (req, res) => {
-  const { name, question, answer, company, role, year, round, topic } =
-    req.body;
+  const { question, answer, company, role, year, round, topic } = req.body;
+  let user = await Student.findById(req.id).select("-password");
+  let name = user.name;
 
   let contribute = new Contribute({
     student: req.id,
@@ -29,9 +31,9 @@ router.get("/get", async (req, res) => {
   res.json({ data: contributes });
 });
 
-// GET /api/contribute/get/:id
-router.get("/get/:id", async (req, res) => {
-  let contribute = await Contribute.findOne({ _id: req.params.id });
+// GET /api/contribute/getbyid
+router.get("/getbyid", fetchuser, async (req, res) => {
+  let contribute = await Contribute.findOne({ _id: req.id });
   res.json({ data: contribute });
 });
 
