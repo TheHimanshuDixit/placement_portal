@@ -55,7 +55,7 @@ router.get("/getall", async (req, res) => {
 });
 
 // POST /api/opening/getbyid
-router.post("/getbyid/:oid", async (req, res) => {
+router.get("/getbyid/:oid", async (req, res) => {
   let resp = await Opening.findOne({
     jobId: req.params.oid,
   });
@@ -63,7 +63,7 @@ router.post("/getbyid/:oid", async (req, res) => {
 });
 
 // POST /api/opening/delete
-router.post("/delete/:oid", async (req, res) => {
+router.delete("/delete/:oid", async (req, res) => {
   let resp = await Opening.findById({
     _id: req.params.oid,
   });
@@ -77,7 +77,7 @@ router.post("/delete/:oid", async (req, res) => {
 });
 
 // POST /api/opening/update
-router.post("/update/:oid", async (req, res) => {
+router.put("/update/:oid", async (req, res) => {
   let resp = await Opening.findById({
     _id: req.params.oid,
   });
