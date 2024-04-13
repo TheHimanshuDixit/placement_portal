@@ -29,6 +29,13 @@ const Login = () => {
       body: JSON.stringify({ email, pwd }),
     });
     const data = await response.json();
+    if (data.message === "success") {
+      alert("Signup successful");
+      localStorage.setItem("authToken", data.authToken);
+      window.location.href = "/";
+    } else {
+      alert("Signup failed");
+    }
     console.log(data);
   };
 

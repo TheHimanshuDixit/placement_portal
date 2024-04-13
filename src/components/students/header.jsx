@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { initFlowbite } from "flowbite";
 import { CgProfile } from "react-icons/cg";
@@ -8,6 +8,13 @@ const Header = () => {
   useEffect(() => {
     initFlowbite();
   }, []);
+
+  const [onProfile, setOnProfile] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    window.location.href = "/login";
+  };
 
   return (
     <>
@@ -31,7 +38,41 @@ const Header = () => {
                 Log in
               </Link>
               <MdNotifications className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800 mr-2 lg:mr-4" />
-              <CgProfile className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800" />
+              {localStorage.getItem("authToken") && (
+                <CgProfile
+                  onMouseOver={() => {
+                    setOnProfile(true);
+                  }}
+                  onMouseLeave={() => {
+                    setOnProfile(false);
+                  }}
+                  className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800"
+                />
+              )}
+              {onProfile && (
+                <div
+                  onMouseOver={() => {
+                    setOnProfile(true);
+                  }}
+                  onMouseLeave={() => {
+                    setOnProfile(false);
+                  }}
+                  className="absolute right-2 -top-1 mt-12 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-md z-50">
+                  <ul>
+                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <Link to="/myprofile">Profile</Link>
+                    </li>
+                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <Link to="/myapplications">Profile</Link>
+                    </li>
+                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <Link to="#" onClick={handleLogout}>
+                        Logout
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
               <button
                 data-collapse-toggle="mobile-menu-2"
                 type="button"

@@ -48,9 +48,7 @@ const Carsoul = () => {
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
               <h5 className="text-xl">1</h5>
-              <p>
-                
-              </p>
+              <p></p>
             </div>
           </div>
           <div
@@ -64,9 +62,7 @@ const Carsoul = () => {
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
               <h5 className="text-xl">2</h5>
-              <p>
-                
-              </p>
+              <p></p>
             </div>
           </div>
           <div
@@ -80,9 +76,7 @@ const Carsoul = () => {
             />
             <div className="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-black md:block">
               <h5 className="text-xl">3</h5>
-              <p>
-                
-              </p>
+              <p></p>
             </div>
           </div>
         </div>

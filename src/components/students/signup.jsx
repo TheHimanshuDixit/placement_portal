@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Input, Ripple, initTE } from "tw-elements";
-import { on } from "../../../backend/models/Student";
 
 const Signup = () => {
   useEffect(() => {
@@ -38,6 +37,13 @@ const Signup = () => {
       body: JSON.stringify({ name, email, enroll, pwd, phone }),
     });
     const data = await response.json();
+    if (data.message === "success") {
+      alert("Signup successful");
+      localStorage.setItem("authToken", data.authToken);
+      window.location.href = "/";
+    } else {
+      alert("Signup failed");
+    }
     console.log(data);
   };
 
