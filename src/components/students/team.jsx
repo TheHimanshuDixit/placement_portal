@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Team = () => {
+  useEffect(() => {
+    const data = (async () => {
+      const response = await fetch("http://localhost:4000/api/team/get");
+      const data = await response.json();
+      console.log(data);
+    })();
+  }, []);
+
+
   return (
     <div>
       <div className="container my-24 mx-auto md:px-6">

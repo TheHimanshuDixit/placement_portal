@@ -4,7 +4,6 @@ import { Input, Ripple, initTE } from "tw-elements";
 
 const Login = () => {
   useEffect(() => {
-    console.log("Login");
     initTE({ Input, Ripple });
   }, []);
 
