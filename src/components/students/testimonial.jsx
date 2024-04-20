@@ -30,19 +30,7 @@ const Testimonial = () => {
                       Google
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
-                      In ac turpis justo. Vivamus auctor quam vitae odio feugiat
-                      pulvinar. Sed semper ligula sed lorem tincidunt dignissim.
-                      Nam sed cursus lectus. Proin non rutrum magna. Proin
-                      gravida, justo et imperdiet tristique turpis nisi viverra.
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 96 960 960"
-                        className="inline-block w-6">
-                        <path
-                          fill="currentColor"
-                          d="M580 556h160V396H580v160Zm-360 0h160V396H220v160Zm406 220 80-160H520V336h280v288l-76 152h-98Zm-360 0 80-160H160V336h280v288l-76 152h-98Zm34-300Zm360 0Z"
-                        />
-                      </svg>
+                    Thanks to the exceptional support and resources provided by our college's training and placement website, I successfully secured a position as a Software Development Engineer at Google. The platform's seamless interface and invaluable guidance played a pivotal role in navigating the application process with confidence. I am immensely grateful for the opportunities it provided, shaping my career trajectory and propelling me towards success.
                     </p>
                     <ul className="mb-0 flex justify-center">
                       <li>
@@ -120,19 +108,7 @@ const Testimonial = () => {
                       Microsoft
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
-                      Maecenas auctor, quam eget tincidunt pretium, felis diam
-                      semper turpis, sed scelerisque diam libero facilisis
-                      libero. Quisque vitae semper metus. Aliquam eu dui
-                      aliquam, faucibus metus quis, elementum nunc.
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 96 960 960"
-                        className="inline-block w-6">
-                        <path
-                          fill="currentColor"
-                          d="M580 556h160V396H580v160Zm-360 0h160V396H220v160Zm406 220 80-160H520V336h280v288l-76 152h-98Zm-360 0 80-160H160V336h280v288l-76 152h-98Zm34-300Zm360 0Z"
-                        />
-                      </svg>
+                    "Launching into the realm of career exploration, I found a trusted ally in our college's training and placement website. Its wealth of resources and steadfast support were instrumental in propelling me towards the coveted position of Software Development Engineer at Microsoft."
                     </p>
                     <ul className="mb-0 flex justify-center">
                       <li>
@@ -210,19 +186,7 @@ const Testimonial = () => {
                       Amazon
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
-                      Duis sagittis, turpis in ullamcorper venenatis, ligula
-                      nibh porta dui, sit amet rutrum enim massa in ante.
-                      Curabitur in justo at lorem laoreet ultricies. Nunc ligula
-                      felis, sagittis eget nisi vitae ex arcu sit amet erat.
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 96 960 960"
-                        className="inline-block w-6">
-                        <path
-                          fill="currentColor"
-                          d="M580 556h160V396H580v160Zm-360 0h160V396H220v160Zm406 220 80-160H520V336h280v288l-76 152h-98Zm-360 0 80-160H160V336h280v288l-76 152h-98Zm34-300Zm360 0Z"
-                        />
-                      </svg>
+                    The training and placement website of our college proved to be the cornerstone of my career journey. It provided me with the essential tools and resources needed to secure a coveted position as a Software Development Engineer at Amazon. With its user-friendly interface and comprehensive support, I navigated the application process with ease, ultimately landing a role that aligns perfectly with my aspirations. I am indebted to the platform for opening doors to such incredible opportunities and empowering me to pursue my dreams.
                     </p>
                     <ul className="mb-0 flex justify-center">
                       <li>
