@@ -1,57 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
-import { Modal, Ripple, initTE } from "tw-elements";
+import { Modal, Ripple, Input, initTE } from "tw-elements";
 
 const Openings = () => {
-  useEffect(() => {
-    initTE({ Modal, Ripple });
-  }, []);
+  const [open, setOpen] = useState([]);
+  const [company, setCompany] = useState([]);
+  const [check, setCheck] = useState(false);
 
-  const products = [
-    {
-      id: 1,
-      comp_name: "Amazon",
-      role: "SDE",
-      stipend: "$48",
-      type: "Internship",
-      mode: "Remote",
-      duration: "2 Months",
-      logo: "./Images/amazon.png",
-    },
-    {
-      id: 2,
-      comp_name: "Amazon",
-      role: "SDE",
-      stipend: "$48",
-      type: "Job",
-      mode: "Onsite",
-      duration: "Full-time",
-      logo: "./Images/amazon.png",
-    },
-    {
-      id: 3,
-      comp_name: "Amazon",
-      role: "SDE",
-      stipend: "$48",
-      type: "Onsite",
-      mode: "FTE",
-      duration: "Full-time",
-      logo: "./Images/amazon.png",
-    },
-    {
-      id: 4,
-      comp_name: "Amazon",
-      role: "SDE",
-      stipend: "$48",
-      type: "Job",
-      mode: "Remote",
-      duration: "Full-time",
-      logo: "./Images/amazon.png",
-    },
-  ];
+  useEffect(() => {
+    initTE({ Modal, Ripple, Input });
+
+    const data = (async () => {
+      const response = await fetch("http://localhost:4000/api/opening/getall");
+      const data = await response.json();
+      console.log(data);
+      setOpen(data.data);
+    })();
+  }, []);
 
   return (
     <>
@@ -95,12 +63,94 @@ const Openings = () => {
             </div>
 
             <div className="relative p-4" style={{ minHeight: "500px" }}>
-              This is some placeholder content to show the scrolling behavior
-              for modals. Instead of repeating the text the modal, we use an
-              inline style set a minimum height, thereby extending the length of
-              the overall modal and demonstrating the overflow scrolling. When
-              content becomes longer than the height of the viewport, scrolling
-              will move the modal as needed.
+              <div class="mx-auto block max-w-md rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+                <form>
+                  <div class="relative mb-6" data-te-input-wrapper-init>
+                    <input
+                      type="text"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="exampleInput7"
+                      placeholder="Name"
+                    />
+                    <label
+                      for="exampleInput7"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      Name
+                    </label>
+                  </div>
+
+                  <div class="relative mb-6" data-te-input-wrapper-init>
+                    <input
+                      type="email"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="exampleInput8"
+                      placeholder="Email address"
+                    />
+                    <label
+                      for="exampleInput8"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      Email address
+                    </label>
+                  </div>
+
+                  <div class="relative mb-6" data-te-input-wrapper-init>
+                    <input
+                      type="text"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="exampleInput9"
+                      placeholder="Enrollnment"
+                    />
+                    <label
+                      for="exampleInput9"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      Enrollment
+                    </label>
+                  </div>
+
+                  <div class="relative mb-6" data-te-input-wrapper-init>
+                    <input
+                      type="text"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="exampleInput10"
+                      placeholder="Branch"
+                    />
+                    <label
+                      for="exampleInput10"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      Branch
+                    </label>
+                  </div>
+
+                  <div class="relative mb-6" data-te-input-wrapper-init>
+                    <input
+                      type="text"
+                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="exampleInput11"
+                      placeholder="Gender"
+                    />
+                    <label
+                      for="exampleInput11"
+                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      Gender
+                    </label>
+                  </div>
+
+                  <div class="relative mb-6" data-te-input-wrapper-init>
+                    <div class="mb-3 p-4">
+                      <label
+                        for="formFile"
+                        class="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
+                        Default file input example
+                      </label>
+                      <input
+                        class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+                        type="file"
+                        id="formFile"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
 
             <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
@@ -123,6 +173,137 @@ const Openings = () => {
           </div>
         </div>
       </div>
+      <div
+        data-te-modal-init
+        className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+        id="exampleModalLong2"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLongLabel"
+        aria-hidden="true">
+        <div
+          data-te-modal-dialog-ref
+          className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
+          <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
+            <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
+              <h5
+                className="text-xl font-medium leading-normal text-surface dark:text-white"
+                id="exampleModalLongLabel">
+                Company Details
+              </h5>
+              <button
+                type="button"
+                className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
+                data-te-modal-dismiss
+                aria-label="Close">
+                <span
+                  className="[&>svg]:h-6 [&>svg]:w-6"
+                  onClick={() => {
+                    setCheck(false);
+                  }}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+
+            {check && (
+              <div className="relative p-4" style={{ minHeight: "500px" }}>
+                <ul class="w-96 text-surface dark:text-white">
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Name :</strong> {company.name}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>JobID :</strong> {company.jobId}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Role :</strong> {company.role}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Internship Stipend :</strong> {company.stipend}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Company CTC :</strong> {company.ctc}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Minimum CGPA :</strong> {company.cgpacritera}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Maximum Backlogs :</strong> {company.backlog}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Applicable for these branches :</strong>{" "}
+                    {company.branch.map((key) => {
+                      return key + ",";
+                    })}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Location :</strong>{" "}
+                    {company.location.map((key) => {
+                      return key + ",";
+                    })}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Gender :</strong> {company.gender}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Mode :</strong> {company.mode}
+                  </li>
+                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Duration :</strong> {company.duration}
+                  </li>
+                  <li class="w-full py-4">
+                    <strong>Type :</strong> {company.type}
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
+              <button
+                type="button"
+                className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+                data-te-modal-dismiss
+                data-te-ripple-init
+                data-te-ripple-color="light"
+                onClick={() => {
+                  setCheck(false);
+                }}>
+                Close
+              </button>
+              <button
+                type="button"
+                className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                data-te-ripple-init
+                data-te-ripple-color="light"
+                onClick={() => {
+                  setCheck(false);
+                }}>
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded-xl hidden"
+        data-te-toggle="modal"
+        data-te-target="#exampleModalLong"
+        data-te-ripple-init
+        data-te-ripple-color="light"
+        type="button">
+        Apply
+      </button>
 
       <div className="bg-white">
         <div className="container mx-auto px-4 py-8">
@@ -130,38 +311,45 @@ const Openings = () => {
             Jobs/Internships
           </h1>
           <div className="flex justify-evenly align-middle">
-            {products.map((product) => (
-              <div key={product.id} className="bg-gray-100 p-4 rounded-lg w-60">
+            {open.map((item) => (
+              <div key={item._id} className="bg-gray-100 p-4 rounded-lg w-60">
                 <div className="flex justify-center items-center align-middle">
                   <div>
-                    <h2 className="text-xl font-bold mb-2 p-2">
-                      {product.comp_name}
-                    </h2>
+                    <h2 className="text-xl font-bold mb-2 p-2">{item.name}</h2>
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
-                      <p>{product.role}</p>
-                      <FaCircleInfo className="hover:cursor-pointer" />
+                      <p>{item.role}</p>
+                      <button
+                        data-te-toggle="modal"
+                        data-te-target="#exampleModalLong2"
+                        onClick={() => {
+                          setCompany(item);
+                          setCheck(true);
+                        }}
+                        type="button">
+                        <FaCircleInfo className="hover:cursor-pointer" />
+                      </button>
                     </div>
                   </div>
                   <img
-                    src={product.logo}
-                    alt={product.comp_name}
+                    src={item.logo}
+                    alt={item.comp_name}
                     className="h-16 w-16 mx-auto "
                   />
                 </div>
                 <hr className="none mb-6 text-xl border-t-2 border-black" />
                 <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaMoneyCheckAlt className="mr-2" /> {product.stipend}/Month
+                  <FaMoneyCheckAlt className="mr-2" /> {item.stipend}/Month
                 </div>
                 <div className="text-sm mb-2 flex justify-start items-center p-1">
                   <IoLocation className="mr-2" />
-                  {product.mode}
+                  {item.mode}
                 </div>
                 <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaCalendarAlt className="mr-2" /> {product.duration}
+                  <FaCalendarAlt className="mr-2" /> {item.duration}
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="text-sm border-2 border-black rounded-md bg-slate-300 font-bold uppercase w-1/2 text-center">
-                    {product.type}
+                    {item.type}
                   </div>
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded-xl"
