@@ -41,41 +41,29 @@ const Contact = () => {
                 Frequently asked questions
               </h2>
               <p className="mb-2 font-bold">
-                Anim pariatur cliche reprehenderit?
+              What is the purpose of the training and placement portal?
               </p>
               <p className="mb-8 text-neutral-500 dark:text-neutral-300">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt
-                autem numquam dolore molestias aperiam culpa alias veritatis
-                architecto eos, molestiae vitae ex eligendi libero eveniet
-                dolorem, doloremque rem aliquid perferendis.
+              The training and placement portal is designed to serve as a bridge between students and potential employers. Its primary goal is to assist students in securing internships, as well as full-time and part-time job opportunities.
               </p>
               <p className="mb-2 font-bold">
-                Non cupidatat skateboard dolor brunch?
+              Can I access the training and placement portal after graduation?
               </p>
               <p className="mb-8 text-neutral-500 dark:text-neutral-300">
-                Distinctio corporis, iure facere ducimus quos consectetur ipsa
-                ut magnam autem doloremque ex! Id, sequi. Voluptatum magnam sed
-                fugit iusto minus et suscipit? Minima sunt at nulla tenetur,
-                numquam unde quod modi magnam ab deserunt ipsam sint aliquid
-                dolores libero repellendus cupiditate mollitia quidem dolorem
-                odit
+              Yes, you can continue to access the portal for a certain period after graduation. However, access might be limited for a specific time.
               </p>
               <p className="mb-2 font-bold">
-                Praesentium voluptatibus temporibus consequatur non aspernatur?
+                Can you change your registered email-id once signed-up on the portal?
               </p>
               <p className="mb-8 text-neutral-500 dark:text-neutral-300">
-                Minima sunt at nulla tenetur, numquam unde quod modi magnam ab
-                deserunt ipsam sint aliquid dolores libero repellendus
-                cupiditate mollitia quidem dolorem.
+              Once registered on the portal, email IDs cannot be changed. Therefore, users are advised to carefully select their email IDs during the registration process. However, if a change is necessary, users may contact the Training and Placement team. Please note that a fine may be applicable for email ID changes.
               </p>
 
               <p className="mb-2 font-bold">
-                Voluptatum magnam sed fugit iusto minus et suscipit?
+              Who should you contact if you encounter technical difficulties with the website?
               </p>
               <p className="text-neutral-500 dark:text-neutral-300">
-                Laudantium perferendis, est alias iure ut veniam suscipit
-                dolorem fugit. Et ipsam corporis earum ea ut quae cum non iusto
-                blanditiis ipsum dolor eius reiciendis, velit adipisci quas.
+              If you encounter technical difficulties while using the training and placement website, you can reach out to the college's IT department or the support team designated for the website for assistance.
               </p>
             </div>
             <div className="w-full shrink-0 grow-0 basis-auto md:w-5/12 md:px-3 lg:px-6">
