@@ -31,7 +31,7 @@ const Contribute = () => {
                   data-te-target="#flush-collapseOne"
                   aria-expanded="false"
                   aria-controls="flush-collapseOne">
-                  Accordion Item #1
+                  Example Question
                   <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +56,7 @@ const Contribute = () => {
                 aria-labelledby="flush-headingOne"
                 data-te-parent="#accordionFlushExample">
                 <div className="px-5 py-4">
-                  Placeholder content for this accordion, which is intended to
-                  demonstrate the
-                  <code>.accordion-flush</code> class. This is the first item's
-                  accordion body.
+                  demo answer
                 </div>
               </div>
             </div>
@@ -74,9 +71,9 @@ const Contribute = () => {
                       type="button"
                       data-te-collapse-init
                       data-te-collapse-collapsed
-                      data-te-target={`#flush-${key.answer}`}
+                      data-te-target={`#flush-${key._id}`}
                       aria-expanded="false"
-                      aria-controls={`flush-${key.answer}`}>
+                      aria-controls={`flush-${key._id}`}>
                       {key.question}
                       <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
                         <svg
@@ -91,7 +88,7 @@ const Contribute = () => {
                     </button>
                   </h2>
                   <div
-                    id={`flush-${key.answer}`}
+                    id={`flush-${key._id}`}
                     className="!visible hidden border-0"
                     data-te-collapse-item
                     aria-labelledby={key.question}
