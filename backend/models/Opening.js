@@ -18,6 +18,11 @@ const OpeningSchema = new Schema({
     type: String,
     default: "0L",
   },
+  logo: {
+    type: String,
+    default:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZLoNujaqRPu7XFemvBYsB68MD_XPTrK3xqqNYuol8qH9jNmrRu6fe22tKsjGyUI_OApI&usqp=CAU",
+  },
   location: {
     type: Array,
     required: true,

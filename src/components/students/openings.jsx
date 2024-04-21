@@ -7,8 +7,17 @@ import { Modal, Ripple, Input, initTE } from "tw-elements";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
+  const [cid, setCid] = useState("");
   const [company, setCompany] = useState([]);
   const [check, setCheck] = useState(false);
+  const [apply, setApply] = useState({
+    name: "",
+    email: "",
+    enrollment: "",
+    branch: "",
+    gender: "",
+    resume: "",
+  });
 
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
@@ -16,10 +25,36 @@ const Openings = () => {
     const data = (async () => {
       const response = await fetch("http://localhost:4000/api/opening/getall");
       const data = await response.json();
-      console.log(data);
+      console.log(data.data);
       setOpen(data.data);
     })();
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setApply({ ...apply, [name]: value });
+  };
+
+  const handleClick = async () => {
+    const response = await fetch(
+      "http://localhost:4000/api/application/add/:cid",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+        body: JSON.stringify(apply),
+      }
+    );
+    const data = await response.json();
+    if(data.message === "success") {
+      alert("Applied Successfully");
+    } else {
+      alert("Failed to apply");
+    }
+    console.log(data);
+  };
 
   return (
     <>
@@ -63,87 +98,105 @@ const Openings = () => {
             </div>
 
             <div className="relative p-4" style={{ minHeight: "500px" }}>
-              <div class="mx-auto block max-w-md rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
+              <div className="mx-auto block max-w-md rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <form>
-                  <div class="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-te-input-wrapper-init>
                     <input
                       type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="name"
+                      value={apply.name}
+                      onChange={handleChange}
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput7"
                       placeholder="Name"
                     />
                     <label
-                      for="exampleInput7"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      htmlFor="exampleInput7"
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Name
                     </label>
                   </div>
 
-                  <div class="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-te-input-wrapper-init>
                     <input
                       type="email"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="email"
+                      value={apply.email}
+                      onChange={handleChange}
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput8"
                       placeholder="Email address"
                     />
                     <label
-                      for="exampleInput8"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      htmlFor="exampleInput8"
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Email address
                     </label>
                   </div>
 
-                  <div class="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-te-input-wrapper-init>
                     <input
                       type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="enrollment"
+                      value={apply.enrollment}
+                      onChange={handleChange}
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput9"
                       placeholder="Enrollnment"
                     />
                     <label
-                      for="exampleInput9"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      htmlFor="exampleInput9"
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Enrollment
                     </label>
                   </div>
 
-                  <div class="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-te-input-wrapper-init>
                     <input
                       type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="branch"
+                      value={apply.branch}
+                      onChange={handleChange}
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput10"
                       placeholder="Branch"
                     />
                     <label
-                      for="exampleInput10"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      htmlFor="exampleInput10"
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Branch
                     </label>
                   </div>
 
-                  <div class="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-te-input-wrapper-init>
                     <input
                       type="text"
-                      class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      name="gender"
+                      value={apply.gender}
+                      onChange={handleChange}
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput11"
                       placeholder="Gender"
                     />
                     <label
-                      for="exampleInput11"
-                      class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      htmlFor="exampleInput11"
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Gender
                     </label>
                   </div>
 
-                  <div class="relative mb-6" data-te-input-wrapper-init>
-                    <div class="mb-3 p-4">
+                  <div className="relative mb-6" data-te-input-wrapper-init>
+                    <div className="mb-3 p-4">
                       <label
-                        for="formFile"
-                        class="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
+                        htmlFor="formFile"
+                        className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
                         Default file input example
                       </label>
                       <input
-                        class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+                        name="resume"
+                        value={apply.resume}
+                        onChange={handleChange}
+                        className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
                         type="file"
                         id="formFile"
                       />
@@ -164,10 +217,11 @@ const Openings = () => {
               </button>
               <button
                 type="button"
+                onClick={handleClick}
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                 data-te-ripple-init
                 data-te-ripple-color="light">
-                Save changes
+                Apply
               </button>
             </div>
           </div>
@@ -218,50 +272,56 @@ const Openings = () => {
 
             {check && (
               <div className="relative p-4" style={{ minHeight: "500px" }}>
-                <ul class="w-96 text-surface dark:text-white">
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                <ul className="w-96 text-surface dark:text-white">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Name :</strong> {company.name}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>JobID :</strong> {company.jobId}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Role :</strong> {company.role}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Internship Stipend :</strong> {company.stipend}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Company CTC :</strong> {company.ctc}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Minimum CGPA :</strong> {company.cgpacritera}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Maximum Backlogs :</strong> {company.backlog}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Applicable for these branches :</strong>{" "}
                     {company.branch.map((key) => {
                       return key + ",";
                     })}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Location :</strong>{" "}
                     {company.location.map((key) => {
                       return key + ",";
                     })}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Gender :</strong> {company.gender}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Mode :</strong> {company.mode}
                   </li>
-                  <li class="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Duration :</strong> {company.duration}
                   </li>
-                  <li class="w-full py-4">
+                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                    <strong>Apply By :</strong>{" "}
+                    {company.applyby.split("T")[1].split(".")[0] +
+                      ", " +
+                      company.applyby.split("T")[0]}
+                  </li>
+                  <li className="w-full py-4">
                     <strong>Type :</strong> {company.type}
                   </li>
                 </ul>
@@ -283,12 +343,13 @@ const Openings = () => {
               <button
                 type="button"
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                data-te-modal-dismiss
                 data-te-ripple-init
                 data-te-ripple-color="light"
                 onClick={() => {
                   setCheck(false);
                 }}>
-                Save changes
+                Apply
               </button>
             </div>
           </div>
@@ -352,6 +413,9 @@ const Openings = () => {
                     {item.type}
                   </div>
                   <button
+                    onClick={() => {
+                      setCid(item._id);
+                    }}
                     className="bg-blue-500 text-white px-4 py-2 rounded-xl"
                     data-te-toggle="modal"
                     data-te-target="#exampleModalLong"

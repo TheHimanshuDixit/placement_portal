@@ -32,12 +32,11 @@ const Header = () => {
               </span>
             </Link>
             <div className="flex items-center lg:order-2">
-              <Link
+              {!localStorage.getItem("authToken") && <Link
                 to="/login"
                 className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                 Log in
-              </Link>
-              <MdNotifications className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800 mr-2 lg:mr-4" />
+              </Link>}
               {localStorage.getItem("authToken") && (
                 <CgProfile
                   onMouseOver={() => {
@@ -60,10 +59,10 @@ const Header = () => {
                   className="absolute right-2 -top-1 mt-12 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-md z-50">
                   <ul>
                     <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="/myprofile">Profile</Link>
+                      <Link to="/myprofile">My Profile</Link>
                     </li>
                     <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="/myapplications">Profile</Link>
+                      <Link to="/myapplications">My Application</Link>
                     </li>
                     <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                       <Link to="#" onClick={handleLogout}>

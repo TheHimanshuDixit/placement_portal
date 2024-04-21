@@ -23,7 +23,6 @@ router.post("/login", async (req, res) => {
   // Implement your login logic here
   let { email, password } = req.body;
   let user = await Student.findOne({ email });
-  console.log(user);
   if (!user) {
     return res.status(401).json({ message: "Invalid email" });
   }

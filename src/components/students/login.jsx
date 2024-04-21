@@ -8,13 +8,13 @@ const Login = () => {
   }, []);
 
   const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [password, setPassword] = useState("");
 
   const onchange = (e) => {
     if (e.target.type === "email") {
       setEmail(e.target.value);
     } else {
-      setPwd(e.target.value);
+      setPassword(e.target.value);
     }
   };
 
@@ -25,9 +25,10 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, pwd }),
+      body: JSON.stringify({ email, password }),
     });
     const data = await response.json();
+    console.log(data);
     if (data.message === "success") {
       alert("Signup successful");
       localStorage.setItem("authToken", data.authToken);
@@ -71,7 +72,7 @@ const Login = () => {
               <div className="relative mb-6" data-te-input-wrapper-init>
                 <input
                   onChange={onchange}
-                  value={pwd}
+                  value={password}
                   type="password"
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput33"
