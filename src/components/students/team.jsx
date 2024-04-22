@@ -4,6 +4,7 @@ const Team = () => {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
+    //eslint-disable-next-line
     const data = (async () => {
       const response = await fetch("http://localhost:4000/api/team/get");
       const data = await response.json();

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { initFlowbite } from "flowbite";
 import { CgProfile } from "react-icons/cg";
-import { MdNotifications } from "react-icons/md";
 
 const Header = () => {
   useEffect(() => {

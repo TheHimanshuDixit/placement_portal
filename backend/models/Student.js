@@ -24,6 +24,9 @@ const StudentSchema = new Schema({
     type: String,
     required: true,
   },
+  resume: {
+    type: String,
+  },
   branch: {
     type: String,
   },

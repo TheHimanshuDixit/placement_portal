@@ -7,11 +7,12 @@ import { Modal, Ripple, Input, initTE } from "tw-elements";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
+  //eslint-disable-next-line
   const [cid, setCid] = useState("");
   const [company, setCompany] = useState([]);
   const [check, setCheck] = useState(false);
   const [apply, setApply] = useState({
-    name: "",
+    name: "", 
     email: "",
     enrollment: "",
     branch: "",
@@ -22,12 +23,31 @@ const Openings = () => {
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
 
+    // eslint-disable-next-line
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:4000/api/auth/profile");
+      const result = await response.json();
+      console.log(result);
+      setApply({
+        name: result.name,
+        email: result.email,
+        enrollment: result.enrollment,
+        branch: result.branch,
+        gender: result.gender,
+        resume: result.resume,
+    });
+    fetchData();
+    };
+
+
+    //eslint-disable-next-line
     const data = (async () => {
       const response = await fetch("http://localhost:4000/api/opening/getall");
       const data = await response.json();
       console.log(data.data);
       setOpen(data.data);
     })();
+    
   }, []);
 
   const handleChange = (e) => {
@@ -48,7 +68,7 @@ const Openings = () => {
       }
     );
     const data = await response.json();
-    if(data.message === "success") {
+    if (data.message === "success") {
       alert("Applied Successfully");
     } else {
       alert("Failed to apply");
@@ -415,6 +435,10 @@ const Openings = () => {
                   <button
                     onClick={() => {
                       setCid(item._id);
+                      if(!localStorage.getItem("authToken"))
+                      {
+                        window.location.href = "/login"
+                      }
                     }}
                     className="bg-blue-500 text-white px-4 py-2 rounded-xl"
                     data-te-toggle="modal"

@@ -18,6 +18,14 @@ const ApplicationSchema = new Schema({
     type: String,
     required: true,
   },
+  phone: {
+    type: String,
+    required: true,
+  },
+  resume: {
+    type: String,
+    required: true,
+  },
   branch: {
     type: Array,
     required: true,
