@@ -36,9 +36,6 @@ const StudentSchema = new Schema({
   cgpa: {
     type: String,
   },
-  resume: {
-    type: String,
-  },
   backlogs: {
     type: String,
   },
