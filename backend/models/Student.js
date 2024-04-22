@@ -43,6 +43,9 @@ const StudentSchema = new Schema({
     type: String,
     default: "Jaypee Institute of Information Technology",
   },
+  coverletter: {
+    type: String,
+  },
   date: {
     type: Date,
     default: new Date(),
