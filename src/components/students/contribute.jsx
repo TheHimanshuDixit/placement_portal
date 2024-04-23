@@ -19,7 +19,7 @@ const Contribute = () => {
     <div>
       <div className="container my-24 mx-auto md:px-6 xl:px-24">
         <section className="mb-32">
-          <h2 className="mb-6 pl-6 text-3xl font-bold">Interview Questions</h2>
+          <h2 className="mb-6 pl-6 text-3xl font-bold">Interview Questions!!</h2>
 
           <div id="accordionFlushExample">
             <div className="rounded-none border border-l-0 border-r-0 border-t-0 border-neutral-200">
@@ -55,9 +55,7 @@ const Contribute = () => {
                 data-te-collapse-show
                 aria-labelledby="flush-headingOne"
                 data-te-parent="#accordionFlushExample">
-                <div className="px-5 py-4">
-                  demo answer
-                </div>
+                <div className="px-5 py-4">demo answer</div>
               </div>
             </div>
             {contributionList.map((key) => {
@@ -75,6 +73,24 @@ const Contribute = () => {
                       aria-expanded="false"
                       aria-controls={`flush-${key._id}`}>
                       {key.question}
+                      <div>
+                        <span className="ml-3 rounded-lg p-1 border-2 text-red-400 border-red-400">
+                          {key.role}
+                        </span>
+                        <span className="ml-3 rounded-lg p-1 border-2 text-blue-400 border-blue-400">
+                          {key.round} Round
+                        </span>
+                        <span className="ml-3 rounded-lg p-1 border-2 text-green-400 border-green-400">
+                          {key.year}
+                        </span>
+                        {key.topic.map((item) => {
+                          return (
+                            <span className="ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
+                              {item}
+                            </span>
+                          );
+                        })}
+                      </div>
                       <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

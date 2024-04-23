@@ -1,6 +1,86 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Myprofile = () => {
+  const [profile, setProfile] = useState({
+    enroll: "",
+    coverletter: "",
+    email: "",
+    college: "",
+    phone: "",
+    branch: "",
+    year: "",
+    cgpa: "",
+    backlogs: "",
+  });
+
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/auth/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+        });
+
+        const data = await res.json();
+        console.log(data);
+        setProfile({
+          enroll: data.enrollnment,
+          coverletter: data.coverletter,
+          email: data.email,
+          college: data.college,
+          phone: data.phoneno,
+          branch: data.branch,
+          year: data.year,
+          cgpa: data.cgpa,
+          backlogs: data.backlogs,
+        });
+        setFname(data.name.split(" ")[0]);
+        setLname(data.name.split(" ")[1]);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+    if (e.target.name === "fname") setFname(e.target.value);
+    if (e.target.name === "lname") setLname(e.target.value);
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:4000/api/auth/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+        body: JSON.stringify(profile),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (data.error) {
+        alert(data.error);
+      } else {
+        alert("Profile updated successfully");
+        window.location.href = "/myprofile";
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="max-w-screen-lg m-auto my-10 border-4 p-2 px-4 rounded-2xl">
       <form>
@@ -17,7 +97,7 @@ const Myprofile = () => {
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-4">
                 <label
-                  htmlFor="username"
+                  htmlFor="enroll"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   Enrollnment Number
                 </label>
@@ -25,10 +105,11 @@ const Myprofile = () => {
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
                       type="text"
-                      name="username"
-                      id="username"
-                      autoComplete="username"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      name="enroll"
+                      value={profile.enroll}
+                      onChange={handleChange}
+                      id="enroll"
+                      className="block flex-1 border-0 bg-transparent px-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -36,16 +117,18 @@ const Myprofile = () => {
 
               <div className="col-span-full">
                 <label
-                  htmlFor="about"
+                  htmlFor="coverletter"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   Cover letter
                 </label>
                 <div className="mt-2">
                   <textarea
-                    id="about"
-                    name="about"
+                    id="coverletter"
+                    name="coverletter"
+                    value={profile.coverletter}
+                    onChange={handleChange}
                     rows="3"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
                 </div>
               </div>
             </div>
@@ -62,34 +145,38 @@ const Myprofile = () => {
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="first-name"
+                  htmlFor="fname"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   First name
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="fname"
+                    value={fname}
+                    onChange={handleChange}
+                    id="fname"
                     autoComplete="given-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="last-name"
+                  htmlFor="lname"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   Last name
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
+                    name="lname"
+                    value={lname}
+                    onChange={handleChange}
+                    id="lname"
                     autoComplete="family-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -104,9 +191,12 @@ const Myprofile = () => {
                   <input
                     id="email"
                     name="email"
+                    value={profile.email}
+                    disabled
+                    onChange={handleChange}
                     type="email"
                     autoComplete="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -121,9 +211,11 @@ const Myprofile = () => {
                   <input
                     type="text"
                     name="college"
+                    value={profile.college}
+                    onChange={handleChange}
                     id="college"
                     autoComplete="college"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -138,9 +230,11 @@ const Myprofile = () => {
                   <input
                     type="text"
                     name="phone"
+                    value={profile.phone}
+                    onChange={handleChange}
                     id="phone"
                     autoComplete="address-level2"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -155,9 +249,11 @@ const Myprofile = () => {
                   <input
                     type="text"
                     name="branch"
+                    value={profile.branch}
+                    onChange={handleChange}
                     id="branch"
                     autoComplete="address-level1"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -172,9 +268,11 @@ const Myprofile = () => {
                   <input
                     type="text"
                     name="year"
+                    value={profile.year}
+                    onChange={handleChange}
                     id="year"
                     autoComplete="year"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -189,9 +287,11 @@ const Myprofile = () => {
                   <input
                     type="text"
                     name="cgpa"
+                    value={profile.cgpa}
+                    onChange={handleChange}
                     id="cgpa"
                     autoComplete="address-level2"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -206,25 +306,30 @@ const Myprofile = () => {
                   <input
                     type="text"
                     name="backlogs"
+                    value={profile.backlogs}
+                    onChange={handleChange}
                     id="backlogs"
                     autoComplete="address-level1"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
-
             </div>
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
+            onClick={() => {
+              window.location.href = "/myprofile";
+            }}
             type="button"
             className="text-sm font-semibold leading-6 text-gray-900">
             Cancel
           </button>
           <button
             type="submit"
+            onClick={handleClick}
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Save
           </button>

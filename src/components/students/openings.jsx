@@ -12,7 +12,7 @@ const Openings = () => {
   const [company, setCompany] = useState([]);
   const [check, setCheck] = useState(false);
   const [apply, setApply] = useState({
-    name: "", 
+    name: "",
     email: "",
     enrollment: "",
     branch: "",
@@ -24,21 +24,6 @@ const Openings = () => {
     initTE({ Modal, Ripple, Input });
 
     // eslint-disable-next-line
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:4000/api/auth/profile");
-      const result = await response.json();
-      console.log(result);
-      setApply({
-        name: result.name,
-        email: result.email,
-        enrollment: result.enrollment,
-        branch: result.branch,
-        gender: result.gender,
-        resume: result.resume,
-    });
-    fetchData();
-    };
-
 
     //eslint-disable-next-line
     const data = (async () => {
@@ -47,7 +32,6 @@ const Openings = () => {
       console.log(data.data);
       setOpen(data.data);
     })();
-    
   }, []);
 
   const handleChange = (e) => {
@@ -74,6 +58,27 @@ const Openings = () => {
       alert("Failed to apply");
     }
     console.log(data);
+  };
+
+  const handleIt = async () => {
+    const response = await fetch("http://localhost:4000/api/auth/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("authToken"),
+      },
+    });
+
+    const result = await response.json();
+    console.log(result)
+    setApply({
+      name: result.name,
+      email: result.email,
+      enrollment: result.enrollnment,
+      branch: result.branch,
+      gender: result.gender,
+      resume: result.resume,
+    });
   };
 
   return (
@@ -435,10 +440,10 @@ const Openings = () => {
                   <button
                     onClick={() => {
                       setCid(item._id);
-                      if(!localStorage.getItem("authToken"))
-                      {
-                        window.location.href = "/login"
+                      if (!localStorage.getItem("authToken")) {
+                        window.location.href = "/login";
                       }
+                      handleIt();
                     }}
                     className="bg-blue-500 text-white px-4 py-2 rounded-xl"
                     data-te-toggle="modal"

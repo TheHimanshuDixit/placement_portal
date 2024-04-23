@@ -17,6 +17,7 @@ import Navbar from "./components/admin/navbar";
 import FooterAdmin from "./components/admin/footer";
 import Myapplications from "./components/students/myapplications";
 import Myprofile from "./components/students/myprofile";
+import Mycontributions from "./components/students/mycontributions";
 
 function App() {
   return (
@@ -130,6 +131,17 @@ function App() {
               <>
                 <Header />
                 <Myprofile />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/mycontributions"
+            element={
+              <>
+                <Header />
+                <Mycontributions />
                 <Footer />
               </>
             }
