@@ -103,4 +103,15 @@ router.get("/profile", fetchuser, async (req, res) => {
   res.json(user);
 });
 
+// POST /api/auth/profile
+router.post("/profile", fetchuser, async (req, res) => {
+  let user = await Student.findById(req.id);
+  if (!user) {
+    return res.status(401).json({ message: "Invalid email" });
+  }
+
+  user = await Student.findByIdAndUpdate(req.id, req.body, { new: true });
+  res.json(user);
+});
+
 module.exports = router;
