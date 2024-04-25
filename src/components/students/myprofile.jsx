@@ -60,7 +60,7 @@ const Myprofile = () => {
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:4000/api/auth/profile", {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "auth-token": localStorage.getItem("authToken"),
@@ -98,7 +98,8 @@ const Myprofile = () => {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="enroll"
-                  className="block text-sm font-medium leading-6 text-gray-900">
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                   Enrollnment Number
                 </label>
                 <div className="mt-2">
@@ -108,6 +109,7 @@ const Myprofile = () => {
                       name="enroll"
                       value={profile.enroll}
                       onChange={handleChange}
+                      disabled
                       id="enroll"
                       className="block flex-1 border-0 bg-transparent px-2 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     />

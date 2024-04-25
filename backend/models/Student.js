@@ -23,6 +23,7 @@ const StudentSchema = new Schema({
   phoneno: {
     type: String,
     required: true,
+    unique: true,
   },
   resume: {
     type: String,
