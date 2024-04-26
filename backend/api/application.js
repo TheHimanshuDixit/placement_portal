@@ -7,7 +7,7 @@ const Student = require("../models/Student");
 
 // POST /api/application/add/:oid
 router.post("/add/:oid", fetchuser, async (req, res) => {
-  let { name, email, enroll, branch, gender, resume } = req.body;
+  let { name, email, enroll, phone, branch, gender, resume } = req.body;
   let student = await Student.findById(req.id);
   if (!student) {
     return res.status(400).json({ error: "Student not found" });
@@ -20,10 +20,10 @@ router.post("/add/:oid", fetchuser, async (req, res) => {
     company: req.params.oid,
     name,
     email,
+    phone,
     enroll,
     branch,
     gender,
-    resume,
   });
   let resp = await application.save();
   res.json({ message: "success", data: resp });

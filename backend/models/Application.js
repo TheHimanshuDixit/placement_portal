@@ -24,7 +24,6 @@ const ApplicationSchema = new Schema({
   },
   resume: {
     type: String,
-    required: true,
   },
   branch: {
     type: Array,

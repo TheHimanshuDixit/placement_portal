@@ -4,6 +4,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
+import { CiDatabase } from "react-icons/ci";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
@@ -15,7 +16,8 @@ const Openings = () => {
   const [apply, setApply] = useState({
     name: "",
     email: "",
-    enrollment: "",
+    enroll: "",
+    phone: "",
     branch: "",
     gender: "",
     resume: "",
@@ -32,7 +34,7 @@ const Openings = () => {
         "https://placement-portall.onrender.com/api/opening/getall"
       );
       const data = await response.json();
-      console.log(data.data);
+      // console.log(data.data);
       setOpen(data.data);
     })();
   }, []);
@@ -43,24 +45,30 @@ const Openings = () => {
   };
 
   const handleClick = async () => {
-    const response = await fetch(
-      "https://placement-portall.onrender.com/api/application/add/:cid",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("authToken"),
-        },
-        body: JSON.stringify(apply),
+    console.log(apply.cgpa, cutoff, cid);
+    if (apply.cgpa >= cutoff) {
+      const response = await fetch(
+        `https://placement-portall.onrender.com/api/application/add/${cid}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+          body: JSON.stringify(apply),
+        }
+      );
+      const data = await response.json();
+      if (data.message === "success") {
+        alert("Applied Successfully");
+      } else {
+        alert("Failed to apply");
       }
-    );
-    const data = await response.json();
-    if (data.message === "success") {
-      alert("Applied Successfully");
+      console.log(data);
+      window.location.reload();
     } else {
-      alert("Failed to apply");
+      alert("You are not eligible for this job");
     }
-    console.log(data);
   };
 
   const handleIt = async () => {
@@ -80,7 +88,8 @@ const Openings = () => {
     setApply({
       name: result.name,
       email: result.email,
-      enrollment: result.enrollnment,
+      enroll: result.enrollnment,
+      phone: result.phoneno,
       branch: result.branch,
       cgpa: result.cgpa,
       gender: result.gender,
@@ -169,8 +178,8 @@ const Openings = () => {
                   <div className="relative mb-6" data-te-input-wrapper-init>
                     <input
                       type="text"
-                      name="enrollment"
-                      value={apply.enrollment}
+                      name="enroll"
+                      value={apply.enroll}
                       onChange={handleChange}
                       className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput9"
@@ -180,6 +189,23 @@ const Openings = () => {
                       htmlFor="exampleInput9"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Enrollment
+                    </label>
+                  </div>
+
+                  <div className="relative mb-6" data-te-input-wrapper-init>
+                    <input
+                      type="text"
+                      name="phone"
+                      value={apply.phone}
+                      onChange={handleChange}
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      id="exampleInput12"
+                      placeholder="Phone"
+                    />
+                    <label
+                      htmlFor="exampleInput12"
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      Phone
                     </label>
                   </div>
 
@@ -250,7 +276,6 @@ const Openings = () => {
               <button
                 type="button"
                 onClick={handleClick}
-                disabled={apply.cgpa >= cutoff ? true : false}
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                 data-te-ripple-init
                 data-te-ripple-color="light">

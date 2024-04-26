@@ -76,11 +76,7 @@ router.put("/update/:id", async (req, res) => {
   var salt = await bcrypt.genSalt(10);
   var hashpwd = await bcrypt.hash(password, salt);
   let newUser = {
-    name,
-    email,
-    enrollnment,
     password: hashpwd,
-    phoneno,
   };
   user = await Student.findByIdAndUpdate(id, newUser, { new: true });
   res.json({ message: "User updated", user });
