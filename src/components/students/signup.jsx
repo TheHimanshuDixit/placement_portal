@@ -147,12 +147,6 @@ const Signup = () => {
                   </label>
                 </div>
 
-                <div className="mb-6 flex items-center justify-between">
-                  <div className="mb-[0.125rem] block min-h-[1.5rem] ps-[1.5rem]"></div>
-
-                  <a href="#!">Forgot password?</a>
-                </div>
-
                 <div className="text-center lg:text-left">
                   <button
                     onClick={handleClick}

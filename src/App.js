@@ -18,6 +18,7 @@ import FooterAdmin from "./components/admin/footer";
 import Myapplications from "./components/students/myapplications";
 import Myprofile from "./components/students/myprofile";
 import Mycontributions from "./components/students/mycontributions";
+import Forgotpassword from "./components/students/forgotpassword";
 
 function App() {
   return (
@@ -55,6 +56,15 @@ function App() {
                 <Header />
                 <Signup />
                 <Footer />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/forgot"
+            element={
+              <>
+                <Forgotpassword />
               </>
             }
           />
