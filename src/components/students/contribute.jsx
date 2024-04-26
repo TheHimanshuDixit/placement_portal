@@ -75,21 +75,24 @@ const Contribute = () => {
                       aria-expanded="false"
                       aria-controls={`flush-${key._id}`}>
                       {key.question}
-                      <div>
-                        <span className="ml-3 rounded-lg p-1 border-2 text-red-400 border-red-400">
+                      <div className="flex flex-wrap">
+                        <div className="my-1 ml-3 rounded-lg p-1 border-2 text-red-400 border-red-400">
+                          {key.company}
+                        </div>
+                        <div className="my-1 ml-3 rounded-lg p-1 border-2 text-red-400 border-red-400">
                           {key.role}
-                        </span>
-                        <span className="ml-3 rounded-lg p-1 border-2 text-blue-400 border-blue-400">
+                        </div>
+                        <div className="my-1 ml-3 rounded-lg p-1 border-2 text-blue-400 border-blue-400">
                           {key.round} Round
-                        </span>
-                        <span className="ml-3 rounded-lg p-1 border-2 text-green-400 border-green-400">
+                        </div>
+                        <div className="my-1 ml-3 rounded-lg p-1 border-2 text-green-400 border-green-400">
                           {key.year}
-                        </span>
+                        </div>
                         {key.topic.map((item) => {
                           return (
-                            <span className="ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
+                            <div className="my-1 ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
                               {item}
-                            </span>
+                            </div>
                           );
                         })}
                       </div>
