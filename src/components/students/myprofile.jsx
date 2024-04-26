@@ -20,13 +20,16 @@ const Myprofile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/auth/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("authToken"),
-          },
-        });
+        const res = await fetch(
+          "https://placement-portall.onrender.com/api/auth/profile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": localStorage.getItem("authToken"),
+            },
+          }
+        );
 
         const data = await res.json();
         console.log(data);
@@ -61,14 +64,17 @@ const Myprofile = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:4000/api/auth/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("authToken"),
-        },
-        body: JSON.stringify(profile),
-      });
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/auth/profile",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+          body: JSON.stringify(profile),
+        }
+      );
 
       const data = await res.json();
       console.log(data);
@@ -81,7 +87,7 @@ const Myprofile = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div className="max-w-screen-lg m-auto my-10 border-4 p-2 px-4 rounded-2xl">
@@ -100,8 +106,7 @@ const Myprofile = () => {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="enroll"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                  className="block text-sm font-medium leading-6 text-gray-900">
                   Enrollnment Number
                 </label>
                 <div className="mt-2">

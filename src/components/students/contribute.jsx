@@ -7,7 +7,7 @@ const Contribute = () => {
   useEffect(() => {
     initTE({ Collapse });
 
-    fetch("http://localhost:4000/api/contribute/get")
+    fetch("https://placement-portall.onrender.com/api/contribute/get")
       .then((res) => res.json())
       .then((data) => {
         setContributionList(data.data);
@@ -19,7 +19,9 @@ const Contribute = () => {
     <div>
       <div className="container my-24 mx-auto md:px-6 xl:px-24">
         <section className="mb-32">
-          <h2 className="mb-6 pl-6 text-3xl font-bold">Interview Questions!!</h2>
+          <h2 className="mb-6 pl-6 text-3xl font-bold">
+            Interview Questions!!
+          </h2>
 
           <div id="accordionFlushExample">
             <div className="rounded-none border border-l-0 border-r-0 border-t-0 border-neutral-200">
