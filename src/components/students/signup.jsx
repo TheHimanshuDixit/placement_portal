@@ -9,7 +9,7 @@ const Signup = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [enrollment, setEnrollment] = useState("");
+  const [enrollnment, setEnrollnment] = useState("");
   const [phoneno, setPhoneno] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,8 +18,8 @@ const Signup = () => {
       setName(e.target.value);
     } else if (e.target.name === "email") {
       setEmail(e.target.value);
-    } else if (e.target.name === "enrollment") {
-      setEnrollment(e.target.value);
+    } else if (e.target.name === "enrollnment") {
+      setEnrollnment(e.target.value);
     } else if (e.target.name === "phoneno") {
       setPhoneno(e.target.value);
     } else {
@@ -36,7 +36,7 @@ const Signup = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, enrollment, password, phoneno }),
+        body: JSON.stringify({ name, email, enrollnment, password, phoneno }),
       }
     );
     const data = await response.json();
@@ -100,8 +100,8 @@ const Signup = () => {
                 <div className="relative mb-6" data-te-input-wrapper-init>
                   <input
                     onChange={handleChange}
-                    name="enrollment"
-                    value={enrollment}
+                    name="enrollnment"
+                    value={enrollnment}
                     type="text"
                     className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                     id="exampleFormControlInput3"
