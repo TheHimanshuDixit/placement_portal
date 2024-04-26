@@ -31,6 +31,9 @@ const StudentSchema = new Schema({
   branch: {
     type: String,
   },
+  gender: {
+    type: String,
+  },
   year: {
     type: String,
   },

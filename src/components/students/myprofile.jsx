@@ -8,6 +8,7 @@ const Myprofile = () => {
     college: "",
     phone: "",
     branch: "",
+    gender: "",
     year: "",
     cgpa: "",
     backlogs: "",
@@ -36,6 +37,7 @@ const Myprofile = () => {
           college: data.college,
           phone: data.phoneno,
           branch: data.branch,
+          gender: data.gender,
           year: data.year,
           cgpa: data.cgpa,
           backlogs: data.backlogs,
@@ -311,6 +313,24 @@ const Myprofile = () => {
                     value={profile.backlogs}
                     onChange={handleChange}
                     id="backlogs"
+                    autoComplete="address-level1"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium leading-6 text-gray-900">
+                  Gender
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="gender"
+                    value={profile.gender}
+                    onChange={handleChange}
+                    id="gender"
                     autoComplete="address-level1"
                     className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
