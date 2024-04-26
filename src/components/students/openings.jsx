@@ -4,7 +4,6 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
-import { CiDatabase } from "react-icons/ci";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
@@ -114,7 +113,7 @@ const Openings = () => {
               <h5
                 className="text-xl font-medium leading-normal text-surface dark:text-white"
                 id="exampleModalLongLabel">
-                Modal title
+                Fill all Details
               </h5>
               <button
                 type="button"
