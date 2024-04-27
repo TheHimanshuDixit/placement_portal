@@ -3,7 +3,10 @@ import { Modal, Ripple, Input, initTE } from "tw-elements";
 
 const Myapplications = () => {
   const [applications, setApplications] = useState([]);
+  // eslint-disable-next-line
   const [open, setOpen] = useState([]);
+  
+  // eslint-disable-next-line
   const [company, setCompany] = useState({});
   const [viewCompany, setViewCompany] = useState({});
   const [check, setCheck] = useState(false);
@@ -31,6 +34,7 @@ const Myapplications = () => {
     };
     fetchData();
 
+    // eslint-disable-next-line
     const data = (async () => {
       const response = await fetch(
         "https://placement-portall.onrender.com/api/opening/getall"
@@ -42,6 +46,7 @@ const Myapplications = () => {
       }
       console.log(company);
     })();
+    // eslint-disable-next-line
   }, []);
 
   return (
