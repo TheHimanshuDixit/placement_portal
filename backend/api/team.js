@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Team = require("../models/Team");
+const bcrypt = require("bcryptjs");
 
 // POST /api/team/add
 router.post("/add", async (req, res) => {
@@ -11,14 +12,18 @@ router.post("/add", async (req, res) => {
   if (newTeam) {
     return res.status(401).json({ message: "Team already exists" });
   }
+  var salt = await bcrypt.genSalt(10);
+  var hashpwd = await bcrypt.hash(password, salt);
+
   let team = new Team({
     name,
     position,
     image,
     email,
-    password,
+    password: hashpwd,
   });
   let resp = await team.save();
+
   res.json({ message: "success", data: resp });
 });
 
@@ -26,13 +31,14 @@ router.post("/add", async (req, res) => {
 router.post("/login", async (req, res) => {
   let { email, password } = req.body;
   let team = await Team.findOne({ email });
-  if (team) {
-    if (team.password === password) {
-      return res.json({ message: "success", data: team });
-    }
-    return res.json({ message: "Invalid Password" });
+  if (!team) {
+    return res.status(401).json({ message: "Invalid email" });
   }
-  return res.json({ message: "Team not found" });
+  const pwd = await bcrypt.compare(password, team.password);
+  if (!pwd) {
+    return res.status(401).json({ message: "Invalid password" });
+  }
+  res.json({ message: "success" });
 });
 
 // GET /api/team/get

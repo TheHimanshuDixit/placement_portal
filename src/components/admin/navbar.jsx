@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { initFlowbite } from "flowbite";
 import { CgProfile } from "react-icons/cg";
-import { MdNotifications } from "react-icons/md";
 
 const Navbar = () => {
   useEffect(() => {
@@ -29,7 +28,6 @@ const Navbar = () => {
               className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
               Log in
             </Link>
-            <MdNotifications className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800 mr-2 lg:mr-4" />
             <CgProfile className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800" />
             <button
               data-collapse-toggle="mobile-menu-2"

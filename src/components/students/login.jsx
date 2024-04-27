@@ -33,13 +33,28 @@ const Login = () => {
     const data = await response.json();
     console.log(data);
     if (data.message === "success") {
-      alert("Signup successful");
+      alert("Login successful");
       localStorage.setItem("authToken", data.authToken);
       window.location.href = "/";
     } else {
-      alert("Signup failed");
+      const respteam = await fetch(
+        "https://placement-portall.onrender.com/api/team/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+      const data = await respteam.json();
+      if (data.message === "success") {
+        alert("Signup successful");
+        window.location.href = "/admin";
+      } else {
+        alert("Login failed");
+      }
     }
-    console.log(data);
   };
 
   return (
