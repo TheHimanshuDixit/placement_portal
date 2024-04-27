@@ -19,6 +19,11 @@ import Myapplications from "./components/students/myapplications";
 import Myprofile from "./components/students/myprofile";
 import Mycontributions from "./components/students/mycontributions";
 import Forgotpassword from "./components/students/forgotpassword";
+import Addadmin from "./components/admin/addadmin";
+import Addopening from "./components/admin/addopening";
+import Announcement from "./components/admin/announcement";
+import Highlights from "./components/admin/highlights";
+import Studetails from "./components/admin/studetails";
 
 function App() {
   return (
@@ -163,6 +168,56 @@ function App() {
               <>
                 <Navbar />
                 <Admin />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/addadmin"
+            element={
+              <>
+                <Navbar />
+                <Addadmin />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/addopening"
+            element={
+              <>
+                <Navbar />
+                <Addopening />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/announcement"
+            element={
+              <>
+                <Navbar />
+                <Announcement />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/highlight"
+            element={
+              <>
+                <Navbar />
+                <Highlights />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/studdetails"
+            element={
+              <>
+                <Navbar />
+                <Studetails/>
                 <FooterAdmin />
               </>
             }
