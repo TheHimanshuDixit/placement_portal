@@ -82,7 +82,7 @@ const Contact = () => {
             </div>
             <div className="w-full shrink-0 grow-0 basis-auto md:w-5/12 md:px-3 lg:px-6">
               <p className="mb-8 font-bold">
-                Didn't find your answer in the FAQ? Contact our sales
+                For Any Queries Use The Form Below!!
               </p>
               <form>
                 <div className="relative mb-6" data-te-input-wrapper-init>
