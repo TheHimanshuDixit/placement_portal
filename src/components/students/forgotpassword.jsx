@@ -62,6 +62,7 @@ const Forgotpassword = () => {
     const response = await data.json();
     if (response.message === "success") {
       alert("Password updated successfully");
+      window.location.href = "/";
     }
   };
 

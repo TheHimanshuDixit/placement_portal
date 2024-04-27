@@ -93,7 +93,6 @@ router.post("/forgot", async (req, res) => {
 
   const otp = Math.floor(100000 + Math.random() * 900000);
   const output = `
-                    <h4>OTP</h4>
                     <h3>OTP : </h3>
                     <p>${otp}</p>
 `;
