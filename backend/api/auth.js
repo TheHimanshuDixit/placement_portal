@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
 const app = express();
 app.use(bodyParser.json());
 const router = express.Router();
@@ -66,20 +67,64 @@ router.post("/signup", async (req, res) => {
 });
 
 // PUT /api/auth/update/:id
-router.put("/update/:id", async (req, res) => {
-  let id = req.params.id;
-  let { name, email, enrollnment, password, phoneno } = req.body;
-  let user = await Student.findById(id);
+router.put("/updatepassword", async (req, res) => {
+  let { email, newPassword } = req.body;
+  let user = await Student.findOne({ email });
   if (!user) {
     return res.status(401).json({ message: "User not found" });
   }
   var salt = await bcrypt.genSalt(10);
-  var hashpwd = await bcrypt.hash(password, salt);
-  let newUser = {
-    password: hashpwd,
+  var hashpwd = await bcrypt.hash(newPassword, salt);
+  user = await Student.findByIdAndUpdate(
+    user._id,
+    { password: hashpwd },
+    { new: true }
+  );
+  res.json({ message: "success" });
+});
+
+// POST /api/auth/forgot
+router.post("/forgot", async (req, res) => {
+  let { email } = req.body;
+  let user = await Student.findOne({ email });
+  if (!user) {
+    return res.status(401).json({ message: "Invalid email" });
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  const output = `
+                    <h4>OTP</h4>
+                    <h3>OTP : </h3>
+                    <p>${otp}</p>
+`;
+  // Instantiate the SMTP server
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com"',
+    port: 465,
+    secure: true,
+    service: "gmail",
+    auth: {
+      user: "harshhimanshudixit@gmail.com",
+      pass: "cwujzimqjehhjyac",
+    },
+  });
+
+  // Specify what the email will look like
+  var mailOption = {
+    from: "harshhimanshudixit@gmail.com", //Sender mail
+    to: email, // Recever mail
+    subject: "One Time Password",
+    html: output,
   };
-  user = await Student.findByIdAndUpdate(id, newUser, { new: true });
-  res.json({ message: "User updated", user });
+
+  // Send mail with defined transport object
+  transporter.sendMail(mailOption, function (error, info) {
+    if (error) {
+      res.json({ message: "Error Occurs" });
+    } else {
+      res.json({ message: "Email sent", otp: otp });
+    }
+  });
 });
 
 // DELETE /api/auth/delete/:id
