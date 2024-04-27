@@ -49,7 +49,7 @@ const Login = () => {
       );
       const data = await respteam.json();
       if (data.message === "success") {
-        alert("Signup successful");
+        alert("Login successful");
         window.location.href = "/admin";
       } else {
         alert("Login failed");
