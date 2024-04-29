@@ -12,7 +12,7 @@ const Navbar = () => {
     <header>
       <nav className=" px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-          <Link to="/" className="flex items-center">
+          <Link to="/admin" className="flex items-center">
             <img
               src="./Images/logo.png"
               className="mr-3 h-6 sm:h-9"

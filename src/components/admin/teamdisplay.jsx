@@ -27,11 +27,11 @@ const Teamdisplay = () => {
               <p className="text-sm leading-6 text-gray-900">
                 Co-Founder / CEO
               </p>
-              <div className="ml-2 text-xl">
+              <div className="ml-2 text-xl cursor-pointer">
                 <MdModeEditOutline />
               </div>
               <div>
-                <MdDelete className="ml-1 text-xl" />
+                <MdDelete className="ml-1 text-xl cursor-pointer" />
               </div>
             </div>
             <p className="mt-1 text-xs leading-5 text-gray-500">
