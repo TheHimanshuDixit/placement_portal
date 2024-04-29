@@ -5,7 +5,7 @@ const Myapplications = () => {
   const [applications, setApplications] = useState([]);
   // eslint-disable-next-line
   const [open, setOpen] = useState([]);
-  
+
   // eslint-disable-next-line
   const [company, setCompany] = useState({});
   const [viewCompany, setViewCompany] = useState({});

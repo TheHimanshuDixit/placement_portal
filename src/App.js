@@ -21,7 +21,6 @@ import Mycontributions from "./components/students/mycontributions";
 import Forgotpassword from "./components/students/forgotpassword";
 import Addadmin from "./components/admin/addadmin";
 import Addopening from "./components/admin/addopening";
-import Announcement from "./components/admin/announcement";
 import Highlights from "./components/admin/highlights";
 import Studetails from "./components/admin/studetails";
 
@@ -188,16 +187,6 @@ function App() {
               <>
                 <Navbar />
                 <Addopening />
-                <FooterAdmin />
-              </>
-            }
-          />
-          <Route
-            path="/announcement"
-            element={
-              <>
-                <Navbar />
-                <Announcement />
                 <FooterAdmin />
               </>
             }
