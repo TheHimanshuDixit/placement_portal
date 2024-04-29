@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import { MdModeEditOutline } from "react-icons/md";
 
 const Teamdisplay = () => {
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authAdminToken");
+    if (!authToken) {
+      window.location.href = "/login";
+    }
+  }, []);
+
   return (
     <div>
       <ul className="divide-y divide-gray-100">

@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Teamdisplay from "./teamdisplay";
 
 const Addadmin = () => {
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authAdminToken");
+    if (!authToken) {
+      window.location.href = "/login";
+    }
+  }, []);
+
   return (
     <div className="max-w-screen-lg m-auto">
       <form className="p-10">

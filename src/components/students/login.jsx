@@ -31,7 +31,7 @@ const Login = () => {
       }
     );
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.message === "success") {
       alert("Login successful");
       localStorage.setItem("authToken", data.authToken);
@@ -48,7 +48,9 @@ const Login = () => {
         }
       );
       const data = await respteam.json();
+      // console.log(data);
       if (data.message === "success") {
+        localStorage.setItem("authAdminToken", data.authAdminToken);
         alert("Login successful");
         window.location.href = "/admin";
       } else {

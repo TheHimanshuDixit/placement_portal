@@ -8,6 +8,11 @@ const Navbar = () => {
     initFlowbite();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("authAdminToken");
+    window.location.href = "/login";
+  };
+
   return (
     <header>
       <nav className=" px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -23,7 +28,17 @@ const Navbar = () => {
             </span>
           </Link>
           <div className="flex items-center lg:order-2">
-            <CgProfile className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800" />
+            {localStorage.getItem("authAdminToken") && (
+              <div>
+                <CgProfile className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800" />
+                <button
+                  onClick={handleLogout}
+                  className="ml-4 text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+                  Logout
+                </button>
+              </div>
+            )}
+
             <button
               data-collapse-toggle="mobile-menu-2"
               type="button"

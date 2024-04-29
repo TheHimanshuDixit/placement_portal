@@ -13,6 +13,11 @@ const Myapplications = () => {
 
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
+
+    if(!localStorage.getItem("authToken")){
+      window.location.href = "/login";
+    }
+
     // Fetch the data from the server
     const fetchData = async () => {
       try {

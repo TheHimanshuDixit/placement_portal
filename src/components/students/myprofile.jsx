@@ -18,6 +18,11 @@ const Myprofile = () => {
   const [lname, setLname] = useState("");
 
   useEffect(() => {
+
+    if(!localStorage.getItem("authToken")){
+      window.location.href = "/login";
+    }
+
     const fetchProfile = async () => {
       try {
         const res = await fetch(

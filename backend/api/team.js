@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Team = require("../models/Team");
 const bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
+const token = "admin";
 
 // POST /api/team/add
 router.post("/add", async (req, res) => {
@@ -23,8 +25,9 @@ router.post("/add", async (req, res) => {
     password: hashpwd,
   });
   let resp = await team.save();
+  let authAdminToken = jwt.sign({ email: email }, token, { expiresIn: "1d" });
 
-  res.json({ message: "success", data: resp });
+  res.json({ message: "success", data: resp, authAdminToken: authAdminToken });
 });
 
 // POST /api/team/login
@@ -38,7 +41,8 @@ router.post("/login", async (req, res) => {
   if (!pwd) {
     return res.status(401).json({ message: "Invalid password" });
   }
-  res.json({ message: "success" });
+  let authAdminToken = jwt.sign({ email: email }, token, { expiresIn: "1d" });
+  res.json({ message: "success", authAdminToken: authAdminToken});
 });
 
 // GET /api/team/get

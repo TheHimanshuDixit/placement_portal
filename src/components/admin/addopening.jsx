@@ -13,6 +13,10 @@ const Addopening = () => {
   const [check, setCheck] = useState(false);
 
   useEffect(() => {
+    if (!localStorage.getItem("authAdminToken")) {
+      window.location.href = "/login";
+    }
+
     initTE({ Modal, Ripple, Input });
 
     //eslint-disable-next-line
@@ -87,7 +91,7 @@ const Addopening = () => {
               </button>
             </div>
 
-            { (
+            {
               <div className="relative p-4" style={{ minHeight: "500px" }}>
                 <ul className="w-96 text-surface dark:text-white">
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
@@ -112,12 +116,10 @@ const Addopening = () => {
                     <strong>Maximum Backlogs :</strong> {}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Applicable for these branches :</strong>{" "}
-                    {}
+                    <strong>Applicable for these branches :</strong> {}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Location :</strong>{" "}
-                    {}
+                    <strong>Location :</strong> {}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Gender :</strong> {}
@@ -129,15 +131,14 @@ const Addopening = () => {
                     <strong>Duration :</strong> {}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Apply By :</strong>{" "}
-                    {}
+                    <strong>Apply By :</strong> {}
                   </li>
                   <li className="w-full py-4">
                     <strong>Type :</strong> {}
                   </li>
                 </ul>
               </div>
-            )}
+            }
 
             <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
               <button

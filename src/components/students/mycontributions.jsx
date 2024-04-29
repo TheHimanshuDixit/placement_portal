@@ -21,6 +21,11 @@ const Mycontributions = () => {
   const [which, setWhich] = useState("");
 
   useEffect(() => {
+
+    if (!localStorage.getItem("authToken")) {
+      window.location.href = "/login";
+    }
+
     initTE({ Collapse, Modal, Ripple, Input });
 
     fetch("https://placement-portall.onrender.com/api/contribute/getbyid", {

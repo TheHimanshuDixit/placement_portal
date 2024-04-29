@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Admin = () => {
+  useEffect(() => {
+    const authToken = localStorage.getItem("authAdminToken");
+    if (!authToken) {
+      window.location.href = "/login";
+    }
+  }, []);
   return (
     <div>
       <div className="container my-3 mx-auto md:px-6">

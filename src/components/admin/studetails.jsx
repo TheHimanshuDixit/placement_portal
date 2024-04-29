@@ -7,6 +7,11 @@ import { Modal, Ripple, Input, initTE } from "tw-elements";
 const Studetails = () => {
 
   useEffect(() => {
+
+    if(!localStorage.getItem("authAdminToken")){
+      window.location.href = "/login";
+    }
+
     initTE({ Modal, Ripple, Input });
   }, []);
 
