@@ -18,8 +18,7 @@ const Myprofile = () => {
   const [lname, setLname] = useState("");
 
   useEffect(() => {
-
-    if(!localStorage.getItem("authToken")){
+    if (!localStorage.getItem("authToken")) {
       window.location.href = "/login";
     }
 

@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { initFlowbite } from "flowbite";
 import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
+  const [isprofile, setIsprofile] = useState(false);
+
   useEffect(() => {
     initFlowbite();
   }, []);
@@ -29,13 +31,30 @@ const Navbar = () => {
           </Link>
           <div className="flex items-center lg:order-2">
             {localStorage.getItem("authAdminToken") && (
-              <div>
-                <CgProfile className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800" />
-                <button
-                  onClick={handleLogout}
-                  className="ml-4 text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
-                  Logout
-                </button>
+              <div className="flex justify-center items-center">
+                <CgProfile
+                  onMouseOver={() => setIsprofile(true)}
+                  onMouseOut={() => setIsprofile(false)}
+                  className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800"
+                />
+                {isprofile && (
+                  <div
+                    onMouseOver={() => setIsprofile(true)}
+                    onMouseOut={() => setIsprofile(false)}
+                    className="absolute top-9 z-10 w-32 p-2 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800">
+                    <Link
+                      to={"#"}
+                      className="text-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+                      Admin
+                    </Link>
+                    <Link
+                      onClick={handleLogout}
+                      to={"#"}
+                      className="text-center block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
+                      Logout
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
 
