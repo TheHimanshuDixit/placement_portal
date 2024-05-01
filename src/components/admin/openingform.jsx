@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
-const Openingform = () => {
-  
+const Openingform = ({ newOpening, setNewOpening, handleAddOpening }) => {
   useEffect(() => {
     const authToken = localStorage.getItem("authAdminToken");
     if (!authToken) {
@@ -30,9 +29,13 @@ const Openingform = () => {
                   <input
                     id="name"
                     name="name"
+                    value={newOpening.name}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, name: e.target.value })
+                    }
                     type="text"
                     autoComplete="name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -47,9 +50,13 @@ const Openingform = () => {
                   <input
                     id="jobId"
                     name="jobId"
+                    value={newOpening.jobId}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, jobId: e.target.value })
+                    }
                     type="text"
                     autoComplete="jobId"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -64,9 +71,13 @@ const Openingform = () => {
                   <input
                     id="stipend"
                     name="stipend"
+                    value={newOpening.stipend}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, stipend: e.target.value })
+                    }
                     type="text"
                     autoComplete="stipend"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -81,9 +92,13 @@ const Openingform = () => {
                   <input
                     id="ctc"
                     name="ctc"
+                    value={newOpening.ctc}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, ctc: e.target.value })
+                    }
                     type="text"
                     autoComplete="ctc"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -98,9 +113,13 @@ const Openingform = () => {
                   <input
                     id="location"
                     name="location"
+                    value={newOpening.location}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, location: e.target.value })
+                    }
                     type="text"
                     autoComplete="location"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -114,9 +133,13 @@ const Openingform = () => {
                   <input
                     id="type"
                     name="type"
+                    value={newOpening.type}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, type: e.target.value })
+                    }
                     type="text"
                     autoComplete="type"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -130,9 +153,13 @@ const Openingform = () => {
                   <input
                     id="mode"
                     name="mode"
+                    value={newOpening.mode}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, mode: e.target.value })
+                    }
                     type="text"
                     autoComplete="mode"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -146,9 +173,13 @@ const Openingform = () => {
                   <input
                     id="role"
                     name="role"
+                    value={newOpening.role}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, role: e.target.value })
+                    }
                     type="text"
                     autoComplete="role"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -162,9 +193,13 @@ const Openingform = () => {
                   <input
                     id="backlog"
                     name="backlog"
+                    value={newOpening.backlog}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, backlog: e.target.value })
+                    }
                     type="text"
                     autoComplete="backlog"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -178,9 +213,16 @@ const Openingform = () => {
                   <input
                     id="cgpacritera"
                     name="cgpacritera"
+                    value={newOpening.cgpacritera}
+                    onChange={(e) =>
+                      setNewOpening({
+                        ...newOpening,
+                        cgpacritera: e.target.value,
+                      })
+                    }
                     type="text"
                     autoComplete="cgpacritera"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -194,9 +236,13 @@ const Openingform = () => {
                   <input
                     id="branch"
                     name="branch"
+                    value={newOpening.branch}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, branch: e.target.value })
+                    }
                     type="text"
                     autoComplete="branch"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -210,9 +256,13 @@ const Openingform = () => {
                   <input
                     id="gender"
                     name="gender"
+                    value={newOpening.gender}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, gender: e.target.value })
+                    }
                     type="text"
                     autoComplete="gender"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -226,9 +276,13 @@ const Openingform = () => {
                   <input
                     id="duration"
                     name="duration"
+                    value={newOpening.duration}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, duration: e.target.value })
+                    }
                     type="text"
                     autoComplete="duration"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -242,9 +296,13 @@ const Openingform = () => {
                   <input
                     id="applyby"
                     name="applyby"
+                    value={newOpening.applyby}
+                    onChange={(e) =>
+                      setNewOpening({ ...newOpening, applyby: e.target.value })
+                    }
                     type="text"
                     autoComplete="applyby"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -255,10 +313,29 @@ const Openingform = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
+            onClick={() =>
+              setNewOpening({
+                name: "",
+                jobId: "",
+                stipend: "",
+                ctc: "",
+                location: [],
+                type: "",
+                mode: "",
+                role: "",
+                backlog: "",
+                cgpacritera: "",
+                branch: [],
+                gender: "",
+                duration: "",
+                applyby: "",
+              })
+            }
             className="text-sm font-semibold leading-6 text-gray-900">
             Cancel
           </button>
           <button
+            onClick={handleAddOpening}
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Save

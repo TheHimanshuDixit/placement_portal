@@ -1,6 +1,8 @@
 const express = require("express");
 const Opening = require("../models/Opening");
 const router = express.Router();
+const nodemailer = require("nodemailer");
+const Student = require("../models/Student");
 
 // http://localhost:4000
 
@@ -47,7 +49,47 @@ router.post("/add", async (req, res) => {
     applyby,
   });
   let resp = await newOpening.save();
-  res.json({ message: "success", data: resp });
+
+  const output = `
+                    <h4>You have a message</h4>
+                    <h3>Opening Details : </h3>
+                    <p>Name: ${name}</p>
+                    <p>JobId: ${jobId}</p>
+                    <p>Stipend: ${stipend}</p>
+                    <p>CTC: ${ctc}</p>
+                    <a href="https://placement-portall.onrender.com/openings">Click here to apply</a>
+`;
+  // Instantiate the SMTP server
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com"',
+    port: 465,
+    secure: true,
+    service: "gmail",
+    auth: {
+      user: "harshhimanshudixit@gmail.com",
+      pass: "cwujzimqjehhjyac",
+    },
+  });
+
+  const allStudents = await Student.find();
+  const allMail = allStudents.map((student) => student.email);
+
+  // Specify what the email will look like
+  var mailOption = {
+    from: "harshhimanshudixit@gmail.com", //Sender mail
+    to: allMail, // Recever mail
+    subject: "New Opening",
+    html: output,
+  };
+
+  // Send mail with defined transport object
+  transporter.sendMail(mailOption, function (error, info) {
+    if (error) {
+      res.json({ message: "Error Occurs" });
+    } else {
+      res.json({ message: "success", data: resp });
+    }
+  });
 });
 
 // POST /api/opening/getall

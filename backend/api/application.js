@@ -42,4 +42,10 @@ router.get("/get", fetchuser, async (req, res) => {
   res.json({ data: applications });
 });
 
+// GET /api/application/getall
+router.get("/getall", async (req, res) => {
+  let applications = await Application.find();
+  res.json({ data: applications });
+});
+
 module.exports = router;

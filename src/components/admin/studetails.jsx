@@ -1,19 +1,147 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MdDelete } from "react-icons/md";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 
-
 const Studetails = () => {
+  const ref = useRef(null);
+
+  const [students, setStudents] = useState({
+    enroll: "",
+    pwd: "",
+  });
+
+  const [studList, setStudList] = useState([]);
+  const [appList, setAppList] = useState([]);
+  const [compList, setCompList] = useState([]);
+  const [studData, setStudData] = useState([]);
 
   useEffect(() => {
-
-    if(!localStorage.getItem("authAdminToken")){
+    if (!localStorage.getItem("authAdminToken")) {
       window.location.href = "/login";
     }
-
     initTE({ Modal, Ripple, Input });
+
+    const fetchData = async () => {
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/application/getall",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      setAppList(data.data);
+    };
+    fetchData();
+
+    const fetchCompData = async () => {
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/opening/getall",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      setCompList(data.data);
+    };
+    fetchCompData();
+
+    const fetchStudData = async () => {
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/auth",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      setStudList(data);
+    };
+    fetchStudData();
   }, []);
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const { enroll, pwd } = students;
+    if (!enroll || !pwd) {
+      alert("Please fill all the fields");
+      return;
+    }
+    const res = await fetch(
+      "https://placement-portall.onrender.com/api/college/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ enroll, pwd }),
+      }
+    );
+    const data = await res.json();
+    if (data.message === "success") {
+      alert("Student added successfully");
+
+      setStudents({ enroll: "", pwd: "" });
+    } else {
+      alert("");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const res = await fetch(
+      `https://placement-portall.onrender.com/api/auth/delete/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    if (data.message === "User deleted") {
+      alert("Student deleted successfully");
+      const updatedList = studList.filter((stud) => stud._id !== id);
+      setStudList(updatedList);
+    } else {
+      alert("Something went wrong");
+    }
+  };
+
+  const further = (res) => {
+    for (let i = 0; i < res.length; i++) {
+      for (let j = 0; j < compList.length; j++) {
+        if (compList[j]._id === res[i].company) {
+          res[i].company = compList[j];
+          break;
+        }
+      }
+    }
+    setStudData(res);
+  };
+
+  const handleView = async (email) => {
+    if (studData[0] && studData[0].email === email) {
+      ref.current.click();
+      return;
+    }
+    setStudData([]);
+    const res = appList.filter((app) => app.email === email);
+    console.log(res);
+    if (res.length <= 0) {
+      ref.current.click();
+      return;
+    }
+    further(res);
+    ref.current.click();
+  };
 
   return (
     <div className="max-w-screen-lg m-auto">
@@ -32,14 +160,18 @@ const Studetails = () => {
               <h5
                 className="text-xl font-medium leading-normal text-surface dark:text-white"
                 id="exampleModalLongLabel">
-                Company Details
+                Srudent Details
               </h5>
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
                 data-te-modal-dismiss
                 aria-label="Close">
-                <span className="[&>svg]:h-6 [&>svg]:w-6" onClick={() => {}}>
+                <span
+                  className="[&>svg]:h-6 [&>svg]:w-6"
+                  onClick={() => {
+                    setStudData([]);
+                  }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -59,48 +191,46 @@ const Studetails = () => {
             {
               <div className="relative p-4" style={{ minHeight: "500px" }}>
                 <ul className="w-96 text-surface dark:text-white">
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Name :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>JobID :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Role :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Internship Stipend :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Company CTC :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Minimum CGPA :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Maximum Backlogs :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Applicable for these branches :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Location :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Gender :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Mode :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Duration :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Apply By :</strong> {}
-                  </li>
-                  <li className="w-full py-4">
-                    <strong>Type :</strong> {}
-                  </li>
+                  {studData.length > 0 &&
+                    studData.map((data, index) => {
+                      return index === 0 ? (
+                        <li
+                          key={data._id}
+                          className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                          <strong>Name :</strong> {data.name} <br />
+                          <strong>Email :</strong> {data.email} <br />
+                          <strong>Enrollment :</strong> {data.enroll} <br />
+                          <strong>Phone :</strong> {data.phone} <br />
+                          <strong>Gender :</strong> {data.gender} <br />
+                        </li>
+                      ) : null;
+                    })}
+
+                  {studData.length > 0 &&
+                    studData.map((data, index) => {
+                      return (
+                        <li
+                          key={data._id}
+                          className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                          <strong>{index + 1}. </strong> <br />
+                          <strong>Company :</strong> {data.company.name} <br />
+                          <strong>Applied on :</strong>{" "}
+                          {data.date
+                            .split("T")[0]
+                            .split("-")
+                            .reverse()
+                            .join("-") +
+                            " " +
+                            data.date.split("T")[1].split(".")[0].slice(0, 5)}
+                          <br />
+                        </li>
+                      );
+                    })}
+                  {studData.length <= 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      No data found
+                    </li>
+                  )}
                 </ul>
               </div>
             }
@@ -109,29 +239,23 @@ const Studetails = () => {
               <button
                 type="button"
                 className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+                onClick={() => {
+                  setStudData([]);
+                }}
                 data-te-modal-dismiss
                 data-te-ripple-init
-                data-te-ripple-color="light"
-                onClick={() => {}}>
+                data-te-ripple-color="light">
                 Close
-              </button>
-              <button
-                type="button"
-                className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
-                onClick={() => {}}>
-                Apply
               </button>
             </div>
           </div>
         </div>
       </div>
       <button
+        ref={ref}
         className="bg-blue-500 text-white px-4 py-2 rounded-xl hidden"
         data-te-toggle="modal"
-        data-te-target="#exampleModalLong"
+        data-te-target="#exampleModalLong2"
         data-te-ripple-init
         data-te-ripple-color="light"
         type="button">
@@ -144,7 +268,6 @@ const Studetails = () => {
               Add Student Enrollnment
             </h2>
           </div>
-
           <div className="border-b border-gray-900/10 pb-12">
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
@@ -157,14 +280,18 @@ const Studetails = () => {
                   <input
                     type="text"
                     name="enroll"
+                    value={students.enroll}
+                    onChange={(e) => {
+                      setStudents({ ...students, enroll: e.target.value });
+                    }}
                     id="enroll"
                     autoComplete="enroll"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
-              <div iv className="sm:col-span-3">
+              <div className="sm:col-span-3">
                 <label
                   htmlFor="pwd"
                   className="block text-sm font-medium leading-6 text-gray-900">
@@ -174,9 +301,13 @@ const Studetails = () => {
                   <input
                     type="text"
                     name="pwd"
+                    value={students.pwd}
+                    onChange={(e) => {
+                      setStudents({ ...students, pwd: e.target.value });
+                    }}
                     id="pwd"
                     autoComplete="pwd"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -187,11 +318,15 @@ const Studetails = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
+            onClick={(e) => {
+              setStudents({ enroll: "", pwd: "" });
+            }}
             className="text-sm font-semibold leading-6 text-gray-900">
             Cancel
           </button>
           <button
             type="submit"
+            onClick={handleClick}
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Save
           </button>
@@ -204,43 +339,52 @@ const Studetails = () => {
       </div>
       <div>
         <ul className="divide-y divide-gray-100">
-          <li className="flex justify-between gap-x-6 py-5">
-            <div className="flex min-w-0 gap-x-4">
-              <img
-                className="h-12 w-12 flex-none rounded-full bg-gray-50"
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt=""
-              />
-              <div className="min-w-0 flex-auto">
-                <p className="text-sm font-semibold leading-6 text-gray-900">
-                  Leslie Alexander
-                </p>
-                <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                  leslie.alexander@example.com
-                </p>
-              </div>
-            </div>
-            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-              <div className="flex justify-center items-center">
-                <p className="text-sm leading-6 text-gray-900">
-                  Co-Founder / CEO
-                </p>
-                <button
-                  className="ml-2 text-xl"
-                  type="button"
-                  data-te-toggle="modal"
-                  data-te-target="#exampleModalLong2">
-                  <BiSolidUserDetail />
-                </button>
-                <div>
-                  <MdDelete className="ml-1 text-xl cursor-pointer" />
-                </div>
-              </div>
-              <p className="mt-1 text-xs leading-5 text-gray-500">
-                Last seen <time datetime="2023-01-23T13:23Z">3h ago</time>
-              </p>
-            </div>
-          </li>
+          {studList.length > 0 &&
+            studList.map((stud, index) => {
+              return (
+                <li
+                  key={stud._id}
+                  className="flex justify-between gap-x-6 py-5">
+                  <div className="flex min-w-0 gap-x-4">
+                    <strong>{index + 1}. </strong>
+                    <div className="min-w-0 flex-auto">
+                      <p className="text-sm font-semibold leading-6 text-gray-900">
+                        {stud.name}
+                      </p>
+                      <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                        {stud.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                    <div className="flex justify-center items-center">
+                      <p className="text-sm leading-6 text-gray-900">
+                        {stud.enrollnment}
+                      </p>
+                      <button className="ml-2 text-xl" type="button">
+                        <BiSolidUserDetail
+                          onClick={() => {
+                            handleView(stud.email);
+                          }}
+                        />
+                      </button>
+                      <div>
+                        <MdDelete
+                          onClick={() => {
+                            handleDelete(stud._id);
+                          }}
+                          className="ml-1 text-xl cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                    <p className="mt-1 text-xs leading-5 text-gray-500">
+                      Batch :{" "}
+                      <time dateTime="2023-01-23T13:23Z">{stud.year}</time>
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
         </ul>
       </div>
     </div>

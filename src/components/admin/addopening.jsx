@@ -11,6 +11,24 @@ const Addopening = () => {
   //eslint-disable-next-line
   const [company, setCompany] = useState([]);
   const [check, setCheck] = useState(false);
+  const [regList, setRegList] = useState([]);
+
+  const [newOpening, setNewOpening] = useState({
+    name: "",
+    jobId: "",
+    stipend: "",
+    ctc: "",
+    location: [],
+    type: "",
+    mode: "",
+    role: "",
+    backlog: "",
+    cgpacritera: "",
+    branch: [],
+    gender: "",
+    duration: "",
+    applyby: "",
+  });
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
@@ -30,24 +48,85 @@ const Addopening = () => {
     })();
   }, []);
 
-  const handleIt = async () => {
+  const handleIt = async (id) => {
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/auth/profile",
+      `https://placement-portall.onrender.com/api/application/get/${id}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("authToken"),
         },
       }
     );
     // eslint-disable-next-line
     const result = await response.json();
+    setRegList(result.data);
+  };
+
+  const handleDelete = async (id) => {
+    const response = await fetch(
+      `https://placement-portall.onrender.com/api/opening/delete/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    // eslint-disable-next-line
+    const result = await response.json();
+    if (result.success) {
+      alert("Deleted Successfully");
+      setOpen(open.filter((item) => item._id !== id));
+    } else {
+      alert("Error in Deleting");
+    }
+  };
+
+  const handleAddOpening = async () => {
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/opening/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newOpening),
+      }
+    );
+    // eslint-disable-next-line
+    const result = await response.json();
+    if (result.success) {
+      alert("Added Successfully");
+      setOpen([...open, newOpening]);
+      setNewOpening({
+        name: "",
+        jobId: "",
+        stipend: "",
+        ctc: "",
+        location: [],
+        type: "",
+        mode: "",
+        role: "",
+        backlog: "",
+        cgpacritera: "",
+        branch: [],
+        gender: "",
+        duration: "",
+        applyby: "",
+      });
+    } else {
+      alert("Error in Adding");
+    }
   };
 
   return (
     <>
-      <Openingform />
+      <Openingform
+        newOpening={newOpening}
+        setNewOpening={setNewOpening}
+        handleAddOpening={handleAddOpening}
+      />
       <div
         data-te-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -94,48 +173,23 @@ const Addopening = () => {
             {
               <div className="relative p-4" style={{ minHeight: "500px" }}>
                 <ul className="w-96 text-surface dark:text-white">
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Name :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>JobID :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Role :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Internship Stipend :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Company CTC :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Minimum CGPA :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Maximum Backlogs :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Applicable for these branches :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Location :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Gender :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Mode :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Duration :</strong> {}
-                  </li>
-                  <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Apply By :</strong> {}
-                  </li>
-                  <li className="w-full py-4">
-                    <strong>Type :</strong> {}
-                  </li>
+                  {regList.length > 0 ? (
+                    regList.map((item, index) => (
+                      <li
+                        key={item._id}
+                        className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                        <strong>{index + 1}. Name : </strong>
+                        {item.name}
+                        <br />
+                        <strong>Email : </strong>
+                        {item.email}
+                      </li>
+                    ))
+                  ) : (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>No Applicants</strong>
+                    </li>
+                  )}
                 </ul>
               </div>
             }
@@ -152,7 +206,7 @@ const Addopening = () => {
                 }}>
                 Close
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                 data-te-modal-dismiss
@@ -162,7 +216,7 @@ const Addopening = () => {
                   setCheck(false);
                 }}>
                 Apply
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -354,7 +408,7 @@ const Addopening = () => {
                   </div>
                   <button
                     onClick={() => {
-                      handleIt();
+                      handleIt(item._id);
                     }}
                     className="bg-blue-500 text-white px-3 py-1 rounded-md border-2 border-black text-sm"
                     data-te-ripple-init
@@ -365,7 +419,11 @@ const Addopening = () => {
                     Stud. List
                   </button>
                 </div>
-                <button className="bg-red-500 text-white w-52 border-2 border-black rounded-md mt-2">
+                <button
+                  onClick={() => {
+                    handleDelete(item._id);
+                  }}
+                  className="bg-red-500 text-white w-52 border-2 border-black rounded-md mt-2">
                   Delete
                 </button>
               </div>
