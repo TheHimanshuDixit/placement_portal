@@ -29,9 +29,7 @@ const Openings = () => {
 
     //eslint-disable-next-line
     const data = (async () => {
-      const response = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall"
-      );
+      const response = await fetch("http://localhost:4000/api/opening/getall");
       const data = await response.json();
       // console.log(data.data);
       setOpen(data.data);
@@ -47,7 +45,7 @@ const Openings = () => {
     console.log(apply.cgpa, cutoff, cid);
     if (apply.cgpa >= cutoff) {
       const response = await fetch(
-        `https://placement-portall.onrender.com/api/application/add/${cid}`,
+        `http://localhost:4000/api/application/add/${cid}`,
         {
           method: "POST",
           headers: {
@@ -71,16 +69,13 @@ const Openings = () => {
   };
 
   const handleIt = async () => {
-    const response = await fetch(
-      "https://placement-portall.onrender.com/api/auth/profile",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("authToken"),
-        },
-      }
-    );
+    const response = await fetch("http://localhost:4000/api/auth/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("authToken"),
+      },
+    });
 
     const result = await response.json();
     console.log(result);
@@ -94,6 +89,16 @@ const Openings = () => {
       gender: result.gender,
       resume: result.resume,
     });
+  };
+
+  const handleCompTime = (time) => {
+    const d1 = new Date(time);
+    const d2 = new Date();
+    if (d1 < d2) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -456,7 +461,8 @@ const Openings = () => {
                 </div>
                 <hr className="none mb-6 text-xl border-t-2 border-black" />
                 <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaMoneyCheckAlt className="mr-2" /> {item.stipend}/Month
+                  <FaMoneyCheckAlt className="mr-2" />{" "}
+                  {item.stipend ? item.stipend : 0}/Month
                 </div>
                 <div className="text-sm mb-2 flex justify-start items-center p-1">
                   <IoLocation className="mr-2" />
@@ -478,6 +484,12 @@ const Openings = () => {
                       }
                       handleIt();
                     }}
+                    onMouseOver={() => {
+                      if (new Date(item.applyby) < new Date()) {
+                        alert("Application Closed");
+                      }
+                    }}
+                    disabled={handleCompTime(item.applyby)}
                     className="bg-blue-500 text-white px-4 py-2 rounded-xl"
                     data-te-toggle="modal"
                     data-te-target="#exampleModalLong"

@@ -17,7 +17,7 @@ const Addadmin = () => {
 
   useEffect(() => {
     //eslint-disable-next-line
-    const resp = fetch("https://placement-portall.onrender.com/api/team/get", {
+    const resp = fetch("http://localhost:4000/api/team/get", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const Addadmin = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    fetch("https://placement-portall.onrender.com/api/team/add", {
+    fetch("http://localhost:4000/api/team/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const Addadmin = () => {
     console.log(editId);
     console.log(teamDetail);
     e.preventDefault();
-    fetch(`https://placement-portall.onrender.com/api/team/update/${editId}`, {
+    fetch(`http://localhost:4000/api/team/update/${editId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -260,6 +260,18 @@ const Addadmin = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
+            onClick={() => {
+              setTeamDetail({
+                firstName: "",
+                lastName: "",
+                email: "",
+                position: "",
+                image: "",
+                password: "",
+              });
+              setType("Add");
+              setEditId("");
+            }}
             className="text-sm font-semibold leading-6 text-gray-900">
             Cancel
           </button>

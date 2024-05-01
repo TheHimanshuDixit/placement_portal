@@ -23,45 +23,36 @@ const Studetails = () => {
     initTE({ Modal, Ripple, Input });
 
     const fetchData = async () => {
-      const res = await fetch(
-        "https://placement-portall.onrender.com/api/application/getall",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:4000/api/application/getall", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await res.json();
       setAppList(data.data);
     };
     fetchData();
 
     const fetchCompData = async () => {
-      const res = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:4000/api/opening/getall", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await res.json();
       setCompList(data.data);
     };
     fetchCompData();
 
     const fetchStudData = async () => {
-      const res = await fetch(
-        "https://placement-portall.onrender.com/api/auth",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await fetch("http://localhost:4000/api/auth", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await res.json();
       setStudList(data);
     };
@@ -75,16 +66,13 @@ const Studetails = () => {
       alert("Please fill all the fields");
       return;
     }
-    const res = await fetch(
-      "https://placement-portall.onrender.com/api/college/add",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ enroll, pwd }),
-      }
-    );
+    const res = await fetch("http://localhost:4000/api/college/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ enroll, pwd }),
+    });
     const data = await res.json();
     if (data.message === "success") {
       alert("Student added successfully");
@@ -96,15 +84,16 @@ const Studetails = () => {
   };
 
   const handleDelete = async (id) => {
-    const res = await fetch(
-      `https://placement-portall.onrender.com/api/auth/delete/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const x = alert("Are you sure you want to delete this student?");
+    if (!x) {
+      return;
+    }
+    const res = await fetch(`http://localhost:4000/api/auth/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await res.json();
     if (data.message === "User deleted") {
       alert("Student deleted successfully");

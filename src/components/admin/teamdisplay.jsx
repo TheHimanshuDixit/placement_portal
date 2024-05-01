@@ -18,26 +18,29 @@ const Teamdisplay = ({
   }, []);
 
   const handleDelete = async (e) => {
-    try {
-      const response = await fetch(
-        `https://placement-portall.onrender.com/api/team/delete/${editId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+    const x = alert("Are you sure you want to delete this team member?");
+    if (x) {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/api/team/delete/${editId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (data.data) {
+          setTeamMembers(teamMembers.filter((member) => member._id !== editId));
+          setEditId("");
+          alert("Team member deleted successfully");
         }
-      );
-      const data = await response.json();
-      if (data.data) {
-        setTeamMembers(teamMembers.filter((member) => member._id !== editId));
-        setEditId("");
-        alert("Team member deleted successfully");
-      }
 
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

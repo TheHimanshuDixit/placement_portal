@@ -24,16 +24,13 @@ const Myprofile = () => {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch(
-          "https://placement-portall.onrender.com/api/auth/profile",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "auth-token": localStorage.getItem("authToken"),
-            },
-          }
-        );
+        const res = await fetch("http://localhost:4000/api/auth/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+        });
 
         const data = await res.json();
         console.log(data);
@@ -68,17 +65,14 @@ const Myprofile = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        "https://placement-portall.onrender.com/api/auth/profile",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("authToken"),
-          },
-          body: JSON.stringify(profile),
-        }
-      );
+      const res = await fetch("http://localhost:4000/api/auth/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+        body: JSON.stringify(profile),
+      });
 
       const data = await res.json();
       console.log(data);
