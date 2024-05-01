@@ -281,14 +281,14 @@ const Testimonial = () => {
                   <div className="w-full shrink-0 grow-0 basis-auto px-3 lg:w-8/12">
                     <h5 className="mb-2 text-lg font-bold">Kamal Garg</h5>
                     <p className="mb-4 font-medium text-neutral-700 dark:text-neutral-400">
-                      Amazon
+                      Cadence
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
                       The training and placement website of our college proved
                       to be the cornerstone of my career journey. It provided me
                       with the essential tools and resources needed to secure a
                       coveted position as a Software Development Engineer at
-                      Amazon. With its user-friendly interface and comprehensive
+                      Cadence. With its user-friendly interface and comprehensive
                       support, I navigated the application process with ease,
                       ultimately landing a role that aligns perfectly with my
                       aspirations. I am indebted to the platform for opening
