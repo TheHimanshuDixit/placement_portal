@@ -11,6 +11,21 @@ const Student = require("../models/Student");
 const College = require("../models/College");
 const token = "hello";
 
+const multer = require("multer");
+const cloudinary = require("../helper/cloudinaryconfig");
+
+// pdf storage path
+const pdfconfig = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./uploads/pdf");
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: pdfconfig });
+
 // http://localhost:4000
 
 // GET /api/auth
@@ -144,14 +159,27 @@ router.get("/profile", fetchuser, async (req, res) => {
 });
 
 // POST /api/auth/profile
-router.post("/profile", fetchuser, async (req, res) => {
-  console.log(req.id);
-  let user = await Student.findById(req.id);
-  if (!user) {
-    return res.status(401).json({ message: "Invalid email" });
-  }
-  user = await Student.findByIdAndUpdate(req.id, req.body, { new: true });
-  res.json(user);
+router.post("/profile", upload.single("resume"), async (req, res) => {
+  fetchuser(req, res, async () => {
+    let user = await Student.findById(req.id);
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email" });
+    }
+    const newStudent = {
+      ...req.body,
+    };
+    if (req.file !== undefined) {
+      const upload = await cloudinary.uploader.upload(req.file.path);
+      const url = upload.secure_url.replace(".pdf", ".jpg");
+      newStudent.resume = url;
+    }
+    user = await Student.findByIdAndUpdate(
+      req.id,
+      { $set: newStudent },
+      { new: true }
+    );
+    res.json({ message: "success" });
+  });
 });
 
 module.exports = router;

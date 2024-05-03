@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Myprofile = () => {
+  const [getResume, setGetResume] = useState("");
+  const [resume, setResume] = useState("");
+
   const [profile, setProfile] = useState({
     enroll: "",
     coverletter: "",
@@ -33,7 +38,6 @@ const Myprofile = () => {
         });
 
         const data = await res.json();
-        console.log(data);
         setProfile({
           enroll: data.enrollnment,
           coverletter: data.coverletter,
@@ -46,6 +50,7 @@ const Myprofile = () => {
           cgpa: data.cgpa,
           backlogs: data.backlogs,
         });
+        setGetResume(data.resume);
         setFname(data.name.split(" ")[0]);
         setLname(data.name.split(" ")[1]);
       } catch (error) {
@@ -64,21 +69,32 @@ const Myprofile = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", fname + " " + lname);
+    formData.append("coverletter", profile.coverletter);
+    formData.append("phoneno", profile.phone);
+    if (resume) {
+      formData.append("resume", resume);
+    } else {
+      formData.append("resume", getResume);
+    }
+    formData.append("branch", profile.branch);
+    formData.append("gender", profile.gender);
+    formData.append("year", profile.year);
+    formData.append("cgpa", profile.cgpa);
+    formData.append("backlogs", profile.backlogs);
+
     try {
       const res = await fetch("http://localhost:4000/api/auth/profile", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "auth-token": localStorage.getItem("authToken"),
         },
-        body: JSON.stringify(profile),
+        body: formData,
       });
 
       const data = await res.json();
-      console.log(data);
-      if (data.error) {
-        alert(data.error);
-      } else {
+      if (data.message === "success") {
         alert("Profile updated successfully");
         window.location.href = "/myprofile";
       }
@@ -339,6 +355,28 @@ const Myprofile = () => {
                   />
                 </div>
               </div>
+            </div>
+            <div className="mt-4">
+              <label
+                htmlFor="formFile"
+                className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
+                Default file input example
+              </label>
+              <input
+                name="resume"
+                onChange={(e) => setResume(e.target.files[0])}
+                className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+                type="file"
+                id="formFile"
+              />
+            </div>
+            <div>
+              <Link
+                to={getResume}
+                target="_blank"
+                className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                <FaExternalLinkAlt className="inline" /> View Resume
+              </Link>
             </div>
           </div>
         </div>
