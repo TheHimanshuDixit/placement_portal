@@ -360,7 +360,7 @@ const Myprofile = () => {
               <label
                 htmlFor="formFile"
                 className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
-                Default file input example
+                Update your resume here
               </label>
               <input
                 name="resume"

@@ -1,32 +1,55 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const cloudinary = require("../helper/cloudinaryconfig");
+
+// pdf storage path
+const pdfconfig = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./uploads/pdf");
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: pdfconfig });
 
 const fetchuser = require("../middleware");
 const Application = require("../models/Application");
 const Student = require("../models/Student");
 
 // POST /api/application/add/:oid
-router.post("/add/:oid", fetchuser, async (req, res) => {
-  let { name, email, enroll, phone, branch, gender, resume } = req.body;
-  let student = await Student.findById(req.id);
-  if (!student) {
-    return res.status(400).json({ error: "Student not found" });
-  }
-  let e = student.email;
-  if (e !== email) {
-    return res.status(400).json({ error: "Email not matched" });
-  }
-  let application = new Application({
-    company: req.params.oid,
-    name,
-    email,
-    phone,
-    enroll,
-    branch,
-    gender,
+router.post("/add/:oid", upload.single("resume"), async (req, res) => {
+  fetchuser(req, res, async () => {
+    let user = await Student.findById(req.id);
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email" });
+    }
+    let e = user.email;
+    if (e !== req.body.email) {
+      return res.status(400).json({ error: "Email not matched" });
+    }
+    const applicationExists = await Application.findOne({
+      email: req.body.email,
+      company: req.params.oid,
+    });
+    if (applicationExists) {
+      return res.status(400).json({ error: "Application already exists" });
+    }
+    const newApplication = {
+      company: req.params.oid,
+      ...req.body,
+    };
+    if (req.file !== undefined) {
+      const upload = await cloudinary.uploader.upload(req.file.path);
+      const url = upload.secure_url.replace(".pdf", ".jpg");
+      newApplication.resume = url;
+    }
+    let application = new Application(newApplication);
+    let resp = await application.save();
+    res.json({ message: "success", data: resp });
   });
-  let resp = await application.save();
-  res.json({ message: "success", data: resp });
 });
 
 // GET /api/application/get/:oid

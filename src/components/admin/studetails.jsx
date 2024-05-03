@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { MdDelete } from "react-icons/md";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
+import { Link } from "react-router-dom";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const Studetails = () => {
   const ref = useRef(null);
@@ -182,6 +184,7 @@ const Studetails = () => {
                 <ul className="w-96 text-surface dark:text-white">
                   {studData.length > 0 &&
                     studData.map((data, index) => {
+                      console.log(data);
                       return index === 0 ? (
                         <li
                           key={data._id}
@@ -212,6 +215,15 @@ const Studetails = () => {
                             " " +
                             data.date.split("T")[1].split(".")[0].slice(0, 5)}
                           <br />
+                          <strong>Resume :</strong>{" "}
+                          <Link
+                            className="text-blue-500"
+                            to={data.resume}
+                            target="_blank"
+                            rel="noreferrer noopener">
+                            View Resume
+                            <FaExternalLinkAlt className="inline ml-2" />
+                          </Link>
                         </li>
                       );
                     })}
