@@ -81,11 +81,11 @@ const Addadmin = () => {
   const handleEdit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    img && formData.append("file", img);
+    if (img) formData.append("file", img);
     formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
     formData.append("email", teamDetail.email);
     formData.append("position", teamDetail.position);
-    teamDetail.password.length > 0 &&
+    if (teamDetail.password.length > 0)
       formData.append("password", teamDetail.password);
     fetch(`http://localhost:4000/api/team/update/${editId}`, {
       method: "PUT",

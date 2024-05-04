@@ -5,6 +5,7 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import Openingform from "./openingform";
+import { FaDownload } from "react-icons/fa";
 
 const Addopening = () => {
   const [open, setOpen] = useState([]);
@@ -129,6 +130,36 @@ const Addopening = () => {
     }
   };
 
+  const handleDownload = async () => {
+    const response = await fetch(
+      "http://localhost:4000/api/application/getall"
+    );
+    const data = await response.json();
+    const csv = data.data.map((item,index) => {
+      return {
+        SrNo: index + 1,
+        Name: item.name,
+        Email: item.email,
+        Enrollment: item.enroll,
+        Phone: item.phone,
+        Gender: item.gender,
+        Resume: item.resume,
+      };
+    });
+    const csvData = csv.map((row) =>
+      Object.values(row)
+        .map((value) => JSON.stringify(value))
+        .join(",")
+    );
+    csvData.unshift(Object.keys(csv[0]));
+    const csvArray = csvData.join("\r\n");
+
+    const a = document.createElement("a");
+    a.href = "data:text/csv;charset=utf-8," + csvArray;
+    a.download = "Applicants.csv";
+    a.click();
+  };
+
   return (
     <>
       <Openingform
@@ -151,10 +182,15 @@ const Addopening = () => {
           <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
               <h5
-                className="text-xl font-medium leading-normal text-surface dark:text-white"
+                className="flex justify-center items-center text-xl font-medium leading-normal text-surface dark:text-white"
                 id="exampleModalLongLabel">
                 Applicant list
+                <FaDownload
+                  onClick={handleDownload}
+                  className="ml-2 cursor-pointer"
+                />
               </h5>
+
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"

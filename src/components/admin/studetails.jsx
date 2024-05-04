@@ -151,7 +151,7 @@ const Studetails = () => {
               <h5
                 className="text-xl font-medium leading-normal text-surface dark:text-white"
                 id="exampleModalLongLabel">
-                Srudent Details
+                Student Details
               </h5>
               <button
                 type="button"
