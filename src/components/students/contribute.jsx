@@ -61,6 +61,7 @@ const Contribute = () => {
               </div>
             </div>
             {contributionList.map((key) => {
+              console.log(key)
               return (
                 <div
                   key={key._id}

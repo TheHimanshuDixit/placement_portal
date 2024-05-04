@@ -12,6 +12,7 @@ const Addopening = () => {
   const [company, setCompany] = useState([]);
   const [check, setCheck] = useState(false);
   const [regList, setRegList] = useState([]);
+  const [logo, setLogo] = useState("");
 
   const [newOpening, setNewOpening] = useState({
     name: "",
@@ -82,12 +83,25 @@ const Addopening = () => {
   };
 
   const handleAddOpening = async () => {
+    const formData = new FormData();
+    formData.append("file", logo);
+    formData.append("name", newOpening.name);
+    formData.append("jobId", newOpening.jobId);
+    formData.append("stipend", newOpening.stipend);
+    formData.append("ctc", newOpening.ctc);
+    formData.append("location", newOpening.location);
+    formData.append("type", newOpening.type);
+    formData.append("mode", newOpening.mode);
+    formData.append("role", newOpening.role);
+    formData.append("backlog", newOpening.backlog);
+    formData.append("cgpacritera", newOpening.cgpacritera);
+    formData.append("branch", newOpening.branch);
+    formData.append("gender", newOpening.gender);
+    formData.append("duration", newOpening.duration);
+    formData.append("applyby", newOpening.applyby);
     const response = await fetch("http://localhost:4000/api/opening/add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newOpening),
+      body: formData,
     });
     // eslint-disable-next-line
     const result = await response.json();
@@ -121,6 +135,8 @@ const Addopening = () => {
         newOpening={newOpening}
         setNewOpening={setNewOpening}
         handleAddOpening={handleAddOpening}
+        logo={logo}
+        setLogo={setLogo}
       />
       <div
         data-te-modal-init

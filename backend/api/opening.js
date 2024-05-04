@@ -6,14 +6,33 @@ const Student = require("../models/Student");
 
 // http://localhost:4000
 
+const multer = require("multer");
+const cloudinary = require("../helper/cloudinaryconfig");
+
+// pdf storage path
+const pdfconfig = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./uploads/pdf");
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: pdfconfig });
+
 // POST /api/opening/add
-router.post("/add", async (req, res) => {
+router.post("/add",upload.single("file"), async (req, res) => {
+
+  const result = await cloudinary.uploader.upload(req.file.path);
+  let logo = result.secure_url;
+  logo = logo.replace("pdf", "png");
+
   const {
     name,
     jobId,
     stipend,
     ctc,
-    logo,
     location,
     type,
     mode,

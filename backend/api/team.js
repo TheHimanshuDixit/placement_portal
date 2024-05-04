@@ -5,9 +5,24 @@ const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 const token = "admin";
 
+const multer = require("multer");
+const cloudinary = require("../helper/cloudinaryconfig");
+
+// pdf storage path
+const pdfconfig = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./uploads/pdf");
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: pdfconfig });
+
 // POST /api/team/add
-router.post("/add", async (req, res) => {
-  const { name, position, image, email, password } = req.body;
+router.post("/add", upload.single("file"), async (req, res) => {
+  const { name, position, email, password } = req.body;
   let newTeam = await Team.findOne({
     email,
   });
@@ -16,6 +31,10 @@ router.post("/add", async (req, res) => {
   }
   var salt = await bcrypt.genSalt(10);
   var hashpwd = await bcrypt.hash(password, salt);
+
+  const upload = await cloudinary.uploader.upload(req.file.path);
+  const url = upload.secure_url.replace(".pdf", ".jpg");
+  let image = url;
 
   let team = new Team({
     name,
@@ -42,7 +61,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid password" });
   }
   let authAdminToken = jwt.sign({ email: email }, token, { expiresIn: "1d" });
-  res.json({ message: "success", authAdminToken: authAdminToken});
+  res.json({ message: "success", authAdminToken: authAdminToken });
 });
 
 // GET /api/team/get
@@ -58,12 +77,21 @@ router.get("/get/:id", async (req, res) => {
 });
 
 // PUT /api/team/update/:id
-router.put("/update/:id", async (req, res) => {
-  let team = await Team.findOneAndUpdate(
-    { _id: req.params.id },
-    { $set: req.body },
-    { new: true }
-  );
+router.put("/update/:id", upload.single("file"), async (req, res) => {
+  let team = await Team.findOne({ _id: req.params.id });
+  if (!team) {
+    return res.status(401).json({ message: "Team not found" });
+  }
+  team = {
+    ...req.body,
+  };
+  if (req.file) {
+    const upload = await cloudinary.uploader.upload(req.file.path);
+    const url = upload.secure_url.replace(".pdf", ".jpg");
+    team.image = url;
+  }
+  await Team.updateOne({ _id: req.params.id }, team);
+  team = await Team.findOne({ _id: req.params.id });
   res.json({ data: team });
 });
 

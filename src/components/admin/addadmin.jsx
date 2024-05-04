@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import Teamdisplay from "./teamdisplay";
 
 const Addadmin = () => {
+  const [img, setImg] = useState("");
   const [teamDetail, setTeamDetail] = useState({
     firstName: "",
     lastName: "",
     email: "",
     position: "",
-    image: "",
     password: "",
+    image: "",
   });
 
   const [teamMembers, setTeamMembers] = useState([]);
@@ -44,12 +45,16 @@ const Addadmin = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", img);
+    formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
+    formData.append("email", teamDetail.email);
+    formData.append("position", teamDetail.position);
+    formData.append("password", teamDetail.password);
+
     fetch("http://localhost:4000/api/team/add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(teamDetail),
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -62,9 +67,9 @@ const Addadmin = () => {
             lastName: "",
             email: "",
             position: "",
-            image: "",
             password: "",
           });
+          setImg("");
         }
       })
       .catch((err) => {
@@ -74,24 +79,17 @@ const Addadmin = () => {
   };
 
   const handleEdit = (e) => {
-    console.log(editId);
-    console.log(teamDetail);
     e.preventDefault();
+    const formData = new FormData();
+    img && formData.append("file", img);
+    formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
+    formData.append("email", teamDetail.email);
+    formData.append("position", teamDetail.position);
+    teamDetail.password.length > 0 &&
+      formData.append("password", teamDetail.password);
     fetch(`http://localhost:4000/api/team/update/${editId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        teamDetail.password.length > 0
-          ? teamDetail
-          : {
-              name: teamDetail.firstName + " " + teamDetail.lastName,
-              email: teamDetail.email,
-              position: teamDetail.position,
-              image: teamDetail.image,
-            }
-      ),
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -218,21 +216,17 @@ const Addadmin = () => {
 
               <div className="sm:col-span-4">
                 <label
-                  htmlFor="image"
-                  className="block text-sm font-medium leading-6 text-gray-900">
-                  Image link
+                  htmlFor="formFile"
+                  className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
+                  Upload Your Image
                 </label>
-                <div className="mt-2">
-                  <input
-                    id="image"
-                    name="image"
-                    type="text"
-                    value={teamDetail.image}
-                    onChange={handleChange}
-                    autoComplete="image"
-                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+                <input
+                  name="img"
+                  onChange={(e) => setImg(e.target.files[0])}
+                  className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+                  type="file"
+                  id="formFile"
+                />
               </div>
 
               <div className="sm:col-span-4">

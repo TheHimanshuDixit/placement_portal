@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-const Openingform = ({ newOpening, setNewOpening, handleAddOpening }) => {
+const Openingform = ({ newOpening, setNewOpening, handleAddOpening, logo, setLogo }) => {
   useEffect(() => {
     const authToken = localStorage.getItem("authAdminToken");
     if (!authToken) {
@@ -63,6 +63,21 @@ const Openingform = ({ newOpening, setNewOpening, handleAddOpening }) => {
 
               <div className="sm:col-span-4">
                 <label
+                  htmlFor="formFile"
+                  className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
+                  Add Company Logo
+                </label>
+                <input
+                  name="logo"
+                  onChange={(e) => setLogo(e.target.files[0])}
+                  className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+                  type="file"
+                  id="formFile"
+                />
+              </div>
+
+              <div className="sm:col-span-4">
+                <label
                   htmlFor="stipend"
                   className="block text-sm font-medium leading-6 text-gray-900">
                   Intern Stipend (in INR)
@@ -115,7 +130,7 @@ const Openingform = ({ newOpening, setNewOpening, handleAddOpening }) => {
                     name="location"
                     value={newOpening.location}
                     onChange={(e) =>
-                      setNewOpening({ ...newOpening, location: e.target.value })
+                      setNewOpening({ ...newOpening, location: (e.target.value).split(",")})
                     }
                     type="text"
                     autoComplete="location"
@@ -238,7 +253,7 @@ const Openingform = ({ newOpening, setNewOpening, handleAddOpening }) => {
                     name="branch"
                     value={newOpening.branch}
                     onChange={(e) =>
-                      setNewOpening({ ...newOpening, branch: e.target.value })
+                      setNewOpening({ ...newOpening, branch: (e.target.value ).split(",")})
                     }
                     type="text"
                     autoComplete="branch"

@@ -26,7 +26,7 @@ const ApplicationSchema = new Schema({
     type: String,
   },
   branch: {
-    type: Array,
+    type: String,
     required: true,
   },
   gender: {
