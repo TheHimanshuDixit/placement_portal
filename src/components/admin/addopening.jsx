@@ -137,9 +137,10 @@ const Addopening = () => {
 
   const handleDownload = async () => {
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/application/getall"
+      `https://placement-portall.onrender.com/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
+    console.log(data);
     const csv = data.data.map((item, index) => {
       return {
         SrNo: index + 1,

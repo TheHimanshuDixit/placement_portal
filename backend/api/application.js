@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const CsvParser = require("json2csv").Parser;
+// const CsvParser = require("json2csv").Parser;
 
 const multer = require("multer");
 const cloudinary = require("../helper/cloudinaryconfig");
@@ -74,35 +74,36 @@ router.get("/getall", async (req, res) => {
 });
 
 // GET /api/application/download/:id
-router.get("/download/:id", async (req, res) => {
-  let application = await Application.find({ company: req.params.id });
-  let applicantList = [];
-  application.forEach((a,index) => {
-    let applicant = {
-      SrNo: index+1,
-      Name: a.name,
-      Email: a.email,
-      Enrollment: a.enroll,
-      Phone: a.phone,
-      Gender: a.gender,
-      Resume: a.resume,
-    };
-    applicantList.push(applicant);
-  });
-  const csvFields = [
-    "SrNo",
-    "Name",
-    "Email",
-    "Enrollment",
-    "Phone",
-    "Gender",
-    "Resume",
-  ];
-  const csvParser = new CsvParser({ csvFields });
-  const csvData = csvParser.parse(applicantList);
-  res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", "attachment; filename=applicants.csv");
-  res.send(csvData);
-});
+// router.get("/download/:id", async (req, res) => {
+//   let application = await Application.find({ company: req.params.id });
+//   let applicantList = [];
+//   application.forEach((a,index) => {
+//     let applicant = {
+//       SrNo: index+1,
+//       Name: a.name,
+//       Email: a.email,
+//       Enrollment: a.enroll,
+//       Phone: a.phone,
+//       Gender: a.gender,
+//       Resume: a.resume,
+//     };
+//     applicantList.push(applicant);
+//   });
+//   const csvFields = [
+//     "SrNo",
+//     "Name",
+//     "Email",
+//     "Enrollment",
+//     "Phone",
+//     "Gender",
+//     "Resume",
+//   ];
+//   const csvParser = new CsvParser({ csvFields });
+//   const csvData = csvParser.parse(applicantList);
+//   res.setHeader("Content-Type", "text/csv");
+//   res.setHeader("Content-Disposition", "attachment; filename=applicants.csv");
+//   console.log(csvData);
+//   res.send(csvData);
+// });
 
 module.exports = router;

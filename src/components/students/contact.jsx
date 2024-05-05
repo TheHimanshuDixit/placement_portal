@@ -18,16 +18,23 @@ const Contact = () => {
   };
 
   const handleSubmit = async () => {
-    const response = await fetch("/api/contact/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, message }),
-    });
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/contact/send",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, message }),
+      }
+    );
     const data = await response.json();
-    if (data.message === "Email sent") alert("Email sent");
-    else alert("Error Occurs");
+    if (data.message === "Email sent") {
+      alert("Email sent");
+      window.location.reload();
+    } else {
+      alert("Error Occurs");
+    }
     console.log(data);
   };
 

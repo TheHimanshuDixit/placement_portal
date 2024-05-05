@@ -17,12 +17,15 @@ const Teamdisplay = ({
     }
   }, []);
 
-  const handleDelete = async (e) => {
-    const x = alert("Are you sure you want to delete this team member?");
+  const handleDelete = async (id) => {
+    const x = window.confirm(
+      "Are you sure you want to delete this team member?"
+    );
+    console.log(x);
     if (x) {
       try {
         const response = await fetch(
-          `https://placement-portall.onrender.com/api/team/delete/${editId}`,
+          `https://placement-portall.onrender.com/api/team/delete/${id}`,
           {
             method: "DELETE",
             headers: {
@@ -32,9 +35,10 @@ const Teamdisplay = ({
         );
         const data = await response.json();
         if (data.data) {
+          alert("Team member deleted successfully");
           setTeamMembers(teamMembers.filter((member) => member._id !== editId));
           setEditId("");
-          alert("Team member deleted successfully");
+          window.location.reload();
         }
 
         console.log(data);
@@ -94,8 +98,7 @@ const Teamdisplay = ({
                     <div>
                       <MdDelete
                         onClick={() => {
-                          setEditId(member._id);
-                          handleDelete();
+                          handleDelete(member._id);
                         }}
                         className="ml-1 text-xl cursor-pointer"
                       />

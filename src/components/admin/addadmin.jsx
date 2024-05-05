@@ -70,6 +70,7 @@ const Addadmin = () => {
             password: "",
           });
           setImg("");
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -118,6 +119,8 @@ const Addadmin = () => {
             password: "",
           });
           setEditId("");
+          setImg("");
+          window.location.reload();
         }
       })
       .catch((err) => {

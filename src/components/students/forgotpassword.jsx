@@ -46,7 +46,7 @@ const Forgotpassword = () => {
     ) {
       return alert("All fields are required");
     }
-    if (otp !== otpSent) {
+    if (parseInt(otp) !== parseInt(otpSent)) {
       return alert("Invalid OTP");
     }
     const data = await fetch(
