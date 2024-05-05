@@ -27,7 +27,7 @@ const Mycontributions = () => {
 
     initTE({ Collapse, Modal, Ripple, Input });
 
-    fetch("http://localhost:4000/api/contribute/getbyid", {
+    fetch("https://placement-portall.onrender.com/api/contribute/getbyid", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -64,14 +64,17 @@ const Mycontributions = () => {
       alert("Please Fill All The Fields");
       return;
     }
-    const data = await fetch("http://localhost:4000/api/contribute/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("authToken"),
-      },
-      body: JSON.stringify(contri),
-    });
+    const data = await fetch(
+      "https://placement-portall.onrender.com/api/contribute/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+        body: JSON.stringify(contri),
+      }
+    );
     const res = await data.json();
     console.log(res);
     if (res.message === "success") {
@@ -84,13 +87,16 @@ const Mycontributions = () => {
 
   const deleteContribution = (id) => {
     return () => {
-      fetch(`http://localhost:4000/api/contribute/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("authToken"),
-        },
-      })
+      fetch(
+        `https://placement-portall.onrender.com/api/contribute/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           setContributionList(
@@ -115,7 +121,7 @@ const Mycontributions = () => {
       return;
     }
     const data = await fetch(
-      `http://localhost:4000/api/contribute/update/${id}`,
+      `https://placement-portall.onrender.com/api/contribute/update/${id}`,
       {
         method: "PUT",
         headers: {

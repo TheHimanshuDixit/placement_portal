@@ -29,13 +29,16 @@ const Myprofile = () => {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/auth/profile", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("authToken"),
-          },
-        });
+        const res = await fetch(
+          "https://placement-portall.onrender.com/api/auth/profile",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": localStorage.getItem("authToken"),
+            },
+          }
+        );
 
         const data = await res.json();
         setProfile({
@@ -85,13 +88,16 @@ const Myprofile = () => {
     formData.append("backlogs", profile.backlogs);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/profile", {
-        method: "POST",
-        headers: {
-          "auth-token": localStorage.getItem("authToken"),
-        },
-        body: formData,
-      });
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/auth/profile",
+        {
+          method: "POST",
+          headers: {
+            "auth-token": localStorage.getItem("authToken"),
+          },
+          body: formData,
+        }
+      );
 
       const data = await res.json();
       if (data.message === "success") {

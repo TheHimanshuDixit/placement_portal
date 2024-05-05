@@ -7,7 +7,7 @@ const Contribute = () => {
   useEffect(() => {
     initTE({ Collapse });
 
-    fetch("http://localhost:4000/api/contribute/get")
+    fetch("https://placement-portall.onrender.com/api/contribute/get")
       .then((res) => res.json())
       .then((data) => {
         setContributionList(data.data);
@@ -61,7 +61,7 @@ const Contribute = () => {
               </div>
             </div>
             {contributionList.map((key) => {
-              console.log(key)
+              console.log(key);
               return (
                 <div
                   key={key._id}

@@ -22,8 +22,7 @@ const pdfconfig = multer.diskStorage({
 const upload = multer({ storage: pdfconfig });
 
 // POST /api/opening/add
-router.post("/add",upload.single("file"), async (req, res) => {
-
+router.post("/add", upload.single("file"), async (req, res) => {
   const result = await cloudinary.uploader.upload(req.file.path);
   let logo = result.secure_url;
   logo = logo.replace("pdf", "png");
@@ -76,7 +75,7 @@ router.post("/add",upload.single("file"), async (req, res) => {
                     <p>JobId: ${jobId}</p>
                     <p>Stipend: ${stipend}</p>
                     <p>CTC: ${ctc}</p>
-                    <a href="http://localhost:4000/openings">Click here to apply</a>
+                    <a href="https://placement-portall.onrender.com/openings">Click here to apply</a>
 `;
   // Instantiate the SMTP server
   var transporter = nodemailer.createTransport({

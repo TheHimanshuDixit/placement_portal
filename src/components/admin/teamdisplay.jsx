@@ -22,7 +22,7 @@ const Teamdisplay = ({
     if (x) {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/team/delete/${editId}`,
+          `https://placement-portall.onrender.com/api/team/delete/${editId}`,
           {
             method: "DELETE",
             headers: {

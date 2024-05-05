@@ -32,7 +32,9 @@ const Openings = () => {
 
     //eslint-disable-next-line
     const data = (async () => {
-      const response = await fetch("http://localhost:4000/api/opening/getall");
+      const response = await fetch(
+        "https://placement-portall.onrender.com/api/opening/getall"
+      );
       const data = await response.json();
       // console.log(data.data);
       setOpen(data.data);
@@ -59,7 +61,7 @@ const Openings = () => {
       formData.append("phone", apply.phone);
       formData.append("branch", apply.branch);
       const response = await fetch(
-        `http://localhost:4000/api/application/add/${cid}`,
+        `https://placement-portall.onrender.com/api/application/add/${cid}`,
         {
           method: "POST",
           headers: {
@@ -82,13 +84,16 @@ const Openings = () => {
   };
 
   const handleIt = async () => {
-    const response = await fetch("http://localhost:4000/api/auth/profile", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("authToken"),
-      },
-    });
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/auth/profile",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+      }
+    );
 
     const result = await response.json();
     console.log(result);
@@ -259,29 +264,29 @@ const Openings = () => {
                       Gender
                     </label>
                   </div>
-                    <label
-                      htmlFor="formFile"
-                      className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
-                      Upload your new resume here
-                    </label>
-                    <input
-                      name="resume"
-                      onChange={(e) => {
-                        console.log(e.target.files[0]);
-                        setResume(e.target.files[0]);
-                      }}
-                      className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
-                      type="file"
-                      id="formFile"
-                    />
-                    <div className="pl-3 pb-1">
-                      <Link
-                        to={getResume}
-                        target="_blank"
-                        className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                        <FaExternalLinkAlt className="inline" /> View Resume
-                      </Link>
-                    </div>
+                  <label
+                    htmlFor="formFile"
+                    className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
+                    Upload your new resume here
+                  </label>
+                  <input
+                    name="resume"
+                    onChange={(e) => {
+                      console.log(e.target.files[0]);
+                      setResume(e.target.files[0]);
+                    }}
+                    className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
+                    type="file"
+                    id="formFile"
+                  />
+                  <div className="pl-3 pb-1">
+                    <Link
+                      to={getResume}
+                      target="_blank"
+                      className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                      <FaExternalLinkAlt className="inline" /> View Resume
+                    </Link>
+                  </div>
                 </form>
               </div>
             </div>
