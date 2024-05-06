@@ -5,11 +5,11 @@ import { Input, Ripple, initTE } from "tw-elements";
 const Login = () => {
   useEffect(() => {
     initTE({ Input, Ripple });
-    if (
-      localStorage.getItem("authToken") ||
-      localStorage.getItem("authAdminToken")
-    ) {
+    if (localStorage.getItem("authToken")) {
       window.location.href = "/";
+    }
+    if (localStorage.getItem("authAdminToken")) {
+      window.location.href = "/admin";
     }
   }, []);
 
