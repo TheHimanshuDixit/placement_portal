@@ -41,7 +41,9 @@ const Addopening = () => {
 
     //eslint-disable-next-line
     const data = (async () => {
-      const response = await fetch("http://localhost:4000/api/opening/getall");
+      const response = await fetch(
+        "https://placement-portall.onrender.com/api/opening/getall"
+      );
       const data = await response.json();
       // console.log(data.data);
       setOpen(data.data);
@@ -50,7 +52,7 @@ const Addopening = () => {
 
   const handleIt = async (id) => {
     const response = await fetch(
-      `http://localhost:4000/api/application/get/${id}`,
+      `https://placement-portall.onrender.com/api/application/get/${id}`,
       {
         method: "GET",
         headers: {
@@ -65,7 +67,7 @@ const Addopening = () => {
 
   const handleDelete = async (id) => {
     const response = await fetch(
-      `http://localhost:4000/api/opening/delete/${id}`,
+      `https://placement-portall.onrender.com/api/opening/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -101,10 +103,13 @@ const Addopening = () => {
     formData.append("gender", newOpening.gender);
     formData.append("duration", newOpening.duration);
     formData.append("applyby", newOpening.applyby);
-    const response = await fetch("http://localhost:4000/api/opening/add", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/opening/add",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     // eslint-disable-next-line
     const result = await response.json();
     if (result.message === "success") {
@@ -134,7 +139,7 @@ const Addopening = () => {
 
   const handleDownload = async () => {
     const response = await fetch(
-      `http://localhost:4000/api/application/get/${regList[0].company}`
+      `https://placement-portall.onrender.com/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
     console.log(data);

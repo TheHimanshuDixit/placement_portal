@@ -26,13 +26,16 @@ const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:4000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
     const data = await response.json();
     // console.log(data);
     if (data.message === "success") {
@@ -40,13 +43,16 @@ const Login = () => {
       localStorage.setItem("authToken", data.authToken);
       window.location.href = "/";
     } else {
-      const respteam = await fetch("http://localhost:4000/api/team/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const respteam = await fetch(
+        "https://placement-portall.onrender.com/api/team/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
       const data = await respteam.json();
       // console.log(data);
       if (data.message === "success") {

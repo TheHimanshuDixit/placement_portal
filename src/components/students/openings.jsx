@@ -32,7 +32,9 @@ const Openings = () => {
 
     //eslint-disable-next-line
     const data = (async () => {
-      const response = await fetch("http://localhost:4000/api/opening/getall");
+      const response = await fetch(
+        "https://placement-portall.onrender.com/api/opening/getall"
+      );
       const data = await response.json();
       // console.log(data.data);
       setOpen(data.data);
@@ -59,7 +61,7 @@ const Openings = () => {
       formData.append("phone", apply.phone);
       formData.append("branch", apply.branch);
       const response = await fetch(
-        `http://localhost:4000/api/application/add/${cid}`,
+        `https://placement-portall.onrender.com/api/application/add/${cid}`,
         {
           method: "POST",
           headers: {
@@ -82,13 +84,16 @@ const Openings = () => {
   };
 
   const handleIt = async () => {
-    const response = await fetch("http://localhost:4000/api/auth/profile", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("authToken"),
-      },
-    });
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/auth/profile",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+      }
+    );
 
     const result = await response.json();
     console.log(result);

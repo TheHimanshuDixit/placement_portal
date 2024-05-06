@@ -16,13 +16,16 @@ const Forgotpassword = () => {
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
-    const data = await fetch("http://localhost:4000/api/auth/forgot", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
+    const data = await fetch(
+      "https://placement-portall.onrender.com/api/auth/forgot",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
     const response = await data.json();
     if (response.message === "Email sent") {
       setSent(true);
@@ -46,13 +49,16 @@ const Forgotpassword = () => {
     if (parseInt(otp) !== parseInt(otpSent)) {
       return alert("Invalid OTP");
     }
-    const data = await fetch("http://localhost:4000/api/auth/updatepassword", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, newPassword }),
-    });
+    const data = await fetch(
+      "https://placement-portall.onrender.com/api/auth/updatepassword",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, newPassword }),
+      }
+    );
     const response = await data.json();
     if (response.message === "success") {
       alert("Password updated successfully");
