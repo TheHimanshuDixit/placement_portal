@@ -27,6 +27,9 @@ const Admin = () => {
                   data-te-ripple-init
                   data-te-ripple-color="light"
                   to="/login"
+                  onClick={() => {
+                    localStorage.removeItem("authAdminToken");
+                  }}
                   role="button">
                   Admin Login
                 </Link>
@@ -35,9 +38,6 @@ const Admin = () => {
                   data-te-ripple-init
                   data-te-ripple-color="light"
                   to="/addadmin"
-                  onClick={()=>{
-                    localStorage.removeItem("authAdminToken");
-                  }}
                   role="button">
                   Add Admin
                 </Link>
