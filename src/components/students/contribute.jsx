@@ -7,7 +7,7 @@ const Contribute = () => {
   useEffect(() => {
     initTE({ Collapse });
 
-    fetch("https://placement-portall.onrender.com/api/contribute/get")
+    fetch("http://localhost:4000/api/contribute/get")
       .then((res) => res.json())
       .then((data) => {
         setContributionList(data.data);

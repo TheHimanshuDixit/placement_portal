@@ -13,7 +13,7 @@ const Openingform = ({ newOpening, setNewOpening, handleAddOpening, logo, setLog
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
-              Add Team Member
+              Add New Opening
             </h2>
           </div>
 
@@ -265,7 +265,7 @@ const Openingform = ({ newOpening, setNewOpening, handleAddOpening, logo, setLog
                 <label
                   htmlFor="gender"
                   className="block text-sm font-medium leading-6 text-gray-900">
-                  Intern, FTE, Intern+FTE
+                  Gender
                 </label>
                 <div className="mt-2">
                   <input
@@ -285,7 +285,7 @@ const Openingform = ({ newOpening, setNewOpening, handleAddOpening, logo, setLog
                 <label
                   htmlFor="duration"
                   className="block text-sm font-medium leading-6 text-gray-900">
-                  Intern, FTE, Intern+FTE
+                  Duration
                 </label>
                 <div className="mt-2">
                   <input

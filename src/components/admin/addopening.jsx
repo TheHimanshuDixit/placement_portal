@@ -41,9 +41,7 @@ const Addopening = () => {
 
     //eslint-disable-next-line
     const data = (async () => {
-      const response = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall"
-      );
+      const response = await fetch("http://localhost:4000/api/opening/getall");
       const data = await response.json();
       // console.log(data.data);
       setOpen(data.data);
@@ -52,7 +50,7 @@ const Addopening = () => {
 
   const handleIt = async (id) => {
     const response = await fetch(
-      `https://placement-portall.onrender.com/api/application/get/${id}`,
+      `http://localhost:4000/api/application/get/${id}`,
       {
         method: "GET",
         headers: {
@@ -67,7 +65,7 @@ const Addopening = () => {
 
   const handleDelete = async (id) => {
     const response = await fetch(
-      `https://placement-portall.onrender.com/api/opening/delete/${id}`,
+      `http://localhost:4000/api/opening/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -77,9 +75,10 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
-    if (result.success) {
+    if (result.message === "success") {
       alert("Deleted Successfully");
       setOpen(open.filter((item) => item._id !== id));
+      window.location.reload();
     } else {
       alert("Error in Deleting");
     }
@@ -102,16 +101,13 @@ const Addopening = () => {
     formData.append("gender", newOpening.gender);
     formData.append("duration", newOpening.duration);
     formData.append("applyby", newOpening.applyby);
-    const response = await fetch(
-      "https://placement-portall.onrender.com/api/opening/add",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const response = await fetch("http://localhost:4000/api/opening/add", {
+      method: "POST",
+      body: formData,
+    });
     // eslint-disable-next-line
     const result = await response.json();
-    if (result.success) {
+    if (result.message === "success") {
       alert("Added Successfully");
       setOpen([...open, newOpening]);
       setNewOpening({
@@ -130,6 +126,7 @@ const Addopening = () => {
         duration: "",
         applyby: "",
       });
+      window.location.reload();
     } else {
       alert("Error in Adding");
     }
@@ -137,7 +134,7 @@ const Addopening = () => {
 
   const handleDownload = async () => {
     const response = await fetch(
-      `https://placement-portall.onrender.com/api/application/get/${regList[0].company}`
+      `http://localhost:4000/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
     console.log(data);

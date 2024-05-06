@@ -75,7 +75,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
                     <p>JobId: ${jobId}</p>
                     <p>Stipend: ${stipend}</p>
                     <p>CTC: ${ctc}</p>
-                    <a href="https://placement-portall.onrender.com/openings">Click here to apply</a>
+                    <a href="http://localhost:4000/openings">Click here to apply</a>
 `;
   // Instantiate the SMTP server
   var transporter = nodemailer.createTransport({

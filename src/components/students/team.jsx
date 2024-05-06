@@ -6,9 +6,7 @@ const Team = () => {
   useEffect(() => {
     //eslint-disable-next-line
     const data = (async () => {
-      const response = await fetch(
-        "https://placement-portall.onrender.com/api/team/get"
-      );
+      const response = await fetch("http://localhost:4000/api/team/get");
       const data = await response.json();
       console.log(data);
       setTeams(data.data);
