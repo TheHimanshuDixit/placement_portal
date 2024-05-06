@@ -5,6 +5,12 @@ import { Input, Ripple, initTE } from "tw-elements";
 const Login = () => {
   useEffect(() => {
     initTE({ Input, Ripple });
+    if (
+      localStorage.getItem("authToken") ||
+      localStorage.getItem("authAdminToken")
+    ) {
+      window.location.href = "/";
+    }
   }, []);
 
   const [email, setEmail] = useState("");
