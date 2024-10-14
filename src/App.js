@@ -23,6 +23,8 @@ import Addadmin from "./components/admin/addadmin";
 import Addopening from "./components/admin/addopening";
 import Highlights from "./components/admin/highlights";
 import Studetails from "./components/admin/studetails";
+import Attendance from "./components/admin/attendence";
+import Record from "./components/admin/record";
 
 function App() {
   return (
@@ -206,7 +208,27 @@ function App() {
             element={
               <>
                 <Navbar />
-                <Studetails/>
+                <Studetails />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/attendence"
+            element={
+              <>
+                <Navbar />
+                <Attendance />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/record"
+            element={
+              <>
+                <Navbar />
+                <Record />
                 <FooterAdmin />
               </>
             }
