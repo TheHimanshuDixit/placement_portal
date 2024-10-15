@@ -17,6 +17,9 @@ const Studetails = () => {
   const [appList, setAppList] = useState([]);
   const [compList, setCompList] = useState([]);
   const [studData, setStudData] = useState([]);
+  const [placed, setPlaced] = useState("No");
+  const [pack, setPack] = useState(0);
+  const [placedCompany, setPlacedCompany] = useState([]);
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
@@ -122,6 +125,7 @@ const Studetails = () => {
   };
 
   const further = (res) => {
+    // console.log(res);
     for (let i = 0; i < res.length; i++) {
       for (let j = 0; j < compList.length; j++) {
         if (compList[j]._id === res[i].company) {
@@ -139,8 +143,30 @@ const Studetails = () => {
       return;
     }
     setStudData([]);
+    setPack("");
+    setPlacedCompany([]);
+    setPlaced("No");
+    const uniqueStudent = studList.filter((stud) => stud.email === email);
+    if (uniqueStudent.length <= 0) {
+      ref.current.click();
+      return;
+    }
+    setPlaced(uniqueStudent[0].placed ? "Yes" : "No");
+    let list = [];
+    for (let i = 0; i < compList.length; i++) {
+      if (uniqueStudent[0].companys.includes(compList[i]._id)) {
+        list.push(compList[i].name);
+      }
+      if (
+        uniqueStudent[0].companys.includes(compList[i]._id) &&
+        compList[i].ctc > pack
+      ) {
+        setPack(compList[i].ctc);
+      }
+    }
+    setPlacedCompany(list);
     const res = appList.filter((app) => app.email === email);
-    console.log(res);
+    // console.log(res);
     if (res.length <= 0) {
       ref.current.click();
       return;
@@ -200,7 +226,7 @@ const Studetails = () => {
                   <ul className="w-96 text-surface dark:text-white">
                     {studData.length > 0 &&
                       studData.map((data, index) => {
-                        console.log(data);
+                        // console.log(data);
                         return index === 0 ? (
                           <li
                             key={data._id}
@@ -210,6 +236,14 @@ const Studetails = () => {
                             <strong>Enrollment :</strong> {data.enroll} <br />
                             <strong>Phone :</strong> {data.phone} <br />
                             <strong>Gender :</strong> {data.gender} <br />
+                            <strong>Placed :</strong> {placed} <br />
+                            <strong>Company :</strong>{" "}
+                            {placedCompany.join(", ")
+                              ? placedCompany.join(", ")
+                              : "Pending"}{" "}
+                            <br />
+                            <strong>Package :</strong> {pack ? pack : 0} LPA{" "}
+                            <br />
                           </li>
                         ) : null;
                       })}
@@ -222,6 +256,9 @@ const Studetails = () => {
                             className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                             <strong>{index + 1}. </strong> <br />
                             <strong>Company :</strong> {data.company.name}{" "}
+                            <br />
+                            <strong>Role :</strong> {data.company.role} <br />
+                            <strong>Progress :</strong> {data.company.progress}{" "}
                             <br />
                             <strong>Applied on :</strong>{" "}
                             {data.date
@@ -362,9 +399,15 @@ const Studetails = () => {
                 return (
                   <li
                     key={stud._id}
-                    className="flex justify-between gap-x-6 py-5">
-                    <div className="flex min-w-0 gap-x-4">
+                    className="flex justify-between gap-x-6 py-5 items-center">
+                    <div className="flex min-w-0 gap-x-4 items-center">
                       <strong>{index + 1}. </strong>
+                      {/* Profile Image */}
+                      <img
+                        src={stud.image} // Replace 'defaultImageURL' with a placeholder image if needed
+                        alt="Profile"
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
                       <div className="min-w-0 flex-auto">
                         <p className="text-sm font-semibold leading-6 text-gray-900">
                           {stud.name}

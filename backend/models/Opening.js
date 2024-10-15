@@ -59,6 +59,10 @@ const OpeningSchema = new Schema({
     type: String,
     required: true,
   },
+  progress:{
+    type: String,
+    default: "Ongoing"
+  },
   applyby: {
     type: Date,
     required: true,
