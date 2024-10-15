@@ -4,6 +4,7 @@ import { BiSolidUserDetail } from "react-icons/bi";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import { Link } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import * as XLSX from "xlsx";
 
 const Studetails = () => {
   const ref = useRef(null);
@@ -17,6 +18,10 @@ const Studetails = () => {
   const [appList, setAppList] = useState([]);
   const [compList, setCompList] = useState([]);
   const [studData, setStudData] = useState([]);
+  const [placed, setPlaced] = useState("No");
+  const [pack, setPack] = useState(0);
+  const [placedCompany, setPlacedCompany] = useState([]);
+  const [allstudents, setAllStudents] = useState([]);
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
@@ -122,6 +127,7 @@ const Studetails = () => {
   };
 
   const further = (res) => {
+    // console.log(res);
     for (let i = 0; i < res.length; i++) {
       for (let j = 0; j < compList.length; j++) {
         if (compList[j]._id === res[i].company) {
@@ -139,14 +145,87 @@ const Studetails = () => {
       return;
     }
     setStudData([]);
+    setPack("");
+    setPlacedCompany([]);
+    setPlaced("No");
+    const uniqueStudent = studList.filter((stud) => stud.email === email);
+    if (uniqueStudent.length <= 0) {
+      ref.current.click();
+      return;
+    }
+    setPlaced(uniqueStudent[0].placed ? "Yes" : "No");
+    let list = [];
+    for (let i = 0; i < compList.length; i++) {
+      if (uniqueStudent[0].companys.includes(compList[i]._id)) {
+        list.push(compList[i].name);
+      }
+      if (
+        uniqueStudent[0].companys.includes(compList[i]._id) &&
+        compList[i].ctc > pack
+      ) {
+        setPack(compList[i].ctc);
+      }
+    }
+    setPlacedCompany(list);
     const res = appList.filter((app) => app.email === email);
-    console.log(res);
+    // console.log(res);
     if (res.length <= 0) {
       ref.current.click();
       return;
     }
     further(res);
     ref.current.click();
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+
+        // Assuming the first sheet contains the required data
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        // Parse the worksheet into JSON
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        // Convert the parsed data into the desired format
+        const parsedData = jsonData.slice(1).map((row) => ({
+          enroll: row[0], // Assuming enrollment number is the first column
+          pwd: row[1], // Assuming password is the second column
+        }));
+
+        // Save the parsed data into the state
+        setAllStudents(parsedData);
+      };
+
+      // Read the file as an array buffer
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const handleClickFileUpload = async () => {
+    const data = await fetch(
+      "https://placement-portall.onrender.com/api/college//multiadd",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(allstudents),
+      }
+    );
+    const res = await data.json();
+    if (res) {
+      alert("Students added successfully");
+      setAllStudents([]);
+    } else {
+      alert("Something went wrong");
+    }
   };
 
   return (
@@ -200,7 +279,7 @@ const Studetails = () => {
                   <ul className="w-96 text-surface dark:text-white">
                     {studData.length > 0 &&
                       studData.map((data, index) => {
-                        console.log(data);
+                        // console.log(data);
                         return index === 0 ? (
                           <li
                             key={data._id}
@@ -210,6 +289,14 @@ const Studetails = () => {
                             <strong>Enrollment :</strong> {data.enroll} <br />
                             <strong>Phone :</strong> {data.phone} <br />
                             <strong>Gender :</strong> {data.gender} <br />
+                            <strong>Placed :</strong> {placed} <br />
+                            <strong>Company :</strong>{" "}
+                            {placedCompany.join(", ")
+                              ? placedCompany.join(", ")
+                              : "Pending"}{" "}
+                            <br />
+                            <strong>Package :</strong> {pack ? pack : 0} LPA{" "}
+                            <br />
                           </li>
                         ) : null;
                       })}
@@ -222,6 +309,9 @@ const Studetails = () => {
                             className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                             <strong>{index + 1}. </strong> <br />
                             <strong>Company :</strong> {data.company.name}{" "}
+                            <br />
+                            <strong>Role :</strong> {data.company.role} <br />
+                            <strong>Progress :</strong> {data.company.progress}{" "}
                             <br />
                             <strong>Applied on :</strong>{" "}
                             {data.date
@@ -281,29 +371,39 @@ const Studetails = () => {
         </button>
         <form className="p-10">
           <div className="space-y-12">
-            <div className="border-b border-gray-900/10 pb-12">
+            <div className="border-b border-gray-900/10 pb-12 flex justify-between items-center">
               <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
-                Add Student Enrollnment
+                Add Student Enrollment
               </h2>
+              {/* Upload Excel Button */}
+              <div className="flex justify-end">
+                <input
+                  type="file"
+                  accept=".xlsx, .xls"
+                  onChange={handleFileUpload}
+                  className="w-1/2 text-sm mr-2 font-semibold text-white bg-blue-600 rounded-md px-3 py-2 shadow-sm hover:bg-blue-500 cursor-pointer"
+                />
+                <button
+                  onClick={handleClickFileUpload}
+                  className="text-sm font-semibold text-white bg-blue-600 rounded-md px-3 py-2 shadow-sm hover:bg-blue-500 cursor-pointer">
+                  Add Student
+                </button>
+              </div>
             </div>
+
             <div className="border-b border-gray-900/10 pb-12">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="enroll"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Enrollnment Number
+                    Enrollment Number
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
                       name="enroll"
-                      value={students.enroll}
-                      onChange={(e) => {
-                        setStudents({ ...students, enroll: e.target.value });
-                      }}
                       id="enroll"
-                      autoComplete="enroll"
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -319,12 +419,7 @@ const Studetails = () => {
                     <input
                       type="text"
                       name="pwd"
-                      value={students.pwd}
-                      onChange={(e) => {
-                        setStudents({ ...students, pwd: e.target.value });
-                      }}
                       id="pwd"
-                      autoComplete="pwd"
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -336,20 +431,31 @@ const Studetails = () => {
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <button
               type="button"
-              onClick={(e) => {
-                setStudents({ enroll: "", pwd: "" });
-              }}
               className="text-sm font-semibold leading-6 text-gray-900">
               Cancel
             </button>
             <button
               type="submit"
-              onClick={handleClick}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Save
             </button>
           </div>
+
+          {/* Display the parsed data */}
+          {students.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-lg font-bold">Uploaded Students:</h3>
+              <ul className="list-disc pl-5">
+                {students.map((student, index) => (
+                  <li key={index}>
+                    Enroll: {student.enroll}, Password: {student.pwd}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </form>
+
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
             Students Details
@@ -362,9 +468,15 @@ const Studetails = () => {
                 return (
                   <li
                     key={stud._id}
-                    className="flex justify-between gap-x-6 py-5">
-                    <div className="flex min-w-0 gap-x-4">
+                    className="flex justify-between gap-x-6 py-5 items-center">
+                    <div className="flex min-w-0 gap-x-4 items-center">
                       <strong>{index + 1}. </strong>
+                      {/* Profile Image */}
+                      <img
+                        src={stud.image} // Replace 'defaultImageURL' with a placeholder image if needed
+                        alt="Profile"
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
                       <div className="min-w-0 flex-auto">
                         <p className="text-sm font-semibold leading-6 text-gray-900">
                           {stud.name}

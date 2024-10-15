@@ -159,27 +159,68 @@ router.get("/profile", fetchuser, async (req, res) => {
 });
 
 // POST /api/auth/profile
-router.post("/profile", upload.single("resume"), async (req, res) => {
-  fetchuser(req, res, async () => {
-    let user = await Student.findById(req.id);
-    if (!user) {
-      return res.status(401).json({ message: "Invalid email" });
-    }
-    const newStudent = {
-      ...req.body,
-    };
-    if (req.file !== undefined) {
-      const upload = await cloudinary.uploader.upload(req.file.path);
-      const url = upload.secure_url.replace(".pdf", ".jpg");
-      newStudent.resume = url;
-    }
+router.post(
+  "/profile",
+  upload.fields([{ name: "resume" }, { name: "profileImage" }]),
+  async (req, res) => {
+    fetchuser(req, res, async () => {
+      let user = await Student.findById(req.id);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid email" });
+      }
+
+      const newStudent = {
+        ...req.body,
+      };
+
+      // If the resume file is uploaded, process it
+      if (req.files["resume"] !== undefined) {
+        const resumeUpload = await cloudinary.uploader.upload(
+          req.files["resume"][0].path
+        );
+        const resumeUrl = resumeUpload.secure_url.replace(".pdf", ".jpg"); // Converting to JPG
+        newStudent.resume = resumeUrl;
+      }
+
+      // If the profile image file is uploaded, process it
+      if (req.files["profileImage"] !== undefined) {
+        const profileImageUpload = await cloudinary.uploader.upload(
+          req.files["profileImage"][0].path
+        );
+        const profileImageUrl = profileImageUpload.secure_url;
+        newStudent.image = profileImageUrl;
+      }
+
+      // Update the user with the new data
+      user = await Student.findByIdAndUpdate(
+        req.id,
+        { $set: newStudent },
+        { new: true }
+      );
+
+      res.json({ message: "success", data: user });
+    });
+  }
+);
+
+
+
+// POST /api/auth/placed
+router.post("/placed", async (req, res) => {
+  let data = req.body;
+  let companyId = data.company;
+  let studentsEmails = data.students;
+  for (let i = 0; i < studentsEmails.length; i++) {
+    let user = await Student.findOne({ email: studentsEmails[i] });
     user = await Student.findByIdAndUpdate(
-      req.id,
-      { $set: newStudent },
+      user._id,
+      { $push: { companys: companyId }, placed: true },
       { new: true }
     );
-    res.json({ message: "success" });
-  });
+  }
+  res.json({ message: "success" });
 });
+
+// POST /api/auth/college
 
 module.exports = router;

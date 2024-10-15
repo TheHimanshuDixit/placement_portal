@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 const Myprofile = () => {
   const [getResume, setGetResume] = useState("");
   const [resume, setResume] = useState("");
+  const [profileImage, setProfileImage] = useState(null); // New state for profile image
+  const [imagePreview, setImagePreview] = useState(""); // For image preview
 
   const [profile, setProfile] = useState({
     enroll: "",
@@ -56,6 +58,7 @@ const Myprofile = () => {
         setGetResume(data.resume);
         setFname(data.name.split(" ")[0]);
         setLname(data.name.split(" ")[1]);
+        setImagePreview(data.image); // Load profile image from the backend
       } catch (error) {
         console.log(error);
       }
@@ -68,6 +71,12 @@ const Myprofile = () => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
     if (e.target.name === "fname") setFname(e.target.value);
     if (e.target.name === "lname") setLname(e.target.value);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setProfileImage(file); // Store image file in state
+    setImagePreview(URL.createObjectURL(file)); // Preview image before upload
   };
 
   const handleClick = async (e) => {
@@ -86,6 +95,9 @@ const Myprofile = () => {
     formData.append("year", profile.year);
     formData.append("cgpa", profile.cgpa);
     formData.append("backlogs", profile.backlogs);
+    if (profileImage) {
+      formData.append("profileImage", profileImage); // Add profile image to formData
+    }
 
     try {
       const res = await fetch(
@@ -123,6 +135,24 @@ const Myprofile = () => {
             </p>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <div className="col-span-full">
+                <label className="block text-sm font-medium text-gray-700">
+                  Profile Photo
+                </label>
+                <div className="mt-1 flex items-center">
+                  <img
+                    src={imagePreview}
+                    alt="Profile"
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
+                  <input
+                    type="file"
+                    name="profileImage"
+                    onChange={handleImageChange}
+                    className="ml-4"
+                  />
+                </div>
+              </div>
               <div className="sm:col-span-4">
                 <label
                   htmlFor="enroll"

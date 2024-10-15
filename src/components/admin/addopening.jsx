@@ -14,6 +14,8 @@ const Addopening = () => {
   const [check, setCheck] = useState(false);
   const [regList, setRegList] = useState([]);
   const [logo, setLogo] = useState("");
+  const [update, setUpdate] = useState(true);
+  const [emailOffer, setEmailOffer] = useState({});
 
   const [newOpening, setNewOpening] = useState({
     name: "",
@@ -32,23 +34,22 @@ const Addopening = () => {
     applyby: "",
   });
 
+  const data = async () => {
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/opening/getall"
+    );
+    const data = await response.json();
+    setOpen(data.data);
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
       window.location.href = "/login";
     }
 
     initTE({ Modal, Ripple, Input });
-
-    //eslint-disable-next-line
-    const data = (async () => {
-      const response = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall"
-      );
-      const data = await response.json();
-      // console.log(data.data);
-      setOpen(data.data);
-    })();
-  }, []);
+    data();
+  }, [update]);
 
   const handleIt = async (id) => {
     const response = await fetch(
@@ -62,6 +63,25 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
+
+    const stdlist = await fetch(
+      "https://placement-portall.onrender.com/api/auth"
+    );
+    const std = await stdlist.json();
+
+    for (let i = 0; i < result.data.length; i++) {
+      for (let j = 0; j < std.length; j++) {
+        result.data[i].offerStatus = "Not Offered";
+        if (
+          std[j].email === result.data[i].email &&
+          std[j].companys.includes(id)
+        ) {
+          result.data[i].offerStatus = "Offered";
+          break;
+        }
+      }
+    }
+    // console.log(result.data);
     setRegList(result.data);
   };
 
@@ -142,7 +162,7 @@ const Addopening = () => {
       `https://placement-portall.onrender.com/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     const csv = data.data.map((item, index) => {
       return {
         SrNo: index + 1,
@@ -166,6 +186,79 @@ const Addopening = () => {
     a.href = "data:text/csv;charset=utf-8," + csvArray;
     a.download = "Applicants.csv";
     a.click();
+  };
+
+  const toggleDriveStatus = async (id, p) => {
+    if (p === "Ongoing") {
+      p = "Closed";
+    } else {
+      p = "Ongoing";
+    }
+    const data = await fetch(
+      `https://placement-portall.onrender.com/api/opening/update/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ progress: p }),
+      }
+    ).then((res) => res.json());
+    if (data.message === "success") {
+      for (let i = 0; i < open.length; i++) {
+        if (open[i]._id === id) {
+          open[i].progress = p;
+          break;
+        }
+      }
+    }
+    setUpdate(!update);
+  };
+
+  const toggleOfferStatus = (studentId) => {
+    setEmailOffer((prevState) => ({
+      ...prevState,
+      [studentId]: !prevState[studentId],
+    }));
+
+    for (let i = 0; i < regList.length; i++) {
+      if (regList[i].email === studentId) {
+        regList[i].offerStatus =
+          regList[i].offerStatus === "Offered" ? "Not Offered" : "Offered";
+        break;
+      }
+    }
+  };
+
+  const handleSubmitOffers = async () => {
+    setCheck(false);
+    const emails = [];
+    for (let e in emailOffer) {
+      if (emailOffer[e] === true) {
+        emails.push(e);
+      }
+    }
+    const data = {
+      company: regList[0].company,
+      students: emails,
+    };
+    // console.log(data);
+    const response = await fetch(
+      "https://placement-portall.onrender.com/api/auth/placed",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const result = await response.json();
+    if (result.message === "success") {
+      alert("Successfully updated Database");
+    } else {
+      alert("There is some error");
+    }
   };
 
   return (
@@ -227,17 +320,32 @@ const Addopening = () => {
 
             {
               <div className="relative p-4" style={{ minHeight: "500px" }}>
-                <ul className="w-96 text-surface dark:text-white">
+                <ul className="w-full text-surface dark:text-white">
                   {regList.length > 0 ? (
                     regList.map((item, index) => (
                       <li
                         key={item._id}
-                        className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                        <strong>{index + 1}. Name : </strong>
-                        {item.name}
-                        <br />
-                        <strong>Email : </strong>
-                        {item.email}
+                        className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10 flex justify-between items-center">
+                        <div>
+                          <strong>{index + 1}. Name : </strong>
+                          {item.name}
+                          <br />
+                          <strong>Email : </strong>
+                          {item.email}
+                        </div>
+                        {/* Offer Toggle Button */}
+                        <button
+                          onClick={() => toggleOfferStatus(item.email)}
+                          className={`border-2 px-3 py-1 rounded-md text-sm ${
+                            item.offerStatus === "Offered"
+                              ? "bg-green-500 text-white"
+                              : "bg-gray-500 text-white"
+                          }`}
+                          disabled={item.offerStatus === "Offered"}>
+                          {item.offerStatus === "Offered"
+                            ? "Offered"
+                            : "Not Offered"}
+                        </button>
                       </li>
                     ))
                   ) : (
@@ -261,17 +369,15 @@ const Addopening = () => {
                 }}>
                 Close
               </button>
-              {/* <button
+              <button
                 type="button"
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                 data-te-modal-dismiss
                 data-te-ripple-init
                 data-te-ripple-color="light"
-                onClick={() => {
-                  setCheck(false);
-                }}>
-                Apply
-              </button> */}
+                onClick={handleSubmitOffers}>
+                Submit
+              </button>
             </div>
           </div>
         </div>
@@ -480,6 +586,17 @@ const Addopening = () => {
                   }}
                   className="bg-red-500 text-white w-52 border-2 border-black rounded-md mt-2">
                   Delete
+                </button>
+
+                {/* Status Button */}
+                <button
+                  onClick={() => toggleDriveStatus(item._id, item.progress)}
+                  className={`w-52 border-2 border-black rounded-md mt-2 ${
+                    item.progress === "Ongoing"
+                      ? "bg-green-500"
+                      : "bg-yellow-500"
+                  } text-white`}>
+                  {item.progress}
                 </button>
               </div>
             ))}

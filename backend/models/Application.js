@@ -33,6 +33,10 @@ const ApplicationSchema = new Schema({
     type: String,
     required: true,
   },
+  event: {
+    type: Array,
+    default: [],
+  },
   date: {
     type: Date,
     default: Date.now,

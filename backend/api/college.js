@@ -18,6 +18,38 @@ router.post("/add", async (req, res) => {
   res.json({ message: "success", data: resp });
 });
 
+// POST /api/collge/multiadd
+router.post("/multiadd", async (req, res) => {
+  let colleges = req.body; 
+  if (!Array.isArray(colleges)) {
+    return res
+      .status(400)
+      .json({ message: "Input should be an array of objects" });
+  }
+  let addedColleges = [];
+  let existingColleges = [];
+
+  for (let college of colleges) {
+    let { enroll, pwd } = college;
+    let check = await College.findOne({ enroll });
+    if (check) {
+      existingColleges.push({ enroll, message: "College already exists" });
+    } else {
+      let newCollege = new College({
+        enroll,
+        pwd,
+      });
+      let resp = await newCollege.save();
+      addedColleges.push(resp);
+    }
+  }
+  res.json({
+    message: "Operation completed",
+    addedColleges,
+    existingColleges,
+  });
+});
+
 // POST /api/college/login
 router.post("/login", async (req, res) => {
   let { enroll, pwd } = req.body;

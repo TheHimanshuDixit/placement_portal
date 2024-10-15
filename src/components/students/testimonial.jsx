@@ -112,14 +112,14 @@ const Testimonial = () => {
                   <div className="w-full shrink-0 grow-0 basis-auto px-3 lg:w-8/12">
                     <h5 className="mb-2 text-lg font-bold">Divya</h5>
                     <p className="mb-4 font-medium text-neutral-700 dark:text-neutral-400">
-                      Morgan Stanley
+                      Kickdrum
                     </p>
                     <p className="mb-6 text-neutral-500 dark:text-neutral-300">
                       I'm thrilled to share my gratitude for the remarkable
                       assistance and tools offered by our college's training and
                       placement website. Thanks to its outstanding support, I
                       recently landed a role as a Software Development Engineer
-                      at Morgan Stanley. The user-friendly interface and expert advice
+                      at Kickdrum. The user-friendly interface and expert advice
                       provided by the platform were instrumental in guiding me
                       through the application process with ease and assurance.
                       I'm deeply appreciative of the opportunities it afforded

@@ -8,7 +8,11 @@ import { Link } from "react-router-dom";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
-  const [cutoff, setCutoff] = useState(0);
+  const [cutoff, setCutoff] = useState("");
+  const [placed, setPlaced] = useState(false);
+  const [comp, setComp] = useState("0");
+  const [allCompany, setAllCompany] = useState([]);
+  const [pack, setPack] = useState("0");
   //eslint-disable-next-line
   const [cid, setCid] = useState("");
   const [company, setCompany] = useState([]);
@@ -29,15 +33,18 @@ const Openings = () => {
     initTE({ Modal, Ripple, Input });
 
     // eslint-disable-next-line
-
-    //eslint-disable-next-line
     const data = (async () => {
       const response = await fetch(
         "https://placement-portall.onrender.com/api/opening/getall"
       );
       const data = await response.json();
       // console.log(data.data);
-      setOpen(data.data);
+      setAllCompany(data.data);
+
+      let ongoingOpen = data.data.filter((item) => {
+        return item.progress === "Ongoing";
+      });
+      setOpen(ongoingOpen);
     })();
   }, []);
 
@@ -47,7 +54,12 @@ const Openings = () => {
   };
 
   const handleClick = async () => {
-    if (apply.cgpa >= cutoff) {
+    console.log(comp, pack);
+    if (
+      apply.cgpa >= cutoff &&
+      placed === false &&
+      parseInt(comp) >= 1.8 * parseInt(pack)
+    ) {
       const formData = new FormData();
       formData.append("name", apply.name);
       formData.append("email", apply.email);
@@ -96,7 +108,7 @@ const Openings = () => {
     );
 
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
     setApply({
       name: result.name,
       email: result.email,
@@ -107,6 +119,15 @@ const Openings = () => {
       gender: result.gender,
     });
     setGetResume(result.resume);
+    setPlaced(result.placed);
+    for (let i = 0; i < allCompany.length; i++) {
+      if (
+        result.companys.includes(allCompany[i]._id) &&
+        allCompany[i].ctc > comp
+      ) {
+        setComp(allCompany[i].ctc);
+      }
+    }
   };
 
   const handleCompTime = (time) => {
@@ -502,6 +523,7 @@ const Openings = () => {
                     onClick={() => {
                       setCid(item._id);
                       setCutoff(item.cgpacritera);
+                      setPack(item.ctc);
                       if (!localStorage.getItem("authToken")) {
                         window.location.href = "/login";
                       }
