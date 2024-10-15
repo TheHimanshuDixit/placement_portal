@@ -4,7 +4,6 @@ import { BiSolidUserDetail } from "react-icons/bi";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import { Link } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import * as XLSX from "xlsx";
 
 const Studetails = () => {
   const ref = useRef(null);
@@ -371,9 +370,9 @@ const Studetails = () => {
         </button>
         <form className="p-10">
           <div className="space-y-12">
-            <div className="border-b border-gray-900/10 pb-12 flex justify-between items-center">
+            <div className="border-b border-gray-900/10 pb-12">
               <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
-                Add Student Enrollment
+                Add Student Enrollnment
               </h2>
               {/* Upload Excel Button */}
               <div className="flex justify-end">
@@ -390,20 +389,24 @@ const Studetails = () => {
                 </button>
               </div>
             </div>
-
             <div className="border-b border-gray-900/10 pb-12">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="enroll"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Enrollment Number
+                    Enrollnment Number
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
                       name="enroll"
+                      value={students.enroll}
+                      onChange={(e) => {
+                        setStudents({ ...students, enroll: e.target.value });
+                      }}
                       id="enroll"
+                      autoComplete="enroll"
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -419,7 +422,12 @@ const Studetails = () => {
                     <input
                       type="text"
                       name="pwd"
+                      value={students.pwd}
+                      onChange={(e) => {
+                        setStudents({ ...students, pwd: e.target.value });
+                      }}
                       id="pwd"
+                      autoComplete="pwd"
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -431,31 +439,20 @@ const Studetails = () => {
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <button
               type="button"
+              onClick={(e) => {
+                setStudents({ enroll: "", pwd: "" });
+              }}
               className="text-sm font-semibold leading-6 text-gray-900">
               Cancel
             </button>
             <button
               type="submit"
+              onClick={handleClick}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Save
             </button>
           </div>
-
-          {/* Display the parsed data */}
-          {students.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-lg font-bold">Uploaded Students:</h3>
-              <ul className="list-disc pl-5">
-                {students.map((student, index) => (
-                  <li key={index}>
-                    Enroll: {student.enroll}, Password: {student.pwd}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </form>
-
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
             Students Details
