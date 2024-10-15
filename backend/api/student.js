@@ -9,7 +9,7 @@ const fetchuser = require("../middleware");
 router.get("/", fetchuser, async (req, res) => {
   let student = await Student.findById(req.id);
   let applications = await Application.find({ email: student.email });
-  console.log(applications);
+  // console.log(applications);
 
   // wants to send array of objects object contain company  and event both is an object
   let data = [];
@@ -29,7 +29,7 @@ router.put("/", async (req, res) => {
   let application = await Application.find({ company: company });
   for (let i = 0; i < application.length; i++) {
     if (studentList.includes(application[i].email)) {
-      console.log(application[i]);
+      // console.log(application[i]);
       let e = { event: event, date: date };
       let addEvent = await Application.findByIdAndUpdate(
         application[i]._id,
