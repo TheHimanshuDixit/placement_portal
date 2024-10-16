@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -15,13 +15,22 @@ import Dashboard from "./dashboard";
 
 const Record = () => {
   // Data for both charts
-  const data = [
-    { year: "2019", placed: 85, companies: 50 },
-    { year: "2020", placed: 90, companies: 60 },
-    { year: "2021", placed: 88, companies: 65 },
-    { year: "2022", placed: 92, companies: 70 },
-    { year: "2023", placed: 95, companies: 80 },
-  ];
+  // const data = [
+  //   { year: "2019", placed: 85, companies: 50 },
+  //   { year: "2020", placed: 90, companies: 60 },
+  //   { year: "2021", placed: 88, companies: 65 },
+  //   { year: "2022", placed: 92, companies: 70 },
+  //   { year: "2023", placed: 95, companies: 80 },
+  // ];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://placement-portall.onrender.com/api/demographicData")
+      .then((res) => res.json())
+      .then((d) => {
+        setData(d);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-pink-50 p-10">

@@ -30,7 +30,6 @@ router.get("/", async (req, res) => {
     // Process student data to calculate placed percentage by year
     students.forEach((student) => {
       const year = student.year;
-      console.log(year, "s");
       if (!data[year]) {
         data[year] = { year: year, placed: 0, totalStudents: 0, companies: 0 };
       }
@@ -42,7 +41,6 @@ router.get("/", async (req, res) => {
     // Process opening data to calculate the number of companies by year
     openings.forEach((opening) => {
       const year = opening.batch;
-      console.log(year, "o");
       if (!data[year]) {
         data[year] = { year: year, placed: 0, totalStudents: 0, companies: 0 };
       }
@@ -64,7 +62,6 @@ router.get("/", async (req, res) => {
         year = parseInt(temp);
         year += 4;
       }
-      console.log(year, "c");
       if (!data[year]) {
         data[year] = { year: year, placed: 0, totalStudents: 0, companies: 0 };
       }
