@@ -12,11 +12,11 @@ const OpeningSchema = new Schema({
   },
   stipend: {
     type: String,
-    default: "0T",
+    default: "0",
   },
   ctc: {
     type: String,
-    default: "0L",
+    default: "0",
   },
   logo: {
     type: String,
@@ -44,6 +44,10 @@ const OpeningSchema = new Schema({
     required: true,
   },
   cgpacritera: {
+    type: String,
+    required: true,
+  },
+  batch:{
     type: String,
     required: true,
   },

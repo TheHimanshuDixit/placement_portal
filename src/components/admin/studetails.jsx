@@ -29,36 +29,45 @@ const Studetails = () => {
     initTE({ Modal, Ripple, Input });
 
     const fetchData = async () => {
-      const res = await fetch("https://placement-portall.onrender.com/api/application/getall", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/application/getall",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await res.json();
       setAppList(data.data);
     };
     fetchData();
 
     const fetchCompData = async () => {
-      const res = await fetch("https://placement-portall.onrender.com/api/opening/getall", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/opening/getall",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await res.json();
       setCompList(data.data);
     };
     fetchCompData();
 
     const fetchStudData = async () => {
-      const res = await fetch("https://placement-portall.onrender.com/api/auth", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        "https://placement-portall.onrender.com/api/auth",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await res.json();
       setStudList(data);
     };
@@ -72,13 +81,16 @@ const Studetails = () => {
       alert("Please fill all the fields");
       return;
     }
-    const res = await fetch("https://placement-portall.onrender.com/api/college/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ enroll, pwd }),
-    });
+    const res = await fetch(
+      "https://placement-portall.onrender.com/api/college/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ enroll, pwd }),
+      }
+    );
     const data = await res.json();
     if (data.message === "success") {
       alert("Student added successfully");
@@ -94,12 +106,15 @@ const Studetails = () => {
     if (!x) {
       return;
     }
-    const res = await fetch(`https://placement-portall.onrender.com/api/auth/delete/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `https://placement-portall.onrender.com/api/auth/delete/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await res.json();
     if (data.message === "User deleted") {
       alert("Student deleted successfully");
@@ -193,13 +208,16 @@ const Studetails = () => {
   };
 
   const handleClickFileUpload = async () => {
-    const data = await fetch("https://placement-portall.onrender.com/api/college//multiadd", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(allstudents),
-    });
+    const data = await fetch(
+      "https://placement-portall.onrender.com/api/college//multiadd",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(allstudents),
+      }
+    );
     const res = await data.json();
     if (res) {
       alert("Students added successfully");
@@ -354,7 +372,7 @@ const Studetails = () => {
           <div className="space-y-12">
             <div className="border-b border-gray-900/10 pb-12 flex justify-between">
               <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
-                Add Student Enrollnment
+                Add Student Enrollment
               </h2>
               {/* Upload Excel Button */}
               <div className="flex justify-end">
@@ -377,7 +395,7 @@ const Studetails = () => {
                   <label
                     htmlFor="enroll"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Enrollnment Number
+                    Enrollment Number
                   </label>
                   <div className="mt-2">
                     <input

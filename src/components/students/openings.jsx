@@ -57,8 +57,8 @@ const Openings = () => {
     console.log(comp, pack);
     if (
       apply.cgpa >= cutoff &&
-      placed === false &&
-      parseInt(comp) >= 1.8 * parseInt(pack)
+      (placed === false ||
+        (placed === true && parseInt(comp) >= 1.8 * parseInt(pack)))
     ) {
       const formData = new FormData();
       formData.append("name", apply.name);

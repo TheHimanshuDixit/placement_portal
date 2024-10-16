@@ -21,6 +21,7 @@ app.use("/api/contribute", require("./api/contribute"));
 app.use("/api/application", require("./api/application"));
 app.use("/api/team", require("./api/team"));
 app.use("/api/student", require("./api/student"));
+app.use("/api/demographicData", require("./api/demographicData"));
 
 run();
 
