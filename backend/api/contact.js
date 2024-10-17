@@ -31,7 +31,7 @@ router.post("/send", async (req, res) => {
     service: "gmail",
     auth: {
       user: "harshhimanshudixit@gmail.com",
-      pass: "cwujzimqjehhjyac",
+      pass: "mzvszfywjvavrjov",
     },
   });
 
@@ -48,7 +48,7 @@ router.post("/send", async (req, res) => {
     if (error) {
       res.json({ message: "Error Occurs" });
     } else {
-      res.json({ message: "Email sent", data: resp});
+      res.json({ message: "Email sent", data: resp });
     }
   });
 });

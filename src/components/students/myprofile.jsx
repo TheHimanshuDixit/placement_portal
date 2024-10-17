@@ -87,8 +87,6 @@ const Myprofile = () => {
     formData.append("phoneno", profile.phone);
     if (resume) {
       formData.append("resume", resume);
-    } else {
-      formData.append("resume", getResume);
     }
     formData.append("branch", profile.branch);
     formData.append("gender", profile.gender);

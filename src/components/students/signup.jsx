@@ -3,7 +3,6 @@ import { Input, Ripple, initTE } from "tw-elements";
 
 const Signup = () => {
   useEffect(() => {
-    console.log("Signup");
     initTE({ Input, Ripple });
   }, []);
 

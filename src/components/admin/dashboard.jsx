@@ -51,6 +51,7 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+    // eslint-disable-next-line
   }, []);
 
   const data = yearData[selectedYear];

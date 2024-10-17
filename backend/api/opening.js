@@ -85,7 +85,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
     service: "gmail",
     auth: {
       user: "harshhimanshudixit@gmail.com",
-      pass: "cwujzimqjehhjyac",
+      pass: "mzvszfywjvavrjov",
     },
   });
 

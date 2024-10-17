@@ -119,7 +119,7 @@ router.post("/forgot", async (req, res) => {
     service: "gmail",
     auth: {
       user: "harshhimanshudixit@gmail.com",
-      pass: "cwujzimqjehhjyac",
+      pass: "mzvszfywjvavrjov",
     },
   });
 
@@ -161,7 +161,7 @@ router.get("/profile", fetchuser, async (req, res) => {
 // POST /api/auth/profile
 router.post(
   "/profile",
-  upload.fields([{ name: "resume" }, { name: "profileImage" }]),
+  upload.fields([{ name: "resume" }, { name: "image" }]),
   async (req, res) => {
     fetchuser(req, res, async () => {
       let user = await Student.findById(req.id);
@@ -183,9 +183,9 @@ router.post(
       }
 
       // If the profile image file is uploaded, process it
-      if (req.files["profileImage"] !== undefined) {
+      if (req.files["image"] !== undefined) {
         const profileImageUpload = await cloudinary.uploader.upload(
-          req.files["profileImage"][0].path
+          req.files["image"][0].path
         );
         const profileImageUrl = profileImageUpload.secure_url;
         newStudent.image = profileImageUrl;
@@ -202,8 +202,6 @@ router.post(
     });
   }
 );
-
-
 
 // POST /api/auth/placed
 router.post("/placed", async (req, res) => {
