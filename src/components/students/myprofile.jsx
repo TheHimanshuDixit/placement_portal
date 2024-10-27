@@ -94,7 +94,7 @@ const Myprofile = () => {
     formData.append("cgpa", profile.cgpa);
     formData.append("backlogs", profile.backlogs);
     if (profileImage) {
-      formData.append("profileImage", profileImage); // Add profile image to formData
+      formData.append("image", profileImage); // Add profile image to formData
     }
 
     try {
