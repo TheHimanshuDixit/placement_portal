@@ -25,6 +25,7 @@ import Highlights from "./components/admin/highlights";
 import Studetails from "./components/admin/studetails";
 import Attendance from "./components/admin/attendence";
 import Record from "./components/admin/record";
+import Myattendence from "./components/students/myattendence";
 
 function App() {
   return (
@@ -136,6 +137,17 @@ function App() {
               <>
                 <Header />
                 <Myapplications />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/myattendence"
+            element={
+              <>
+                <Header />
+                <Myattendence />
                 <Footer />
               </>
             }

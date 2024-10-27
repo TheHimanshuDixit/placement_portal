@@ -64,6 +64,9 @@ const Header = () => {
                       <Link to="/myapplications">My Applications</Link>
                     </li>
                     <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <Link to="/myattendence">My Attendence</Link>
+                    </li>
+                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                       <Link to="/mycontributions">My Contributions</Link>
                     </li>
                     <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
