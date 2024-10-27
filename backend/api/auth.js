@@ -16,17 +16,33 @@ const cloudinary = require("../helper/cloudinaryconfig");
 
 // pdf storage path
 const pdfconfig = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "./uploads/pdf");
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
   },
-  filename: (req, file, callback) => {
-    callback(null, file.originalname);
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
   },
 });
 
-const upload = multer({ storage: pdfconfig });
+const upload = multer({
+  storage: pdfconfig,
+  fileFilter: (req, file, callback) => {
+    if (
+      file.mimetype === "application/pdf" ||
+      file.mimetype === "image/jpeg" ||
+      file.mimetype === "image/png"
+    ) {
+      callback(null, true);
+    } else {
+      callback(
+        new Error("Only .pdf, .jpg, and .png formats are allowed!"),
+        false
+      );
+    }
+  },
+});
 
-// http://localhost:4000
+// https://placement-portall.onrender.com/
 
 // GET /api/auth
 router.get("/", async (req, res) => {
@@ -174,21 +190,28 @@ router.post(
       };
 
       // If the resume file is uploaded, process it
-      if (req.files["resume"] !== undefined) {
+      if (
+        req.files &&
+        req.files["resume"] &&
+        req.files["resume"][0].mimetype === "application/pdf"
+      ) {
         const resumeUpload = await cloudinary.uploader.upload(
-          req.files["resume"][0].path
+          req.files["resume"][0].path,
+          { format: "jpg" }
         );
-        const resumeUrl = resumeUpload.secure_url.replace(".pdf", ".jpg"); // Converting to JPG
-        newStudent.resume = resumeUrl;
+        newStudent.resume = resumeUpload.secure_url;
       }
 
-      // If the profile image file is uploaded, process it
-      if (req.files["image"] !== undefined) {
+      // For image
+      if (
+        req.files &&
+        req.files["image"] &&
+        ["image/jpeg", "image/png"].includes(req.files["image"][0].mimetype)
+      ) {
         const profileImageUpload = await cloudinary.uploader.upload(
           req.files["image"][0].path
         );
-        const profileImageUrl = profileImageUpload.secure_url;
-        newStudent.image = profileImageUrl;
+        newStudent.image = profileImageUpload.secure_url;
       }
 
       // Update the user with the new data

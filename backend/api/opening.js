@@ -4,7 +4,7 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 const Student = require("../models/Student");
 
-// http://localhost:4000
+// https://placement-portall.onrender.com/
 
 const multer = require("multer");
 const cloudinary = require("../helper/cloudinaryconfig");
