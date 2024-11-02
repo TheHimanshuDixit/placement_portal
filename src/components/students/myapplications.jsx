@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
+import GlowingLoader from "../loader";
 
 const Myapplications = () => {
   const [applications, setApplications] = useState([]);
@@ -10,6 +11,7 @@ const Myapplications = () => {
   const [company, setCompany] = useState({});
   const [viewCompany, setViewCompany] = useState({});
   const [check, setCheck] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
@@ -50,11 +52,14 @@ const Myapplications = () => {
         company[data.data[i]._id] = data.data[i];
       }
       console.log(company);
+      setLoading(false);
     })();
     // eslint-disable-next-line
   }, []);
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <>
       <div
         data-te-modal-init

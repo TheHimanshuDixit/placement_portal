@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import GlowingLoader from "../loader";
 
 const Myprofile = () => {
   const [getResume, setGetResume] = useState("");
@@ -23,6 +24,7 @@ const Myprofile = () => {
 
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
@@ -43,6 +45,7 @@ const Myprofile = () => {
         );
 
         const data = await res.json();
+        setLoading(false);
         setProfile({
           enroll: data.enrollnment,
           coverletter: data.coverletter,
@@ -98,6 +101,7 @@ const Myprofile = () => {
     }
 
     try {
+      setLoading(true);
       const res = await fetch(
         "https://placement-portall.onrender.com/api/auth/profile",
         {
@@ -110,6 +114,7 @@ const Myprofile = () => {
       );
 
       const data = await res.json();
+      setLoading(false);
       if (data.message === "success") {
         alert("Profile updated successfully");
         window.location.href = "/myprofile";
@@ -119,7 +124,9 @@ const Myprofile = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="max-w-screen-lg m-auto my-10 border-4 p-2 px-4 rounded-2xl">
       <form>
         <div className="space-y-12">

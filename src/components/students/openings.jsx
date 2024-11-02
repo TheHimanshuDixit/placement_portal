@@ -5,6 +5,7 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import { Link } from "react-router-dom";
+import GlowingLoader from "../loader";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
@@ -28,6 +29,7 @@ const Openings = () => {
 
   const [resume, setResume] = useState("");
   const [getResume, setGetResume] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
@@ -45,6 +47,7 @@ const Openings = () => {
         return item.progress === "Ongoing";
       });
       setOpen(ongoingOpen);
+      setLoading(false);
     })();
   }, []);
 
@@ -72,6 +75,7 @@ const Openings = () => {
       formData.append("gender", apply.gender);
       formData.append("phone", apply.phone);
       formData.append("branch", apply.branch);
+      setLoading(true);
       const response = await fetch(
         `https://placement-portall.onrender.com/api/application/add/${cid}`,
         {
@@ -83,6 +87,7 @@ const Openings = () => {
         }
       );
       const data = await response.json();
+      setLoading(false);
       if (data.message === "success") {
         alert("Applied Successfully");
       } else {
@@ -96,6 +101,7 @@ const Openings = () => {
   };
 
   const handleIt = async () => {
+    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/auth/profile",
       {
@@ -128,6 +134,7 @@ const Openings = () => {
         setComp(allCompany[i].ctc);
       }
     }
+    setLoading(false);
   };
 
   const handleCompTime = (time) => {
@@ -140,7 +147,9 @@ const Openings = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <>
       <div
         data-te-modal-init

@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Dashboard from "./dashboard";
+import GlowingLoader from "../loader";
 
 const Record = () => {
   // Data for both charts
@@ -24,15 +25,20 @@ const Record = () => {
   // ];
   const [data, setData] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
+
   useEffect(() => {
+    setLoading(true);
     fetch("https://placement-portall.onrender.com/api/demographicData")
       .then((res) => res.json())
       .then((d) => {
         setData(d);
+        setLoading(false);
       });
   }, []);
 
-  return (
+  return loading ? <GlowingLoader/> : (
     <div className="min-h-screen bg-pink-50 p-10">
       <h1 className="text-4xl font-bold text-center text-gray-700 mb-8">
         Placement Statistics Dashboard

@@ -13,6 +13,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Select from "react-select";
+import GlowingLoader from "../loader";
+import { set } from "react-datepicker/dist/date_utils";
 
 // Define color palette for pie chart
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -25,15 +27,18 @@ const Dashboard = () => {
   const [years, setYears] = useState([
     { value: "Select one year", label: "Select one year" },
   ]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch API data
+    setLoading(true);
     fetch(
       "https://placement-portall.onrender.com/api/demographicData/dashboard"
     )
       .then((response) => response.json())
       .then((data) => {
         // Update state with the fetched year data
+        setLoading(false);
         setYearData((prevData) => ({ ...prevData, ...data }));
         const uniqueYears = new Set([
           ...years.map((year) => year.value), // Existing years
@@ -68,7 +73,9 @@ const Dashboard = () => {
     setShowModal(true);
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="min-h-screen bg-pink-50 p-10">
       <h1 className="text-4xl font-bold text-center text-gray-700 mb-8">
         Select Year

@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { MdModeEditOutline } from "react-icons/md";
+import GlowingLoader from "../loader";
 
 const Teamdisplay = ({
   teamMembers,
@@ -10,6 +11,7 @@ const Teamdisplay = ({
   editId,
   setEditId,
 }) => {
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const authToken = localStorage.getItem("authAdminToken");
     if (!authToken) {
@@ -24,6 +26,7 @@ const Teamdisplay = ({
     console.log(x);
     if (x) {
       try {
+        setLoading(true);
         const response = await fetch(
           `https://placement-portall.onrender.com/api/team/delete/${id}`,
           {
@@ -34,6 +37,7 @@ const Teamdisplay = ({
           }
         );
         const data = await response.json();
+        setLoading(false);
         if (data.data) {
           alert("Team member deleted successfully");
           setTeamMembers(teamMembers.filter((member) => member._id !== editId));
@@ -48,7 +52,9 @@ const Teamdisplay = ({
     }
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div>
       {teamMembers.length > 0 ? (
         <ul className="divide-y divide-gray-100">

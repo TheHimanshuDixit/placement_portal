@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Ripple, Input, initTE } from "tw-elements";
+import GlowingLoader from "../loader";
 
 const Forgotpassword = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ const Forgotpassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     initTE({ Ripple, Input });
@@ -16,6 +18,10 @@ const Forgotpassword = () => {
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
+    if (email === "") {
+      return alert("Email is required");
+    }
+    setLoading(true);
     const data = await fetch(
       "https://placement-portall.onrender.com/api/auth/forgot",
       {
@@ -27,6 +33,7 @@ const Forgotpassword = () => {
       }
     );
     const response = await data.json();
+    setLoading(false);
     if (response.message === "Email sent") {
       setSent(true);
       setOtpSent(response.otp);
@@ -49,6 +56,7 @@ const Forgotpassword = () => {
     if (parseInt(otp) !== parseInt(otpSent)) {
       return alert("Invalid OTP");
     }
+    setLoading(true);
     const data = await fetch(
       "https://placement-portall.onrender.com/api/auth/updatepassword",
       {
@@ -60,13 +68,16 @@ const Forgotpassword = () => {
       }
     );
     const response = await data.json();
+    setLoading(false);
     if (response.message === "success") {
       alert("Password updated successfully");
       window.location.href = "/";
     }
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="h-[100vh] bg-blue-300">
       <div className="py-20 block">
         <div className=" h-full mx-auto block max-w-sm rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">

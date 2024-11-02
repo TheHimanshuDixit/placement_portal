@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { image } = require("../helper/cloudinaryconfig");
 const { Schema } = mongoose;
 
 const StudentSchema = new Schema({

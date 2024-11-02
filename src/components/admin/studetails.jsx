@@ -5,6 +5,8 @@ import { Modal, Ripple, Input, initTE } from "tw-elements";
 import { Link } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import * as XLSX from "xlsx";
+import GlowingLoader from "../loader";
+import { set } from "react-datepicker/dist/date_utils";
 const Studetails = () => {
   const ref = useRef(null);
 
@@ -21,6 +23,7 @@ const Studetails = () => {
   const [pack, setPack] = useState(0);
   const [placedCompany, setPlacedCompany] = useState([]);
   const [allstudents, setAllStudents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
@@ -29,6 +32,7 @@ const Studetails = () => {
     initTE({ Modal, Ripple, Input });
 
     const fetchData = async () => {
+      setLoading(true);
       const res = await fetch(
         "https://placement-portall.onrender.com/api/application/getall",
         {
@@ -39,11 +43,13 @@ const Studetails = () => {
         }
       );
       const data = await res.json();
+      setLoading(false);
       setAppList(data.data);
     };
     fetchData();
 
     const fetchCompData = async () => {
+      setLoading(true);
       const res = await fetch(
         "https://placement-portall.onrender.com/api/opening/getall",
         {
@@ -54,11 +60,13 @@ const Studetails = () => {
         }
       );
       const data = await res.json();
+      setLoading(false);
       setCompList(data.data);
     };
     fetchCompData();
 
     const fetchStudData = async () => {
+      setLoading(true);
       const res = await fetch(
         "https://placement-portall.onrender.com/api/auth",
         {
@@ -69,6 +77,7 @@ const Studetails = () => {
         }
       );
       const data = await res.json();
+      setLoading(false);
       setStudList(data);
     };
     fetchStudData();
@@ -81,6 +90,7 @@ const Studetails = () => {
       alert("Please fill all the fields");
       return;
     }
+    setLoading(true);
     const res = await fetch(
       "https://placement-portall.onrender.com/api/college/add",
       {
@@ -92,6 +102,7 @@ const Studetails = () => {
       }
     );
     const data = await res.json();
+    setLoading(false);
     if (data.message === "success") {
       alert("Student added successfully");
 
@@ -106,6 +117,7 @@ const Studetails = () => {
     if (!x) {
       return;
     }
+    setLoading(true);
     const res = await fetch(
       `https://placement-portall.onrender.com/api/auth/delete/${id}`,
       {
@@ -116,6 +128,7 @@ const Studetails = () => {
       }
     );
     const data = await res.json();
+    setLoading(false);
     if (data.message === "User deleted") {
       alert("Student deleted successfully");
       const updatedList = studList.filter((stud) => stud._id !== id);
@@ -208,6 +221,11 @@ const Studetails = () => {
   };
 
   const handleClickFileUpload = async () => {
+    if (allstudents.length <= 0) {
+      alert("Please upload a file first");
+      return;
+    }
+    setLoading(true);
     const data = await fetch(
       "https://placement-portall.onrender.com/api/college//multiadd",
       {
@@ -219,6 +237,7 @@ const Studetails = () => {
       }
     );
     const res = await data.json();
+    setLoading(false);
     if (res) {
       alert("Students added successfully");
       setAllStudents([]);
@@ -227,7 +246,9 @@ const Studetails = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="bg-pink-50">
       <div className="max-w-screen-lg m-auto">
         <div

@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
+import GlowingLoader from "../loader";
+import { set } from "react-datepicker/dist/date_utils";
 
 const Attendance = () => {
   const [event, setEvent] = useState(null);
@@ -12,6 +14,7 @@ const Attendance = () => {
   const [date, setDate] = useState(new Date());
   const [attendance, setAttendance] = useState({});
   const [registeredStudents, setRegisteredStudents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const placementEvents = [
     { value: "ppt", label: "PPT" },
@@ -40,6 +43,7 @@ const Attendance = () => {
       studentList: attendanceData,
     };
     // console.log(data);
+    setLoading(true);
     const result = await fetch(
       "https://placement-portall.onrender.com/api/student",
       {
@@ -59,10 +63,12 @@ const Attendance = () => {
     } else {
       alert("Failed to mark attendance");
     }
+    setLoading(false);
   };
 
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
+    setLoading(true);
     const data = await fetch(
       `https://placement-portall.onrender.com/api/application/get/${selectedOption.value}`
     );
@@ -72,10 +78,12 @@ const Attendance = () => {
       reqRS.push({ id: RS.data[i].email, name: RS.data[i].name });
     }
     setRegisteredStudents(reqRS);
+    setLoading(false);
   };
 
   useEffect(() => {
     const handleFetch = async () => {
+      setLoading(true);
       const data = await fetch(
         "https://placement-portall.onrender.com/api/opening/getall"
       );
@@ -88,11 +96,14 @@ const Attendance = () => {
         res.push({ value: event._id, label: event.name });
       });
       setCompanies(res);
+      setLoading(false);
     };
     handleFetch();
   }, []);
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="min-h-screen bg-pink-50 p-8">
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
         Mark Attendance for Placement Drive

@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
+import GlowingLoader from "../loader";
 
 const Team = () => {
   const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     //eslint-disable-next-line
     const data = (async () => {
+      setLoading(true);
       const response = await fetch(
         "https://placement-portall.onrender.com/api/team/get"
       );
       const data = await response.json();
-      console.log(data);
+      setLoading(false);
       setTeams(data.data);
     })();
   }, []);
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div>
       <div className="container my-24 mx-auto md:px-6">
         <section className="mb-32 text-center">

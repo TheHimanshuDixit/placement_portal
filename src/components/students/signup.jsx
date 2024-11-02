@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input, Ripple, initTE } from "tw-elements";
+import GlowingLoader from "../loader";
 
 const Signup = () => {
   useEffect(() => {
@@ -11,6 +12,7 @@ const Signup = () => {
   const [enrollnment, setEnrollnment] = useState("");
   const [phoneno, setPhoneno] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -28,6 +30,11 @@ const Signup = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    if (!name || !email || !enrollnment || !phoneno || !password) {
+      alert("Please fill all the fields");
+      return;
+    }
+    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/auth/signup",
       {
@@ -39,6 +46,7 @@ const Signup = () => {
       }
     );
     const data = await response.json();
+    setLoading(false);
     if (data.message === "success") {
       alert("Signup successful");
       localStorage.setItem("authToken", data.authToken);
@@ -49,7 +57,9 @@ const Signup = () => {
     console.log(data);
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div>
       <section className="h-screen mx-auto max-w-screen-xl">
         <div className="h-full">

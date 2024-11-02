@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "tailwindcss/tailwind.css";
+import GlowingLoader from "../loader";
 
 const Myattendence = () => {
   const [companies, setCompanies] = useState([]);
   const [attendanceData, setAttendanceData] = useState({});
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     const token = localStorage.getItem("authToken");
@@ -44,6 +46,7 @@ const Myattendence = () => {
 
           setCompanies(fetchedCompanies);
           setAttendanceData(fetchedAttendanceData);
+          setLoading(false);
         })
         .catch((error) => console.error(error));
     }
@@ -89,7 +92,9 @@ const Myattendence = () => {
     );
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
         Placement Attendance

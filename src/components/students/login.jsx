@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Input, Ripple, initTE } from "tw-elements";
+import GlowingLoader from "../loader";
 
 const Login = () => {
   useEffect(() => {
@@ -15,6 +16,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onchange = (e) => {
     if (e.target.type === "email") {
@@ -26,6 +28,11 @@ const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      alert("Please fill all the fields");
+      return;
+    }
+    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/auth/login",
       {
@@ -63,6 +70,7 @@ const Login = () => {
         alert("Login failed");
       }
     }
+    setLoading(false);
   };
 
   return (

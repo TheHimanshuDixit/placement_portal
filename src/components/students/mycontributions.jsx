@@ -3,6 +3,7 @@ import { Modal, Ripple, Input, Collapse, initTE } from "tw-elements";
 import { FaEdit } from "react-icons/fa";
 import { IoIosRemoveCircle } from "react-icons/io";
 import { IoIosAddCircle } from "react-icons/io";
+import GlowingLoader from "../loader";
 
 const Mycontributions = () => {
   const [contributionList, setContributionList] = useState([]);
@@ -19,6 +20,8 @@ const Mycontributions = () => {
   const [idd, setIdd] = useState("");
 
   const [which, setWhich] = useState("");
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
@@ -37,6 +40,7 @@ const Mycontributions = () => {
       .then((res) => res.json())
       .then((data) => {
         setContributionList(data.data);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -64,6 +68,7 @@ const Mycontributions = () => {
       alert("Please Fill All The Fields");
       return;
     }
+    setLoading(true);
     const data = await fetch(
       "https://placement-portall.onrender.com/api/contribute/add",
       {
@@ -76,7 +81,7 @@ const Mycontributions = () => {
       }
     );
     const res = await data.json();
-    console.log(res);
+    setLoading(false);
     if (res.message === "success") {
       setContributionList([...contributionList, contri]);
       alert("Contribution Added Successfully");
@@ -86,6 +91,7 @@ const Mycontributions = () => {
   };
 
   const deleteContribution = (id) => {
+    setLoading(true);
     return () => {
       fetch(
         `https://placement-portall.onrender.com/api/contribute/delete/${id}`,
@@ -102,6 +108,7 @@ const Mycontributions = () => {
           setContributionList(
             contributionList.filter((item) => item._id !== id)
           );
+          setLoading(false);
           window.location.reload();
         })
         .catch((err) => console.log(err));
@@ -121,6 +128,7 @@ const Mycontributions = () => {
       alert("Please Fill All The Fields");
       return;
     }
+    setLoading(true);
     const data = await fetch(
       `https://placement-portall.onrender.com/api/contribute/update/${id}`,
       {
@@ -133,6 +141,7 @@ const Mycontributions = () => {
       }
     );
     const res = await data.json();
+    setLoading(false);
     if (res) {
       setContributionList(
         contributionList.map((item) => {
@@ -148,7 +157,9 @@ const Mycontributions = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div>
       <div
         data-te-modal-init

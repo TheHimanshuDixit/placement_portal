@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Teamdisplay from "./teamdisplay";
+import GlowingLoader from "../loader";
 
 const Addadmin = () => {
   const [img, setImg] = useState("");
@@ -15,6 +16,7 @@ const Addadmin = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [type, setType] = useState("Add");
   const [editId, setEditId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     //eslint-disable-next-line
@@ -27,6 +29,7 @@ const Addadmin = () => {
       .then((res) => res.json())
       .then((data) => {
         setTeamMembers(data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -45,6 +48,7 @@ const Addadmin = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", img);
     formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
@@ -58,6 +62,7 @@ const Addadmin = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);
         if (data.error) {
           alert(data.error);
         } else {
@@ -81,6 +86,7 @@ const Addadmin = () => {
 
   const handleEdit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
     if (img) formData.append("file", img);
     formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
@@ -94,6 +100,7 @@ const Addadmin = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);
         if (data.error) {
           alert(data.error);
         } else {
@@ -129,7 +136,7 @@ const Addadmin = () => {
       });
   };
 
-  return (
+  return loading ? <GlowingLoader/> : (
     <div className="bg-pink-50">
       <div className="max-w-screen-lg m-auto">
         <form className="p-10">

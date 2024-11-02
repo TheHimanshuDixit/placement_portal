@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { initTE, Input, Ripple } from "tw-elements";
+import GlowingLoader from "../loader";
 
 const Contact = () => {
   useEffect(() => {
@@ -9,6 +10,7 @@ const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +20,11 @@ const Contact = () => {
   };
 
   const handleSubmit = async () => {
+    if (!name || !email || !message) {
+      alert("Please fill all the fields");
+      return;
+    }
+    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/contact/send",
       {
@@ -29,6 +36,7 @@ const Contact = () => {
       }
     );
     const data = await response.json();
+    setLoading(false);
     if (data.message === "Email sent") {
       alert("Email sent");
       window.location.reload();
@@ -38,7 +46,9 @@ const Contact = () => {
     console.log(data);
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div>
       <div className="w-3/4 my-24 mx-auto md:px-6">
         <section className="mb-32">

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Collapse, initTE } from "tw-elements";
+import GlowingLoader from "../loader";
 
 const Contribute = () => {
   const [contributionList, setContributionList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     initTE({ Collapse });
@@ -10,12 +12,15 @@ const Contribute = () => {
     fetch("https://placement-portall.onrender.com/api/contribute/get")
       .then((res) => res.json())
       .then((data) => {
+        setLoading(false);
         setContributionList(data.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div>
       <div className="container my-24 mx-auto md:px-6 xl:px-24">
         <section className="mb-32">

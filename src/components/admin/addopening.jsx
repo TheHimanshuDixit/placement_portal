@@ -6,6 +6,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import Openingform from "./openingform";
 import { FaDownload } from "react-icons/fa";
+import GlowingLoader from "../loader";
 
 const Addopening = () => {
   const [open, setOpen] = useState([]);
@@ -35,11 +36,15 @@ const Addopening = () => {
     applyby: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const data = async () => {
+    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/opening/getall"
     );
     const data = await response.json();
+    setLoading(false);
     setOpen(data.data);
   };
 
@@ -53,6 +58,7 @@ const Addopening = () => {
   }, [update]);
 
   const handleIt = async (id) => {
+    setLoading(true);
     const response = await fetch(
       `https://placement-portall.onrender.com/api/application/get/${id}`,
       {
@@ -64,6 +70,8 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
+    setLoading(false);
+    setLoading(true);
 
     const stdlist = await fetch(
       "https://placement-portall.onrender.com/api/auth"
@@ -84,9 +92,11 @@ const Addopening = () => {
     }
     // console.log(result.data);
     setRegList(result.data);
+    setLoading(false);
   };
 
   const handleDelete = async (id) => {
+    setLoading(true);
     const response = await fetch(
       `https://placement-portall.onrender.com/api/opening/delete/${id}`,
       {
@@ -98,6 +108,7 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
+    setLoading(false);
     if (result.message === "success") {
       alert("Deleted Successfully");
       setOpen(open.filter((item) => item._id !== id));
@@ -108,6 +119,11 @@ const Addopening = () => {
   };
 
   const handleAddOpening = async () => {
+    if (!logo) {
+      alert("Please upload a logo");
+      return;
+    }
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", logo);
     formData.append("name", newOpening.name);
@@ -133,6 +149,7 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
+    setLoading(false);
     if (result.message === "success") {
       alert("Added Successfully");
       setOpen([...open, newOpening]);
@@ -160,11 +177,13 @@ const Addopening = () => {
   };
 
   const handleDownload = async () => {
+    setLoading(true);
     const response = await fetch(
       `https://placement-portall.onrender.com/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
     // console.log(data);
+    setLoading(false);
     const csv = data.data.map((item, index) => {
       return {
         SrNo: index + 1,
@@ -196,6 +215,7 @@ const Addopening = () => {
     } else {
       p = "Ongoing";
     }
+    setLoading(true);
     const data = await fetch(
       `https://placement-portall.onrender.com/api/opening/update/${id}`,
       {
@@ -206,6 +226,7 @@ const Addopening = () => {
         body: JSON.stringify({ progress: p }),
       }
     ).then((res) => res.json());
+    setLoading(false);
     if (data.message === "success") {
       for (let i = 0; i < open.length; i++) {
         if (open[i]._id === id) {
@@ -245,6 +266,7 @@ const Addopening = () => {
       students: emails,
     };
     // console.log(data);
+    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/auth/placed",
       {
@@ -256,6 +278,7 @@ const Addopening = () => {
       }
     );
     const result = await response.json();
+    setLoading(false);
     if (result.message === "success") {
       alert("Successfully updated Database");
     } else {
@@ -263,7 +286,7 @@ const Addopening = () => {
     }
   };
 
-  return (
+  return loading ? <GlowingLoader/> : (
     <>
       <Openingform
         newOpening={newOpening}
