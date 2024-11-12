@@ -415,7 +415,7 @@ const Studetails = () => {
                   <label
                     htmlFor="enroll"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Enrollment Number
+                    Enrollment Number <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -436,7 +436,7 @@ const Studetails = () => {
                   <label
                     htmlFor="pwd"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Password
+                    Password <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input

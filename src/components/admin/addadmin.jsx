@@ -136,7 +136,9 @@ const Addadmin = () => {
       });
   };
 
-  return loading ? <GlowingLoader/> : (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <div className="bg-pink-50">
       <div className="max-w-screen-lg m-auto">
         <form className="p-10">
@@ -153,7 +155,7 @@ const Addadmin = () => {
                   <label
                     htmlFor="first-name"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    First name
+                    First name <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -172,7 +174,7 @@ const Addadmin = () => {
                   <label
                     htmlFor="last-name"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Last name
+                    Last name <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -191,7 +193,7 @@ const Addadmin = () => {
                   <label
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Email address
+                    Email address <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -210,7 +212,7 @@ const Addadmin = () => {
                   <label
                     htmlFor="position"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Position
+                    Position <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -228,8 +230,8 @@ const Addadmin = () => {
                 <div className="sm:col-span-4">
                   <label
                     htmlFor="formFile"
-                    className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
-                    Upload Your Image
+                    className="mb-2 inline-block text-sm font-medium leading-6 text-gray-900">
+                    Upload Your Image <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="img"
@@ -244,7 +246,7 @@ const Addadmin = () => {
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Password
+                    Password <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input

@@ -39,8 +39,8 @@ const Mycontributions = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setContributionList(data.data);
         setLoading(false);
+        setContributionList(data.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -91,8 +91,8 @@ const Mycontributions = () => {
   };
 
   const deleteContribution = (id) => {
-    setLoading(true);
     return () => {
+      setLoading(true);
       fetch(
         `https://placement-portall.onrender.com/api/contribute/delete/${id}`,
         {

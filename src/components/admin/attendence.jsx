@@ -189,11 +189,13 @@ const Attendance = () => {
         </div>
 
         {/* Submit Button */}
-        <button
-          className="mt-8 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg mx-auto block text-lg font-bold"
-          onClick={handleSubmit}>
-          Submit Attendance
-        </button>
+        {registeredStudents.length > 0 && (
+          <button
+            className="mt-8 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg mx-auto block text-lg font-bold"
+            onClick={handleSubmit}>
+            Submit Attendance
+          </button>
+        )}
       </div>
     </div>
   );

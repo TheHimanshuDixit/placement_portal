@@ -101,7 +101,6 @@ const Openings = () => {
   };
 
   const handleIt = async () => {
-    setLoading(true);
     const response = await fetch(
       "https://placement-portall.onrender.com/api/auth/profile",
       {
@@ -114,7 +113,7 @@ const Openings = () => {
     );
 
     const result = await response.json();
-    // console.log(result);
+
     setApply({
       name: result.name,
       email: result.email,
@@ -134,7 +133,7 @@ const Openings = () => {
         setComp(allCompany[i].ctc);
       }
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   const handleCompTime = (time) => {
@@ -206,7 +205,7 @@ const Openings = () => {
                     <label
                       htmlFor="exampleInput7"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
-                      Name
+                      Name <span className="text-red-500">*</span>
                     </label>
                   </div>
 
@@ -223,7 +222,7 @@ const Openings = () => {
                     <label
                       htmlFor="exampleInput8"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
-                      Email address
+                      Email address <span className="text-red-500">*</span>
                     </label>
                   </div>
 
@@ -240,7 +239,7 @@ const Openings = () => {
                     <label
                       htmlFor="exampleInput9"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
-                      Enrollment
+                      Enrollment <span className="text-red-500">*</span>
                     </label>
                   </div>
 
@@ -257,7 +256,7 @@ const Openings = () => {
                     <label
                       htmlFor="exampleInput12"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
-                      Phone
+                      Phone <span className="text-red-500">*</span>
                     </label>
                   </div>
 
@@ -274,7 +273,7 @@ const Openings = () => {
                     <label
                       htmlFor="exampleInput10"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
-                      Branch
+                      Branch <span className="text-red-500">*</span>
                     </label>
                   </div>
 
@@ -291,13 +290,14 @@ const Openings = () => {
                     <label
                       htmlFor="exampleInput11"
                       className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
-                      Gender
+                      Gender <span className="text-red-500">*</span>
                     </label>
                   </div>
                   <label
                     htmlFor="formFile"
                     className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
-                    Upload your new resume here
+                    Upload your new resume here{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="resume"
@@ -457,10 +457,13 @@ const Openings = () => {
               </button>
               <button
                 type="button"
-                className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                className={`ms-1 inline-block rounded ${
+                  handleCompTime(company.applyby) ? "bg-gray-500" : "bg-primary"
+                } px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong`}
                 data-te-modal-dismiss
                 data-te-ripple-init
                 data-te-ripple-color="light"
+                disabled={handleCompTime(company.applyby)}
                 onClick={() => {
                   setCheck(false);
                 }}>
@@ -538,13 +541,12 @@ const Openings = () => {
                       }
                       handleIt();
                     }}
-                    onMouseOver={() => {
-                      if (new Date(item.applyby) < new Date()) {
-                        alert("Application Closed");
-                      }
-                    }}
                     disabled={handleCompTime(item.applyby)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-xl"
+                    className={`${
+                      handleCompTime(item.applyby)
+                        ? "bg-gray-500"
+                        : "bg-blue-500"
+                    } text-white px-4 py-2 rounded-xl`}
                     data-te-toggle="modal"
                     data-te-target="#exampleModalLong"
                     data-te-ripple-init

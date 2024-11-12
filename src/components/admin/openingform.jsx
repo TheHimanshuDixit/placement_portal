@@ -30,7 +30,7 @@ const Openingform = ({
                   <label
                     htmlFor="name"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Company Name
+                    Company Name <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -51,7 +51,7 @@ const Openingform = ({
                   <label
                     htmlFor="jobId"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Company Job ID
+                    Company Job ID <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -71,8 +71,8 @@ const Openingform = ({
                 <div className="sm:col-span-4">
                   <label
                     htmlFor="formFile"
-                    className="mb-2 inline-block text-neutral-500 dark:text-neutral-400">
-                    Add Company Logo
+                    className="mb-2 inline-block text-sm font-medium text-gray-900">
+                    Add Company Logo <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="logo"
@@ -87,7 +87,8 @@ const Openingform = ({
                   <label
                     htmlFor="stipend"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Intern Stipend (in INR)
+                    Intern Stipend (in INR){" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -111,7 +112,7 @@ const Openingform = ({
                   <label
                     htmlFor="ctc"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    CTC (in LPA)
+                    CTC (in LPA) <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -132,7 +133,7 @@ const Openingform = ({
                   <label
                     htmlFor="location"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Location
+                    Location <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -155,7 +156,8 @@ const Openingform = ({
                   <label
                     htmlFor="type"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Intern, FTE, Intern+FTE
+                    Intern, FTE, Intern+FTE{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -175,7 +177,7 @@ const Openingform = ({
                   <label
                     htmlFor="mode"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Mode
+                    Mode <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -195,7 +197,7 @@ const Openingform = ({
                   <label
                     htmlFor="role"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Role
+                    Role <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -215,7 +217,7 @@ const Openingform = ({
                   <label
                     htmlFor="backlog"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Maximum Backlog
+                    Maximum Backlog <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -238,7 +240,7 @@ const Openingform = ({
                   <label
                     htmlFor="cgpacritera"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    CGPA Cutoff
+                    CGPA Cutoff <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -261,7 +263,7 @@ const Openingform = ({
                   <label
                     htmlFor="batch"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Batch
+                    Batch <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -284,7 +286,7 @@ const Openingform = ({
                   <label
                     htmlFor="branch"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Branch
+                    Branch <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -307,7 +309,7 @@ const Openingform = ({
                   <label
                     htmlFor="gender"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Gender
+                    Gender <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -324,12 +326,12 @@ const Openingform = ({
                   </div>
                 </div>
                 <div className="sm:col-span-4">
-                  <label
-                    htmlFor="duration"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Duration
-                  </label>
                   <div className="mt-2">
+                    <label
+                      htmlFor="duration"
+                      className="block text-sm font-medium text-gray-900">
+                      Duration <span className="text-red-500">*</span>
+                    </label>
                     <input
                       id="duration"
                       name="duration"
@@ -350,20 +352,27 @@ const Openingform = ({
                   <label
                     htmlFor="applyby"
                     className="block text-sm font-medium leading-6 text-gray-900">
-                    Last Date to Apply (YYYY-MM-DDTHH:MM:SSZ)
+                    Last Date to Apply (YYYY-MM-DDTHH:MM:SSZ){" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
                       id="applyby"
                       name="applyby"
-                      value={newOpening.applyby}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const selectedDate = new Date(e.target.value);
+                        const isoFormattedDate = selectedDate.toISOString(); // Convert to ISO 8601 format
+                        // remove miliseconds
+                        let format = isoFormattedDate.split(".")[0];
+                        format += "Z";
+
+                        console.log(format);
                         setNewOpening({
                           ...newOpening,
-                          applyby: e.target.value,
-                        })
-                      }
-                      type="text"
+                          applyby: format,
+                        });
+                      }}
+                      type="datetime-local"
                       autoComplete="applyby"
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />

@@ -37,7 +37,8 @@ const Dashboard = () => {
       .then((response) => response.json())
       .then((data) => {
         // Update state with the fetched year data
-        setLoading(false);
+        console.log(data);
+
         setYearData((prevData) => ({ ...prevData, ...data }));
         const uniqueYears = new Set([
           ...years.map((year) => year.value), // Existing years
@@ -51,6 +52,7 @@ const Dashboard = () => {
             label: year,
           })),
         ]);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

@@ -286,7 +286,9 @@ const Addopening = () => {
     }
   };
 
-  return loading ? <GlowingLoader/> : (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <>
       <Openingform
         newOpening={newOpening}

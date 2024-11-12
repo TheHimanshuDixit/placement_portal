@@ -48,6 +48,7 @@ const Login = () => {
     if (data.message === "success") {
       alert("Login successful");
       localStorage.setItem("authToken", data.authToken);
+      setLoading(false);
       window.location.href = "/";
     } else {
       const respteam = await fetch(
@@ -65,6 +66,7 @@ const Login = () => {
       if (data.message === "success") {
         localStorage.setItem("authAdminToken", data.authAdminToken);
         alert("Login successful");
+        setLoading(false);
         window.location.href = "/admin";
       } else {
         alert("Login failed");
