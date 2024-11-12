@@ -73,7 +73,9 @@ const Login = () => {
     setLoading(false);
   };
 
-  return (
+  return loading ? (
+    <GlowingLoader />
+  ) : (
     <section className="">
       <div className="h-full px-6 py-24">
         <div className="w-3/4 m-auto flex h-full flex-wrap items-center justify-center lg:justify-between">

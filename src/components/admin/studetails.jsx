@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import GlowingLoader from "../loader";
-import { set } from "react-datepicker/dist/date_utils";
 const Studetails = () => {
   const ref = useRef(null);
 

@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import GlowingLoader from "../loader";
-import { set } from "react-datepicker/dist/date_utils";
 
 const Attendance = () => {
   const [event, setEvent] = useState(null);
