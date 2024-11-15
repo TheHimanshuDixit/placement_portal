@@ -112,7 +112,7 @@ const Studetails = () => {
   };
 
   const handleDelete = async (id) => {
-    const x = alert("Are you sure you want to delete this student?");
+    const x = window.confirm("Are you sure you wants to delete?");
     if (!x) {
       return;
     }
@@ -127,6 +127,7 @@ const Studetails = () => {
       }
     );
     const data = await res.json();
+    console.log(data);
     setLoading(false);
     if (data.message === "User deleted") {
       alert("Student deleted successfully");

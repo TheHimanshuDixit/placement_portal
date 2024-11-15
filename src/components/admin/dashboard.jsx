@@ -37,7 +37,7 @@ const Dashboard = () => {
       .then((response) => response.json())
       .then((data) => {
         // Update state with the fetched year data
-        console.log(data);
+        // console.log(data);
 
         setYearData((prevData) => ({ ...prevData, ...data }));
         const uniqueYears = new Set([

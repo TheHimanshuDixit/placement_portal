@@ -33,6 +33,7 @@ const Record = () => {
       .then((res) => res.json())
       .then((d) => {
         setData(d);
+        console.log(d);
         setLoading(false);
       });
   }, []);
@@ -71,7 +72,7 @@ const Record = () => {
         {/* Bar Chart - Right Side */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-center mb-4 text-gray-800">
-            Number of Companies Visiting
+            Year-wise Number of Companies Visiting
           </h2>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={data}>
