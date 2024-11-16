@@ -123,6 +123,25 @@ const Addopening = () => {
       alert("Please upload a logo");
       return;
     }
+
+    if (
+      !newOpening.name ||
+      !newOpening.jobId ||
+      !newOpening.stipend ||
+      !newOpening.ctc ||
+      newOpening.location.length === 0 ||
+      !newOpening.type ||
+      !newOpening.mode ||
+      !newOpening.role ||
+      !newOpening.backlog ||
+      !newOpening.cgpacritera ||
+      !newOpening.batch ||
+      newOpening.branch.length === 0
+    ) {
+      alert("Please fill all the fields");
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData();
     formData.append("file", logo);
@@ -523,17 +542,6 @@ const Addopening = () => {
                 }}>
                 Close
               </button>
-              <button
-                type="button"
-                className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
-                onClick={() => {
-                  setCheck(false);
-                }}>
-                Apply
-              </button>
             </div>
           </div>
         </div>
@@ -554,11 +562,13 @@ const Addopening = () => {
           <h1 className="text-2xl font-bold mb-4 text-center underline">
             Jobs/Internships
           </h1>
-          <div className="flex justify-evenly align-middle">
+          <div className="flex justify-evenly align-middle flex-wrap">
             {open.map((item) => (
-              <div key={item._id} className="bg-gray-100 p-4 rounded-lg w-60">
-                <div className="flex justify-center items-center align-middle">
-                  <div>
+              <div
+                key={item._id}
+                className="bg-gray-100 p-4 rounded-lg w-1/5 m-2">
+                <div className="flex justify-between items-center align-middle">
+                  <div className="w-2/3">
                     <h2 className="text-xl font-bold mb-2 p-2">{item.name}</h2>
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
                       <p>{item.role}</p>
@@ -577,7 +587,7 @@ const Addopening = () => {
                   <img
                     src={item.logo}
                     alt={item.comp_name}
-                    className="h-16 w-16 mx-auto "
+                    className="h-16 w-16 "
                   />
                 </div>
                 <hr className="none mb-6 text-xl border-t-2 border-black" />
@@ -612,14 +622,14 @@ const Addopening = () => {
                   onClick={() => {
                     handleDelete(item._id);
                   }}
-                  className="bg-red-500 text-white w-52 border-2 border-black rounded-md mt-2">
+                  className="bg-red-500 text-white w-full border-2 border-black rounded-md mt-2">
                   Delete
                 </button>
 
                 {/* Status Button */}
                 <button
                   onClick={() => toggleDriveStatus(item._id, item.progress)}
-                  className={`w-52 border-2 border-black rounded-md mt-2 ${
+                  className={`w-full border-2 border-black rounded-md mt-2 ${
                     item.progress === "Ongoing"
                       ? "bg-green-500"
                       : "bg-yellow-500"

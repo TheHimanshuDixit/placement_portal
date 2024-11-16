@@ -57,7 +57,22 @@ const Openings = () => {
   };
 
   const handleClick = async () => {
-    console.log(comp, pack);
+    if (
+      apply.name === "" ||
+      apply.email === "" ||
+      apply.enroll === "" ||
+      apply.phone === "" ||
+      apply.branch === ""
+    ) {
+      alert("Please fill all the details");
+      return;
+    }
+
+    if (!resume && !getResume) {
+      alert("Please upload your resume");
+      return;
+    }
+
     if (
       apply.cgpa >= cutoff &&
       (placed === false ||
@@ -87,7 +102,7 @@ const Openings = () => {
       );
       const data = await response.json();
       if (data.message === "success") {
-        alert("Applied Successfully");  
+        alert("Applied Successfully");
       } else {
         alert("Already Applied");
       }
@@ -396,7 +411,8 @@ const Openings = () => {
                     <strong>Role :</strong> {company.role}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Internship Stipend :</strong> {company.stipend} /Month
+                    <strong>Internship Stipend :</strong> {company.stipend}{" "}
+                    /Month
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Company CTC :</strong> {company.ctc} LPA
@@ -489,11 +505,13 @@ const Openings = () => {
           <h1 className="text-2xl font-bold mb-4 text-center underline">
             Jobs/Internships
           </h1>
-          <div className="flex justify-evenly align-middle">
+          <div className="flex justify-evenly align-middle flex-wrap">
             {open.map((item) => (
-              <div key={item._id} className="bg-gray-100 p-4 rounded-lg w-60">
-                <div className="flex justify-center items-center align-middle">
-                  <div>
+              <div
+                key={item._id}
+                className="bg-gray-100 p-4 rounded-lg w-1/5 m-2">
+                <div className="flex justify-between items-center align-middle">
+                  <div className="w-2/3">
                     <h2 className="text-xl font-bold mb-2 p-2">{item.name}</h2>
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
                       <p>{item.role}</p>
@@ -512,7 +530,7 @@ const Openings = () => {
                   <img
                     src={item.logo}
                     alt={item.comp_name}
-                    className="h-16 w-16 mx-auto "
+                    className="h-16 w-16"
                   />
                 </div>
                 <hr className="none mb-6 text-xl border-t-2 border-black" />

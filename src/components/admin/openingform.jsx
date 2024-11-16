@@ -26,7 +26,7 @@ const Openingform = ({
 
             <div className="border-b border-gray-900/10 pb-12">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="name"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -47,7 +47,7 @@ const Openingform = ({
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="jobId"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -68,7 +68,7 @@ const Openingform = ({
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="formFile"
                     className="mb-2 inline-block text-sm font-medium text-gray-900">
@@ -83,7 +83,7 @@ const Openingform = ({
                   />
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="stipend"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -108,7 +108,7 @@ const Openingform = ({
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="ctc"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -129,7 +129,7 @@ const Openingform = ({
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="location"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -152,7 +152,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="type"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -173,7 +173,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="mode"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -193,7 +193,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="role"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -213,7 +213,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="backlog"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -236,7 +236,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="cgpacritera"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -259,7 +259,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="batch"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -282,7 +282,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="branch"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -305,7 +305,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="gender"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -325,7 +325,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <div className="mt-2">
                     <label
                       htmlFor="duration"
@@ -348,7 +348,7 @@ const Openingform = ({
                     />
                   </div>
                 </div>
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="applyby"
                     className="block text-sm font-medium leading-6 text-gray-900">

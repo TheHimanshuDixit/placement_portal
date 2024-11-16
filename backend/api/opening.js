@@ -74,9 +74,9 @@ router.post("/add", upload.single("file"), async (req, res) => {
                     <h3>Opening Details : </h3>
                     <p>Name: ${name}</p>
                     <p>JobId: ${jobId}</p>
-                    <p>Stipend: ${stipend}</p>
-                    <p>CTC: ${ctc}</p>
-                    <a href="https://placement-portall.onrender.com/openings">Click here to apply</a>
+                    <p>Monthly Stipend: ${stipend}/Month</p>
+                    <p>CTC: ${ctc} LPA</p>
+                    <a href="https://main--jiit-placement-portal.netlify.app/openings">Click here to apply</a>
 `;
   // Instantiate the SMTP server
   var transporter = nodemailer.createTransport({

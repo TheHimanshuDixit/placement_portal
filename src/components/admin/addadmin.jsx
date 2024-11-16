@@ -48,9 +48,20 @@ const Addadmin = () => {
   };
 
   const handleClick = async (e) => {
-    // console.log(teamDetail, img);
     e.preventDefault();
-    // setLoading(true);
+
+    if (
+      teamDetail.firstName === "" ||
+      teamDetail.lastName === "" ||
+      teamDetail.email === "" ||
+      teamDetail.position === "" ||
+      teamDetail.password === "" ||
+      img === ""
+    ) {
+      alert("All fields are required");
+      return;
+    }
+
     const formData = new FormData();
     if (img) {
       formData.append("file", img);
@@ -191,7 +202,7 @@ const Addadmin = () => {
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -210,7 +221,7 @@ const Addadmin = () => {
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="position"
                     className="block text-sm font-medium leading-6 text-gray-900">
@@ -229,7 +240,7 @@ const Addadmin = () => {
                   </div>
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="formFile"
                     className="mb-2 inline-block text-sm font-medium leading-6 text-gray-900">
@@ -244,7 +255,7 @@ const Addadmin = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-4">
+                <div className="sm:col-span-6">
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium leading-6 text-gray-900">
