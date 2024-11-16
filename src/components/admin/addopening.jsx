@@ -136,6 +136,7 @@ const Addopening = () => {
     formData.append("role", newOpening.role);
     formData.append("backlog", newOpening.backlog);
     formData.append("cgpacritera", newOpening.cgpacritera);
+    formData.append("batch", newOpening.batch);
     formData.append("branch", newOpening.branch);
     formData.append("gender", newOpening.gender);
     formData.append("duration", newOpening.duration);

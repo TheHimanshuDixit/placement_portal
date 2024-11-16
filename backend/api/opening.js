@@ -12,7 +12,7 @@ const cloudinary = require("../helper/cloudinaryconfig");
 // pdf storage path
 const pdfconfig = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "./uploads/pdf");
+    callback(null, "./uploads");
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);
@@ -25,7 +25,6 @@ const upload = multer({ storage: pdfconfig });
 router.post("/add", upload.single("file"), async (req, res) => {
   const result = await cloudinary.uploader.upload(req.file.path);
   let logo = result.secure_url;
-  logo = logo.replace("pdf", "png");
 
   const {
     name,
@@ -38,6 +37,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
     role,
     backlog,
     cgpacritera,
+    batch,
     branch,
     gender,
     duration,
@@ -61,6 +61,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
     role,
     backlog,
     cgpacritera,
+    batch,
     branch,
     gender,
     duration,
@@ -69,7 +70,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
   let resp = await newOpening.save();
 
   const output = `
-                    <h4>You have a message</h4>
+                    <h4>New Opening for ${batch} batch</h4>
                     <h3>Opening Details : </h3>
                     <p>Name: ${name}</p>
                     <p>JobId: ${jobId}</p>

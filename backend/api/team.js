@@ -11,7 +11,7 @@ const cloudinary = require("../helper/cloudinaryconfig");
 // pdf storage path
 const pdfconfig = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "./uploads/pdf");
+    callback(null, "./uploads");
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);
@@ -22,31 +22,57 @@ const upload = multer({ storage: pdfconfig });
 
 // POST /api/team/add
 router.post("/add", upload.single("file"), async (req, res) => {
-  const { name, position, email, password } = req.body;
-  let newTeam = await Team.findOne({
-    email,
-  });
-  if (newTeam) {
-    return res.status(401).json({ message: "Team already exists" });
+  try {
+    const { name, position, email, password } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "File is required" });
+    }
+
+    let newTeam = await Team.findOne({ email });
+    if (newTeam) {
+      return res.status(401).json({ message: "Team already exists" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashpwd = await bcrypt.hash(password, salt);
+
+    let url="";
+    try {
+      const upload = await cloudinary.uploader.upload(req.file.path, {
+        timeout: 60000, // 60 seconds timeout
+      });
+      url = upload.secure_url;
+    } catch (cloudinaryError) {
+      console.error("Cloudinary upload error:", cloudinaryError);
+      return res.status(500).json({
+        message: "File upload failed",
+        error: cloudinaryError.message,
+      });
+    }
+
+    const team = new Team({
+      name,
+      position,
+      image: url,
+      email,
+      password: hashpwd,
+    });
+
+    const resp = await team.save();
+    const authAdminToken = jwt.sign({ email: email }, token, {
+      expiresIn: "1d",
+    });
+
+    res.json({
+      message: "success",
+      data: resp,
+      authAdminToken: authAdminToken,
+    });
+  } catch (err) {
+    console.error("Error in /add route:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
-  var salt = await bcrypt.genSalt(10);
-  var hashpwd = await bcrypt.hash(password, salt);
-
-  const upload = await cloudinary.uploader.upload(req.file.path);
-  const url = upload.secure_url.replace(".pdf", ".jpg");
-  let image = url;
-
-  let team = new Team({
-    name,
-    position,
-    image,
-    email,
-    password: hashpwd,
-  });
-  let resp = await team.save();
-  let authAdminToken = jwt.sign({ email: email }, token, { expiresIn: "1d" });
-
-  res.json({ message: "success", data: resp, authAdminToken: authAdminToken });
 });
 
 // POST /api/team/login

@@ -28,6 +28,7 @@ const Addadmin = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setTeamMembers(data.data);
         setLoading(false);
       })
@@ -46,42 +47,43 @@ const Addadmin = () => {
     setTeamDetail({ ...teamDetail, [e.target.name]: e.target.value });
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
+    // console.log(teamDetail, img);
     e.preventDefault();
-    setLoading(true);
+    // setLoading(true);
     const formData = new FormData();
-    formData.append("file", img);
+    if (img) {
+      formData.append("file", img);
+    }
     formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
     formData.append("email", teamDetail.email);
     formData.append("position", teamDetail.position);
     formData.append("password", teamDetail.password);
 
-    fetch("https://placement-portall.onrender.com/api/team/add", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        if (data.error) {
-          alert(data.error);
-        } else {
-          alert("Team Member Added Successfully");
-          setTeamDetail({
-            firstName: "",
-            lastName: "",
-            email: "",
-            position: "",
-            password: "",
-          });
-          setImg("");
-          window.location.reload();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("Something went wrong");
+    const res = await fetch(
+      "https://placement-portall.onrender.com/api/team/add",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    console.log(data);
+    if (data.message === "success") {
+      alert("Team Member Added Successfully");
+      setTeamDetail({
+        firstName: "",
+        lastName: "",
+        email: "",
+        position: "",
+        password: "",
       });
+      setImg("");
+      window.location.reload();
+    } else {
+      alert("Something went wrong");
+    }
   };
 
   const handleEdit = (e) => {

@@ -84,7 +84,7 @@ const Navbar = () => {
                   path: "/studdetails",
                   key: "studdetails",
                 },
-                { name: "Attendance", path: "/attendance", key: "attendance" },
+                { name: "Attendance", path: "/attendence", key: "attendance" },
                 { name: "Statistics", path: "/record", key: "record" },
               ].map((item) => (
                 <li key={item.key}>
