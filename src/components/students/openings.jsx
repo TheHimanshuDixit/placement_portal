@@ -87,7 +87,7 @@ const Openings = () => {
       );
       const data = await response.json();
       if (data.message === "success") {
-        alert("Applied Successfully");
+        alert("Applied Successfully");  
       } else {
         alert("Already Applied");
       }
@@ -396,10 +396,10 @@ const Openings = () => {
                     <strong>Role :</strong> {company.role}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Internship Stipend :</strong> {company.stipend}
+                    <strong>Internship Stipend :</strong> {company.stipend} /Month
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                    <strong>Company CTC :</strong> {company.ctc}
+                    <strong>Company CTC :</strong> {company.ctc} LPA
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Minimum CGPA :</strong> {company.cgpacritera}
