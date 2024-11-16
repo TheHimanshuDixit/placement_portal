@@ -49,7 +49,7 @@ const Openings = () => {
       setOpen(ongoingOpen);
       setLoading(false);
     })();
-  }, []);
+  }, [open]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +75,6 @@ const Openings = () => {
       formData.append("gender", apply.gender);
       formData.append("phone", apply.phone);
       formData.append("branch", apply.branch);
-      setLoading(true);
       const response = await fetch(
         `https://placement-portall.onrender.com/api/application/add/${cid}`,
         {
@@ -87,7 +86,6 @@ const Openings = () => {
         }
       );
       const data = await response.json();
-      setLoading(false);
       if (data.message === "success") {
         alert("Applied Successfully");
       } else {
@@ -198,13 +196,13 @@ const Openings = () => {
                       name="name"
                       value={apply.name}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput7"
                       placeholder="Name"
                     />
                     <label
                       htmlFor="exampleInput7"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Name <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -221,7 +219,7 @@ const Openings = () => {
                     />
                     <label
                       htmlFor="exampleInput8"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Email address <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -238,7 +236,7 @@ const Openings = () => {
                     />
                     <label
                       htmlFor="exampleInput9"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Enrollment <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -255,7 +253,7 @@ const Openings = () => {
                     />
                     <label
                       htmlFor="exampleInput12"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Phone <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -272,7 +270,7 @@ const Openings = () => {
                     />
                     <label
                       htmlFor="exampleInput10"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Branch <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -289,7 +287,7 @@ const Openings = () => {
                     />
                     <label
                       htmlFor="exampleInput11"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
                       Gender <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -460,7 +458,9 @@ const Openings = () => {
                 className={`ms-1 inline-block rounded ${
                   handleCompTime(company.applyby) ? "bg-gray-500" : "bg-primary"
                 } px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong`}
-                data-te-modal-dismiss
+                // data-te-modal-dismiss
+                data-te-toggle="modal"
+                data-te-target="#exampleModalLong"
                 data-te-ripple-init
                 data-te-ripple-color="light"
                 disabled={handleCompTime(company.applyby)}
