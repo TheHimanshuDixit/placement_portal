@@ -13,7 +13,6 @@ const Team = () => {
         "https://placement-portall.onrender.com/api/team/get"
       );
       const data = await response.json();
-      console.log(data);
       setLoading(false);
       setTeams(data.data);
     })();

@@ -4,7 +4,7 @@ import GlowingLoader from "../loader";
 
 const Contribute = () => {
   const [contributionList, setContributionList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     initTE({ Collapse });
@@ -12,15 +12,13 @@ const Contribute = () => {
     fetch("https://placement-portall.onrender.com/api/contribute/get")
       .then((res) => res.json())
       .then((data) => {
-        setLoading(false);
+        // setLoading(false);
         setContributionList(data.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div>
       <div className="container my-24 mx-auto md:px-6 xl:px-24">
         <section className="mb-32">
@@ -29,7 +27,7 @@ const Contribute = () => {
           </h2>
 
           <div id="accordionFlushExample">
-            <div className="rounded-none border border-l-0 border-r-0 border-t-0 border-neutral-200">
+            <div className="rounded-none border border-l-0 border-r-0 border-t-0 border-neutral-200 hidden">
               <h2 className="mb-0" id="flush-headingOne">
                 <button
                   className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
@@ -65,8 +63,7 @@ const Contribute = () => {
                 <div className="px-5 py-4">demo answer</div>
               </div>
             </div>
-            {contributionList.map((key) => {
-              console.log(key);
+            {contributionList.map((key, index) => {
               return (
                 <div
                   key={key._id}
@@ -94,9 +91,11 @@ const Contribute = () => {
                         <div className="my-1 ml-3 rounded-lg p-1 border-2 text-green-400 border-green-400">
                           {key.year}
                         </div>
-                        {key.topic.map((item) => {
+                        {key.topic.map((item, index) => {
                           return (
-                            <div className="my-1 ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
+                            <div
+                              key={index}
+                              className="my-1 ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
                               {item}
                             </div>
                           );

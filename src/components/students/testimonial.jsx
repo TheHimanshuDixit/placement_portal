@@ -288,7 +288,7 @@ const Testimonial = () => {
                       to be the cornerstone of my career journey. It provided me
                       with the essential tools and resources needed to secure a
                       coveted position as a Software Development Engineer at
-                      Cadence. With its user-friendly interface and comprehensive
+                      Zscaler. With its user-friendly interface and comprehensive
                       support, I navigated the application process with ease,
                       ultimately landing a role that aligns perfectly with my
                       aspirations. I am indebted to the platform for opening
