@@ -244,11 +244,23 @@ const Dashboard = () => {
           {/* Modal to Display Selected Year Companies List */}
           {showModal && (
             <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-3/4 lg:w-1/2">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-3/4 lg:w-1/2 max-h-[90vh] overflow-y-auto">
                 <h2 className="text-2xl font-bold mb-4">
                   Companies List for {selectedYear}
                 </h2>
                 <ul className="space-y-3">
+                  <li className="flex justify-between bg-gray-100 rounded-lg p-3">
+                    <span className="font-medium text-gray-800">
+                      Company Name
+                    </span>
+                    <span className="text-green-600 font-bold">
+                      Package (LPA)
+                    </span>
+                    <span className="text-gray-600">
+                      Placed Students (Offers)
+                    </span>
+                    <span className="text-gray-600">Visit Date</span>
+                  </li>
                   {modalCompanies.map((company, index) => (
                     <li
                       key={index}
