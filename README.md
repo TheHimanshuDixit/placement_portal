@@ -4,6 +4,12 @@ JIIT Training & Placement Portal Project - the Project of transformation which i
 
 ---
 
+## Screenshot
+
+![image](https://github.com/user-attachments/assets/fe00eb68-5e10-42ac-83ad-1a46e5c376d4)
+
+---
+
 ## Technology Stack
 
 | Component        | Technology                          |
