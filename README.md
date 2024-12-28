@@ -18,6 +18,7 @@ JIIT Training & Placement Portal Project - the Project of transformation which i
 | **Backend**       | Node.js with Express.js            |
 | **Database**      | MongoDB                            |
 | **Authentication**| JSON Web Tokens (JWT)              |
+| **Security**      | bcryptJs                           |
 | **Hosting**       | Render or Netlify                  |
 
 ---
