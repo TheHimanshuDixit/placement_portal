@@ -18,7 +18,7 @@ JIIT Training & Placement Portal Project - the Project of transformation which i
 | **Backend**       | Node.js with Express.js            |
 | **Database**      | MongoDB                            |
 | **Authentication**| JSON Web Tokens (JWT)              |
-| **Security**      | bcryptJs                           |
+| **Security**      | BcryptJs                           |
 | **Hosting**       | Render or Netlify                  |
 
 ---
@@ -27,12 +27,10 @@ JIIT Training & Placement Portal Project - the Project of transformation which i
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/ExpiryGuard.git
-   cd placement_portal
+   git clone https://github.com/TheHimanshuDixit/placement_portal.git
    ```
 
 2. **Install dependencies:**
-   Navigate to both the `Major_Frontend` and `Major_Backend` directories and install dependencies:
    ```bash
    # For Frontend
    cd placement_portal
@@ -45,7 +43,6 @@ JIIT Training & Placement Portal Project - the Project of transformation which i
    ```
 
 3. **Run the development server:**
-   Start the development servers in both directories:
    ```bash
    # Frontend 
    npm run start
