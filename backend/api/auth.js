@@ -9,7 +9,8 @@ var jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Student = require("../models/Student");
 const College = require("../models/College");
-const token = "hello";
+const token = process.env.TOKEN_SECRET;
+require("dotenv").config();
 
 const multer = require("multer");
 const cloudinary = require("../helper/cloudinaryconfig");
@@ -134,14 +135,14 @@ router.post("/forgot", async (req, res) => {
     secure: true,
     service: "gmail",
     auth: {
-      user: "harshhimanshudixit@gmail.com",
-      pass: "mzvszfywjvavrjov",
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
     },
   });
 
   // Specify what the email will look like
   var mailOption = {
-    from: "harshhimanshudixit@gmail.com", //Sender mail
+    from: process.env.EMAIL, //Sender mail
     to: email, // Recever mail
     subject: "One Time Password",
     html: output,

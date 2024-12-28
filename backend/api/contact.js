@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const Contact = require("../models/Contact");
+require("dotenv").config();
 
 // POST /api/contact/send
 router.post("/send", async (req, res) => {
@@ -30,15 +31,15 @@ router.post("/send", async (req, res) => {
     secure: true,
     service: "gmail",
     auth: {
-      user: "harshhimanshudixit@gmail.com",
-      pass: "mzvszfywjvavrjov",
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
     },
   });
 
   // Specify what the email will look like
   var mailOption = {
-    from: "harshhimanshudixit@gmail.com", //Sender mail
-    to: "himanshuharshdixit@gmail.com", // Recever mail
+    from: process.env.EMAIL, //Sender mail
+    to: process.env.RECEIVER_EMAIL, // Recever mail
     subject: "Message",
     html: output,
   };

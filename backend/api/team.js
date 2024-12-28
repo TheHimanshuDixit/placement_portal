@@ -3,7 +3,8 @@ const router = express.Router();
 const Team = require("../models/Team");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
-const token = "admin";
+require("dotenv").config();
+const token = process.env.ADMIN_TOKEN_SECRET;
 
 const multer = require("multer");
 const cloudinary = require("../helper/cloudinaryconfig");

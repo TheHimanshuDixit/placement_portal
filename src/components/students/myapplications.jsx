@@ -221,7 +221,7 @@ const Myapplications = () => {
                         Company Name
                       </th>
                       <th scope="col" className="px-6 py-4">
-                        Job Title
+                        Job Id
                       </th>
                       <th scope="col" className="px-6 py-4">
                         Application Date

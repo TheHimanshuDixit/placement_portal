@@ -58,7 +58,7 @@ const Addopening = () => {
   }, [update]);
 
   const handleIt = async (id) => {
-    setLoading(true);
+    // setLoading(true);
     const response = await fetch(
       `https://placement-portall.onrender.com/api/application/get/${id}`,
       {
@@ -70,8 +70,8 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
-    setLoading(false);
-    setLoading(true);
+    // setLoading(false);
+    // setLoading(true);
 
     const stdlist = await fetch(
       "https://placement-portall.onrender.com/api/auth"
@@ -92,7 +92,7 @@ const Addopening = () => {
     }
     // console.log(result.data);
     setRegList(result.data);
-    setLoading(false);
+    // setLoading(false);
   };
 
   const handleDelete = async (id) => {

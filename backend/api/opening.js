@@ -3,6 +3,7 @@ const Opening = require("../models/Opening");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const Student = require("../models/Student");
+require("dotenv").config();
 
 // https://placement-portall.onrender.com/
 
@@ -76,7 +77,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
                     <p>JobId: ${jobId}</p>
                     <p>Monthly Stipend: ${stipend}/Month</p>
                     <p>CTC: ${ctc} LPA</p>
-                    <a href="https://main--jiit-placement-portal.netlify.app/openings">Click here to apply</a>
+                    <a href=${process.env.URL}>Click here to apply</a>
 `;
   // Instantiate the SMTP server
   var transporter = nodemailer.createTransport({
@@ -85,8 +86,8 @@ router.post("/add", upload.single("file"), async (req, res) => {
     secure: true,
     service: "gmail",
     auth: {
-      user: "harshhimanshudixit@gmail.com",
-      pass: "mzvszfywjvavrjov",
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
     },
   });
 
@@ -95,7 +96,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
 
   // Specify what the email will look like
   var mailOption = {
-    from: "harshhimanshudixit@gmail.com", //Sender mail
+    from: process.env.EMAIL, //Sender mail
     to: allMail, // Recever mail
     subject: "New Opening",
     html: output,
