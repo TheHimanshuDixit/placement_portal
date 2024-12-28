@@ -46,29 +46,29 @@ JIIT Training & Placement Portal Project - the Project of transformation which i
    # Backend 
    node index.js
    ```
+   
 
-4. **Environment Variables:**
-   Configure your `.env` files in both `Major_Backend` and `Major_Frontend` directories with the required settings:
-
-   **Backend `.env` file:**
+4. **Backend `.env` file:**
    ```env
-  MONGO_URI=<mongo-uri>
-  TOKEN_SECRET=<jwt-token>
-  ADMIN_TOKEN_SECRET=<jwt-token-admin>
-  CLOUDINARY_CLOUD_NAME=<name>
-  CLOUDINARY_API_KEY=<api-key>
-  CLOUDINARY_API_SECRET=<secret>
-  EMAIL=<contactus-sender-email>
-  PASSWORD=<app-password>
-  RECEIVER_EMAIL=<contactus-reciever-email>
-  URL=<backend-url>
+     MONGO_URI=<mongo-uri>
+     TOKEN_SECRET=<jwt-token>
+     ADMIN_TOKEN_SECRET=<jwt-token-admin>
+     CLOUDINARY_CLOUD_NAME=<name>
+     CLOUDINARY_API_KEY=<api-key>
+     CLOUDINARY_API_SECRET=<secret>
+     EMAIL=<contactus-sender-email>
+     PASSWORD=<app-password>
+     RECEIVER_EMAIL=<contactus-reciever-email>
+     URL=<backend-url>
    ```
+
+---
 
 5. **Temporary Login Credentials:**
 
 | User Type    | Email                         | Password |
 |--------------|-------------------------------|----------|
-| **Student** | `himanshuharshdixit@gmail.com` | `123456` |
+| **Student**  | `himanshuharshdixit@gmail.com`| `123456` |
 
 ---
 
