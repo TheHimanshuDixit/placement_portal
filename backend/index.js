@@ -22,6 +22,7 @@ app.use("/api/application", require("./api/application"));
 app.use("/api/team", require("./api/team"));
 app.use("/api/student", require("./api/student"));
 app.use("/api/demographicData", require("./api/demographicData"));
+app.use("/api/openai", require("./api/openai"));
 
 run();
 
