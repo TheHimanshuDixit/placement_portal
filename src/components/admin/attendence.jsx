@@ -44,7 +44,7 @@ const Attendance = () => {
     // console.log(data);
     setLoading(true);
     const result = await fetch(
-      "https://placement-portall.onrender.com/api/student",
+      `${process.env.REACT_APP_DEV_URI}/api/student`,
       {
         method: "PUT",
         headers: {
@@ -69,7 +69,7 @@ const Attendance = () => {
     setCompany(selectedOption);
     setLoading(true);
     const data = await fetch(
-      `https://placement-portall.onrender.com/api/application/get/${selectedOption.value}`
+      `${process.env.REACT_APP_DEV_URI}/api/application/get/${selectedOption.value}`
     );
     const RS = await data.json();
     const reqRS = [];
@@ -84,7 +84,7 @@ const Attendance = () => {
     const handleFetch = async () => {
       setLoading(true);
       const data = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall"
+        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
       );
       const openings = await data.json();
       const allOngoingEvents = openings.data.filter(

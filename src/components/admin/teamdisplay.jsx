@@ -28,7 +28,7 @@ const Teamdisplay = ({
       try {
         setLoading(true);
         const response = await fetch(
-          `https://placement-portall.onrender.com/api/team/delete/${id}`,
+          `${process.env.REACT_APP_DEV_URI}/api/team/delete/${id}`,
           {
             method: "DELETE",
             headers: {

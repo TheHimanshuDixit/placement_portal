@@ -7,7 +7,7 @@ dotenv.config();
 
 router.get("/", async (req, res) => {
   const genAI = new GoogleGenerativeAI(
-    "AIzaSyDAd9EQeSOHBoxzx_k-lnIg6CFcsMjC-6E"
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY
   );
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });

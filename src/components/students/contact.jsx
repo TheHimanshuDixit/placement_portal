@@ -26,7 +26,7 @@ const Contact = () => {
     }
     setLoading(true);
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/contact/send",
+      `${process.env.REACT_APP_DEV_URI}/api/contact/send`,
       {
         method: "POST",
         headers: {

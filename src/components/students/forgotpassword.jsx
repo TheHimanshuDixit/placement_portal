@@ -23,7 +23,7 @@ const Forgotpassword = () => {
     }
     setLoading(true);
     const data = await fetch(
-      "https://placement-portall.onrender.com/api/auth/forgot",
+      `${process.env.REACT_APP_DEV_URI}/api/auth/forgot`,
       {
         method: "POST",
         headers: {
@@ -58,7 +58,7 @@ const Forgotpassword = () => {
     }
     setLoading(true);
     const data = await fetch(
-      "https://placement-portall.onrender.com/api/auth/updatepassword",
+      `${process.env.REACT_APP_DEV_URI}/api/auth/updatepassword`,
       {
         method: "PUT",
         headers: {

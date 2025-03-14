@@ -41,7 +41,7 @@ const Addopening = () => {
   const data = async () => {
     setLoading(true);
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/opening/getall"
+      `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
     );
     const data = await response.json();
     setLoading(false);
@@ -60,7 +60,7 @@ const Addopening = () => {
   const handleIt = async (id) => {
     // setLoading(true);
     const response = await fetch(
-      `https://placement-portall.onrender.com/api/application/get/${id}`,
+      `${process.env.REACT_APP_DEV_URI}/api/application/get/${id}`,
       {
         method: "GET",
         headers: {
@@ -74,7 +74,7 @@ const Addopening = () => {
     // setLoading(true);
 
     const stdlist = await fetch(
-      "https://placement-portall.onrender.com/api/auth"
+      `${process.env.REACT_APP_DEV_URI}/api/auth`
     );
     const std = await stdlist.json();
 
@@ -98,7 +98,7 @@ const Addopening = () => {
   const handleDelete = async (id) => {
     setLoading(true);
     const response = await fetch(
-      `https://placement-portall.onrender.com/api/opening/delete/${id}`,
+      `${process.env.REACT_APP_DEV_URI}/api/opening/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -161,7 +161,7 @@ const Addopening = () => {
     formData.append("duration", newOpening.duration);
     formData.append("applyby", newOpening.applyby);
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/opening/add",
+      `${process.env.REACT_APP_DEV_URI}/api/opening/add`,
       {
         method: "POST",
         body: formData,
@@ -199,7 +199,7 @@ const Addopening = () => {
   const handleDownload = async () => {
     setLoading(true);
     const response = await fetch(
-      `https://placement-portall.onrender.com/api/application/get/${regList[0].company}`
+      `${process.env.REACT_APP_DEV_URI}/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
     // console.log(data);
@@ -237,7 +237,7 @@ const Addopening = () => {
     }
     setLoading(true);
     const data = await fetch(
-      `https://placement-portall.onrender.com/api/opening/update/${id}`,
+      `${process.env.REACT_APP_DEV_URI}/api/opening/update/${id}`,
       {
         method: "PUT",
         headers: {
@@ -288,7 +288,7 @@ const Addopening = () => {
     // console.log(data);
     setLoading(true);
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/auth/placed",
+      `${process.env.REACT_APP_DEV_URI}/api/auth/placed`,
       {
         method: "POST",
         headers: {

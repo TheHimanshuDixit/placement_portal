@@ -32,7 +32,7 @@ const Dashboard = () => {
     // Fetch API data
     setLoading(true);
     fetch(
-      "https://placement-portall.onrender.com/api/demographicData/dashboard"
+      `${process.env.REACT_APP_DEV_URI}/api/demographicData/dashboard`
     )
       .then((response) => response.json())
       .then((data) => {

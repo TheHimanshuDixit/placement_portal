@@ -30,7 +30,7 @@ const Mycontributions = () => {
 
     initTE({ Collapse, Modal, Ripple, Input });
 
-    fetch("https://placement-portall.onrender.com/api/contribute/getbyid", {
+    fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/getbyid`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +70,7 @@ const Mycontributions = () => {
     }
     setLoading(true);
     const data = await fetch(
-      "https://placement-portall.onrender.com/api/contribute/add",
+      `${process.env.REACT_APP_DEV_URI}/api/contribute/add`,
       {
         method: "POST",
         headers: {
@@ -93,16 +93,13 @@ const Mycontributions = () => {
   const deleteContribution = (id) => {
     return () => {
       setLoading(true);
-      fetch(
-        `https://placement-portall.onrender.com/api/contribute/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("authToken"),
-          },
-        }
-      )
+      fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           setContributionList(
@@ -130,7 +127,7 @@ const Mycontributions = () => {
     }
     setLoading(true);
     const data = await fetch(
-      `https://placement-portall.onrender.com/api/contribute/update/${id}`,
+      `${process.env.REACT_APP_DEV_URI}/api/contribute/update/${id}`,
       {
         method: "PUT",
         headers: {

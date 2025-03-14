@@ -9,7 +9,7 @@ const Contribute = () => {
   useEffect(() => {
     initTE({ Collapse });
 
-    fetch("https://placement-portall.onrender.com/api/contribute/get")
+    fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/get`)
       .then((res) => res.json())
       .then((data) => {
         // setLoading(false);

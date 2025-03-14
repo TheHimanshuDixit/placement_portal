@@ -33,7 +33,7 @@ const Studetails = () => {
     const fetchData = async () => {
       setLoading(true);
       const res = await fetch(
-        "https://placement-portall.onrender.com/api/application/getall",
+        `${process.env.REACT_APP_DEV_URI}/api/application/getall`,
         {
           method: "GET",
           headers: {
@@ -50,7 +50,7 @@ const Studetails = () => {
     const fetchCompData = async () => {
       setLoading(true);
       const res = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall",
+        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`,
         {
           method: "GET",
           headers: {
@@ -67,7 +67,7 @@ const Studetails = () => {
     const fetchStudData = async () => {
       setLoading(true);
       const res = await fetch(
-        "https://placement-portall.onrender.com/api/auth",
+        `${process.env.REACT_APP_DEV_URI}/api/auth`,
         {
           method: "GET",
           headers: {
@@ -91,7 +91,7 @@ const Studetails = () => {
     }
     setLoading(true);
     const res = await fetch(
-      "https://placement-portall.onrender.com/api/college/add",
+      `${process.env.REACT_APP_DEV_URI}/api/college/add`,
       {
         method: "POST",
         headers: {
@@ -118,7 +118,7 @@ const Studetails = () => {
     }
     setLoading(true);
     const res = await fetch(
-      `https://placement-portall.onrender.com/api/auth/delete/${id}`,
+      `${process.env.REACT_APP_DEV_URI}/api/auth/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -227,7 +227,7 @@ const Studetails = () => {
     }
     setLoading(true);
     const data = await fetch(
-      "https://placement-portall.onrender.com/api/college//multiadd",
+      `${process.env.REACT_APP_DEV_URI}/api/college//multiadd`,
       {
         method: "POST",
         headers: {

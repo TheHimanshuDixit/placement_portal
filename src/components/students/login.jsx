@@ -34,7 +34,7 @@ const Login = () => {
     }
     setLoading(true);
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/auth/login",
+      `${process.env.REACT_APP_DEV_URI}/api/auth/login`,
       {
         method: "POST",
         headers: {
@@ -52,7 +52,7 @@ const Login = () => {
       window.location.href = "/";
     } else {
       const respteam = await fetch(
-        "https://placement-portall.onrender.com/api/team/login",
+        `${process.env.REACT_APP_DEV_URI}/api/team/login`,
         {
           method: "POST",
           headers: {

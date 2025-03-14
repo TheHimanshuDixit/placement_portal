@@ -29,7 +29,7 @@ const Record = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://placement-portall.onrender.com/api/demographicData")
+    fetch(`${process.env.REACT_APP_DEV_URI}/api/demographicData`)
       .then((res) => res.json())
       .then((d) => {
         setData(d);

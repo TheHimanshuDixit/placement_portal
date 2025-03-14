@@ -24,7 +24,7 @@ const Myapplications = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://placement-portall.onrender.com/api/application/get",
+          `${process.env.REACT_APP_DEV_URI}/api/application/get`,
           {
             method: "GET",
             headers: {
@@ -44,7 +44,7 @@ const Myapplications = () => {
     // eslint-disable-next-line
     const data = (async () => {
       const response = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall"
+        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
       );
       const data = await response.json();
       setOpen(data.data);

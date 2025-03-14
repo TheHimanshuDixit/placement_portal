@@ -20,7 +20,7 @@ const Addadmin = () => {
 
   useEffect(() => {
     //eslint-disable-next-line
-    const resp = fetch("https://placement-portall.onrender.com/api/team/get", {
+    const resp = fetch(`${process.env.REACT_APP_DEV_URI}/api/team/get`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const Addadmin = () => {
     formData.append("password", teamDetail.password);
 
     const res = await fetch(
-      "https://placement-portall.onrender.com/api/team/add",
+      `${process.env.REACT_APP_DEV_URI}/api/team/add`,
       {
         method: "POST",
         body: formData,
@@ -107,7 +107,7 @@ const Addadmin = () => {
     formData.append("position", teamDetail.position);
     if (teamDetail.password.length > 0)
       formData.append("password", teamDetail.password);
-    fetch(`https://placement-portall.onrender.com/api/team/update/${editId}`, {
+    fetch(`${process.env.REACT_APP_DEV_URI}/api/team/update/${editId}`, {
       method: "PUT",
       body: formData,
     })

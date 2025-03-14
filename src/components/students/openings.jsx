@@ -37,7 +37,7 @@ const Openings = () => {
     // eslint-disable-next-line
     const data = (async () => {
       const response = await fetch(
-        "https://placement-portall.onrender.com/api/opening/getall"
+        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
       );
       const data = await response.json();
       // console.log(data.data);
@@ -91,7 +91,7 @@ const Openings = () => {
       formData.append("phone", apply.phone);
       formData.append("branch", apply.branch);
       const response = await fetch(
-        `https://placement-portall.onrender.com/api/application/add/${cid}`,
+        `${process.env.REACT_APP_DEV_URI}/api/application/add/${cid}`,
         {
           method: "POST",
           headers: {
@@ -115,7 +115,7 @@ const Openings = () => {
 
   const handleIt = async () => {
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/auth/profile",
+      `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
       {
         method: "GET",
         headers: {

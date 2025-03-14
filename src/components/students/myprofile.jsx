@@ -34,7 +34,7 @@ const Myprofile = () => {
     const fetchProfile = async () => {
       try {
         const res = await fetch(
-          "https://placement-portall.onrender.com/api/auth/profile",
+          `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
           {
             method: "GET",
             headers: {
@@ -104,7 +104,7 @@ const Myprofile = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        "https://placement-portall.onrender.com/api/auth/profile",
+        `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
         {
           method: "POST",
           headers: {

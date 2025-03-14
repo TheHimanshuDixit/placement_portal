@@ -9,9 +9,7 @@ const Team = () => {
     //eslint-disable-next-line
     const data = (async () => {
       setLoading(true);
-      const response = await fetch(
-        "https://placement-portall.onrender.com/api/team/get"
-      );
+      const response = await fetch(`${process.env.REACT_APP_DEV_URI}/api/team/get`);
       const data = await response.json();
       setLoading(false);
       setTeams(data.data);

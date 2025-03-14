@@ -15,7 +15,7 @@ const Myattendence = () => {
   const fetchData = async () => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      fetch("https://placement-portall.onrender.com/api/student", {
+      fetch(`${process.env.REACT_APP_DEV_URI}/api/student`, {
         method: "GET",
         headers: {
           "auth-token": token,

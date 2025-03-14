@@ -36,7 +36,7 @@ const Signup = () => {
     }
     setLoading(true);
     const response = await fetch(
-      "https://placement-portall.onrender.com/api/auth/signup",
+      `${process.env.REACT_APP_DEV_URI}/api/auth/signu`,
       {
         method: "POST",
         headers: {
