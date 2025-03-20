@@ -1,57 +1,45 @@
 const express = require("express");
 const router = express.Router();
-const nodemailer = require("nodemailer");
 const Contact = require("../models/Contact");
+const sendMail = require("../utils/mailer");
 require("dotenv").config();
 
 // POST /api/contact/send
 router.post("/send", async (req, res) => {
-  const { name, email, message } = req.body;
+  try {
+    const { name, email, message } = req.body;
 
-  let contact = new Contact({
-    name,
-    email,
-    message,
-  });
+    let contact = new Contact({
+      name,
+      email,
+      message,
+    });
 
-  let resp = await contact.save();
+    let resp = await contact.save();
 
-  const output = `
-                    <h4>You have a message</h4>
-                    <h3>Contact Details : </h3>
-                    <p>Name: ${name}</p>
-                    <p>Email: ${email}</p>
-                    <h3>Message : </h3>
-                    <p>${message}</p>
-`;
-  // Instantiate the SMTP server
-  var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com"',
-    port: 465,
-    secure: true,
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
-    },
-  });
+    const output = `
+        <h4>You have a message</h4>
+        <h3>Contact Details:</h3>
+        <p>Name: ${name}</p>
+        <p>Email: ${email}</p>
+        <h3>Message:</h3>
+        <p>${message}</p>
+    `;
 
-  // Specify what the email will look like
-  var mailOption = {
-    from: process.env.EMAIL, //Sender mail
-    to: process.env.RECEIVER_EMAIL, // Recever mail
-    subject: "Message",
-    html: output,
-  };
+    const mailResponse = await sendMail(
+      process.env.RECEIVER_EMAIL,
+      "Message",
+      output
+    );
 
-  // Send mail with defined transport object
-  transporter.sendMail(mailOption, function (error, info) {
-    if (error) {
-      res.json({ message: "Error Occurs" });
-    } else {
+    if (mailResponse.success) {
       res.json({ message: "Email sent", data: resp });
+    } else {
+      res.json({ message: "Error sending email", error: mailResponse.error });
     }
-  });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error", error });
+  }
 });
 
 module.exports = router;

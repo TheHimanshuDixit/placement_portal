@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import { MdDelete } from "react-icons/md";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import GlowingLoader from "../loader";
 const Studetails = () => {
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   const [students, setStudents] = useState({
     enroll: "",
@@ -471,6 +472,11 @@ const Studetails = () => {
               onClick={handleClick}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Save
+            </button>
+            <button
+              onClick={() => navigate("/college-students")}
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Display all enrolled students
             </button>
           </div>
         </form>

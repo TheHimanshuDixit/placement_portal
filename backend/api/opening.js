@@ -43,6 +43,12 @@ router.post("/add", upload.single("file"), async (req, res) => {
     gender,
     duration,
     applyby,
+    requirements,
+    jobdescription,
+    selectionprocess,
+    ppt,
+    test,
+    interview,
   } = req.body;
   let newOpening = await Opening.findOne({
     jobId,
@@ -67,6 +73,12 @@ router.post("/add", upload.single("file"), async (req, res) => {
     gender,
     duration,
     applyby,
+    requirements,
+    jobdescription,
+    selectionprocess,
+    ppt,
+    test,
+    interview,
   });
   let resp = await newOpening.save();
 
@@ -148,10 +160,34 @@ router.put("/update/:oid", async (req, res) => {
   if (!resp) {
     return res.status(401).json({ message: "Opening does not exists" });
   }
+  const data = {
+    name: req.body.name,
+    jobId: req.body.jobId,
+    stipend: req.body.stipend,
+    ctc: req.body.ctc,
+    logo: resp.logo,
+    location: req.body.location,
+    type: req.body.type,
+    mode: req.body.mode,
+    role: req.body.role,
+    backlog: req.body.backlog,
+    cgpacritera: req.body.cgpacritera,
+    batch: req.body.batch,
+    branch: req.body.branch,
+    gender: req.body.gender,
+    duration: req.body.duration,
+    applyby: req.body.applyby,
+    requirements: req.body.requirements,
+    jobdescription: req.body.jobdescription,
+    selectionprocess: req.body.selectionprocess,
+    ppt: req.body.ppt,
+    test: req.body.test,
+    interview: req.body.interview,
+  };
   resp = await Opening.updateOne(
     { _id: req.params.oid },
     {
-      $set: req.body,
+      $set: data,
     }
   );
   res.json({ message: "success", data: resp });

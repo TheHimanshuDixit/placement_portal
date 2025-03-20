@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Collapse, initTE } from "tw-elements";
-import GlowingLoader from "../loader";
 
 const Contribute = () => {
   const [contributionList, setContributionList] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [filteredContributions, setFilteredContributions] = useState([]);
+  const [filters, setFilters] = useState({
+    company: "",
+    role: "",
+    round: "",
+    year: "",
+  });
 
   useEffect(() => {
     initTE({ Collapse });
@@ -12,65 +17,111 @@ const Contribute = () => {
     fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/get`)
       .then((res) => res.json())
       .then((data) => {
-        // setLoading(false);
         setContributionList(data.data);
+        setFilteredContributions(data.data); // Initialize filtered list
       })
       .catch((err) => console.log(err));
   }, []);
 
+  // Function to update filter state
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Function to filter contributions based on user selections
+  useEffect(() => {
+    const filtered = contributionList.filter((item) => {
+      return (
+        (filters.company === "" || item.company === filters.company) &&
+        (filters.role === "" || item.role === filters.role) &&
+        (filters.round === "" || item.round.toString() === filters.round) &&
+        (filters.year === "" || item.year.toString() === filters.year)
+      );
+    });
+    setFilteredContributions(filtered);
+  }, [filters, contributionList]);
+
+  // Get unique filter values
+  const getUniqueValues = (key) => {
+    return [...new Set(contributionList.map((item) => item[key]))].filter(
+      Boolean
+    );
+  };
+
   return (
     <div>
       <div className="container my-24 mx-auto md:px-6 xl:px-24">
-        <section className="mb-32">
+        <section className="mb-8">
           <h2 className="mb-6 pl-6 text-3xl font-bold">
             Interview Questions!!
           </h2>
 
+          {/* Filter Section */}
+          <div className="flex flex-wrap gap-4 mb-6">
+            <select
+              name="company"
+              value={filters.company}
+              onChange={handleFilterChange}
+              className="border px-4 py-2 rounded">
+              <option value="">All Companies</option>
+              {getUniqueValues("company").map((company) => (
+                <option key={company} value={company}>
+                  {company}
+                </option>
+              ))}
+            </select>
+
+            <select
+              name="role"
+              value={filters.role}
+              onChange={handleFilterChange}
+              className="border px-4 py-2 rounded">
+              <option value="">All Roles</option>
+              {getUniqueValues("role").map((role) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
+
+            <select
+              name="round"
+              value={filters.round}
+              onChange={handleFilterChange}
+              className="border px-4 py-2 rounded">
+              <option value="">All Rounds</option>
+              {getUniqueValues("round").map((round) => (
+                <option key={round} value={round}>
+                  {round} Round
+                </option>
+              ))}
+            </select>
+
+            <select
+              name="year"
+              value={filters.year}
+              onChange={handleFilterChange}
+              className="border px-4 py-2 rounded">
+              <option value="">All Years</option>
+              {getUniqueValues("year").map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Questions List */}
           <div id="accordionFlushExample">
-            <div className="rounded-none border border-l-0 border-r-0 border-t-0 border-neutral-200 hidden">
-              <h2 className="mb-0" id="flush-headingOne">
-                <button
-                  className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
-                  type="button"
-                  data-te-collapse-init
-                  data-te-target="#flush-collapseOne"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseOne">
-                  Example Question
-                  <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </h2>
-              <div
-                id="flush-collapseOne"
-                className="!visible border-0"
-                data-te-collapse-item
-                data-te-collapse-show
-                aria-labelledby="flush-headingOne"
-                data-te-parent="#accordionFlushExample">
-                <div className="px-5 py-4">demo answer</div>
-              </div>
-            </div>
-            {contributionList.map((key, index) => {
-              return (
+            {filteredContributions.length > 0 ? (
+              filteredContributions.map((key, index) => (
                 <div
                   key={key._id}
                   className="rounded-none border border-l-0 border-r-0 border-t-0 border-neutral-200">
                   <h2 className="mb-0" id={key.question}>
                     <button
-                      className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
+                      className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition hover:z-[2] focus:z-[3] focus:outline-none"
                       type="button"
                       data-te-collapse-init
                       data-te-collapse-collapsed
@@ -91,17 +142,15 @@ const Contribute = () => {
                         <div className="my-1 ml-3 rounded-lg p-1 border-2 text-green-400 border-green-400">
                           {key.year}
                         </div>
-                        {key.topic.map((item, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="my-1 ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
-                              {item}
-                            </div>
-                          );
-                        })}
+                        {key.topic.map((item) => (
+                          <div
+                            key={item}
+                            className="my-1 ml-3 rounded-lg p-1 border-2 text-yellow-400 border-yellow-400">
+                            {item}
+                          </div>
+                        ))}
                       </div>
-                      <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
+                      <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 16 16">
@@ -119,13 +168,15 @@ const Contribute = () => {
                     data-te-collapse-item
                     aria-labelledby={key.question}
                     data-te-parent="#accordionFlushExample">
-                    <div className="py-4 px-5 text-neutral-500 dark:text-neutral-300">
+                    <div className="py-4 px-5 text-neutral-500">
                       {key.answer}
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No results found.</p>
+            )}
           </div>
         </section>
       </div>

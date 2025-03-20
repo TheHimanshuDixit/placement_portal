@@ -26,6 +26,8 @@ import Studetails from "./components/admin/studetails";
 import Attendance from "./components/admin/attendence";
 import Record from "./components/admin/record";
 import Myattendence from "./components/students/myattendence";
+import ViewAttendance from "./components/admin/viewattendance";
+import StudentList from "./components/admin/enrolledstudents";
 
 function App() {
   return (
@@ -226,11 +228,31 @@ function App() {
             }
           />
           <Route
+            path="/college-students"
+            element={
+              <>
+                <Navbar />
+                <StudentList />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
             path="/attendence"
             element={
               <>
                 <Navbar />
                 <Attendance />
+                <FooterAdmin />
+              </>
+            }
+          />
+          <Route
+            path="/view-attendance"
+            element={
+              <>
+                <Navbar />
+                <ViewAttendance />
                 <FooterAdmin />
               </>
             }

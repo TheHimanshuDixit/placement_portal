@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 const router = express.Router();
 const fetchuser = require("../middleware");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Student = require("../models/Student");
 const College = require("../models/College");

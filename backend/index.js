@@ -1,6 +1,7 @@
 const express = require("express");
 const run = require("./database");
 const cors = require("cors");
+const { scheduleJob } = require("./utils/scheduler");
 const corsOptions = {
   origin: "*",
   credentials: true, //access-control-allow-credentials:true
@@ -10,7 +11,7 @@ const corsOptions = {
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(cors(corsOptions)) // Use this after the variable declaration
+app.use(cors(corsOptions)); // Use this after the variable declaration
 app.use(express.json());
 
 app.use("/api/auth", require("./api/auth"));
@@ -25,6 +26,7 @@ app.use("/api/demographicData", require("./api/demographicData"));
 app.use("/api/openai", require("./api/openai"));
 
 run();
+scheduleJob();
 
 app.get("/", (req, res) => {
   res.send("API Working");

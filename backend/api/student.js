@@ -9,15 +9,14 @@ const fetchuser = require("../middleware");
 router.get("/", fetchuser, async (req, res) => {
   let student = await Student.findById(req.id);
   let applications = await Application.find({ email: student.email });
-  // console.log(applications);
 
   // wants to send array of objects object contain company  and event both is an object
   let data = [];
-  for (let i = 0; i < applications.length; i++) {
-    let opening = await Opening.findById(applications[i].company);
+  for (const application of applications) {
+    let opening = await Opening.findById(application.company);
     data.push({
       company: opening,
-      event: applications[i].event ? applications[i].event : "",
+      event: application.event ? application.event : "",
     });
   }
   res.json({ data: data });
@@ -27,18 +26,36 @@ router.get("/", fetchuser, async (req, res) => {
 router.put("/", async (req, res) => {
   let { company, event, date, studentList } = req.body;
   let application = await Application.find({ company: company });
-  for (let i = 0; i < application.length; i++) {
-    if (studentList.includes(application[i].email)) {
-      // console.log(application[i]);
-      let e = { event: event, date: date };
-      let addEvent = await Application.findByIdAndUpdate(
-        application[i]._id,
+  for (const app of application) {
+    if (studentList.includes(app.email)) {
+      let e = { event: event, date: date, status: "Present" };
+      await Application.findByIdAndUpdate(
+        app._id,
+        { $push: { event: e } },
+        { new: true }
+      );
+    } else {
+      let e = { event: event, date: date, status: "Absent" };
+      await Application.findByIdAndUpdate(
+        app._id,
         { $push: { event: e } },
         { new: true }
       );
     }
   }
   res.json({ message: "success" });
+});
+
+// GET /api/student/:cid
+router.get("/:cid", async (req, res) => {
+  let application = await Application.find({ company: req.params.cid });
+  let data = [];
+  for (const app of application) {
+    for (const event of app.event) {
+      data.push({ name: app.name, event: event });
+    }
+  }
+  res.json({ data: data });
 });
 
 module.exports = router;

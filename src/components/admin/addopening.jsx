@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
-import { FaCalendarAlt } from "react-icons/fa";
-import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import Openingform from "./openingform";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaCalendarAlt, FaMoneyCheckAlt } from "react-icons/fa";
 import GlowingLoader from "../loader";
 
 const Addopening = () => {
@@ -17,6 +15,7 @@ const Addopening = () => {
   const [logo, setLogo] = useState("");
   const [update, setUpdate] = useState(true);
   const [emailOffer, setEmailOffer] = useState({});
+  const [type, setType] = useState("Add");
 
   const [newOpening, setNewOpening] = useState({
     name: "",
@@ -34,6 +33,12 @@ const Addopening = () => {
     gender: "",
     duration: "",
     applyby: "",
+    requirements: [],
+    jobdescription: [],
+    selectionprocess: [],
+    ppt: "",
+    test: "",
+    interview: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -58,7 +63,6 @@ const Addopening = () => {
   }, [update]);
 
   const handleIt = async (id) => {
-    // setLoading(true);
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/application/get/${id}`,
       {
@@ -70,12 +74,8 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
-    // setLoading(false);
-    // setLoading(true);
 
-    const stdlist = await fetch(
-      `${process.env.REACT_APP_DEV_URI}/api/auth`
-    );
+    const stdlist = await fetch(`${process.env.REACT_APP_DEV_URI}/api/auth`);
     const std = await stdlist.json();
 
     for (let i = 0; i < result.data.length; i++) {
@@ -90,9 +90,7 @@ const Addopening = () => {
         }
       }
     }
-    // console.log(result.data);
     setRegList(result.data);
-    // setLoading(false);
   };
 
   const handleDelete = async (id) => {
@@ -118,6 +116,64 @@ const Addopening = () => {
     }
   };
 
+  const handleEdit = async (id) => {
+    setType("Edit");
+    setNewOpening(open.filter((item) => item._id === id)[0]);
+  };
+
+  const handleEditOpening = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/opening/update/${newOpening._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newOpening),
+      }
+    );
+
+    // eslint-disable-next-line
+    const result = await response.json();
+
+    if (result.message === "success") {
+      alert("Updated Successfully");
+      setOpen(
+        open.map((item) =>
+          item._id === newOpening._id ? { ...newOpening } : item
+        )
+      );
+      setNewOpening({
+        name: "",
+        jobId: "",
+        stipend: "",
+        ctc: "",
+        location: [],
+        type: "",
+        mode: "",
+        role: "",
+        backlog: "",
+        cgpacritera: "",
+        batch: "",
+        branch: [],
+        gender: "",
+        duration: "",
+        applyby: "",
+        requirements: [],
+        jobdescription: [],
+        selectionprocess: [],
+        ppt: "",
+        test: "",
+        interview: "",
+      });
+      window.location.reload();
+    }
+
+    if (result.message === "error") {
+      alert("Error in Updating");
+    }
+  };
+
   const handleAddOpening = async () => {
     if (!logo) {
       alert("Please upload a logo");
@@ -138,7 +194,7 @@ const Addopening = () => {
       !newOpening.batch ||
       newOpening.branch.length === 0
     ) {
-      alert("Please fill all the fields");
+      alert("Please fill all the required fields");
       return;
     }
 
@@ -160,6 +216,15 @@ const Addopening = () => {
     formData.append("gender", newOpening.gender);
     formData.append("duration", newOpening.duration);
     formData.append("applyby", newOpening.applyby);
+    newOpening.requirements.length > 0 &&
+      formData.append("requirements", newOpening.requirements);
+    newOpening.jobdescription.length > 0 &&
+      formData.append("jobdescription", newOpening.jobdescription);
+    newOpening.selectionprocess.length > 0 &&
+      formData.append("selectionprocess", newOpening.selectionprocess);
+    newOpening.ppt && formData.append("ppt", newOpening.ppt);
+    newOpening.test && formData.append("test", newOpening.test);
+    newOpening.interview && formData.append("interview", newOpening.interview);
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/opening/add`,
       {
@@ -189,6 +254,12 @@ const Addopening = () => {
         gender: "",
         duration: "",
         applyby: "",
+        requirements: [],
+        jobdescription: [],
+        selectionprocess: [],
+        ppt: "",
+        test: "",
+        interview: "",
       });
       window.location.reload();
     } else {
@@ -202,7 +273,6 @@ const Addopening = () => {
       `${process.env.REACT_APP_DEV_URI}/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
-    // console.log(data);
     setLoading(false);
     const csv = data.data.map((item, index) => {
       return {
@@ -285,7 +355,6 @@ const Addopening = () => {
       company: regList[0].company,
       students: emails,
     };
-    // console.log(data);
     setLoading(true);
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/placed`,
@@ -314,6 +383,10 @@ const Addopening = () => {
         newOpening={newOpening}
         setNewOpening={setNewOpening}
         handleAddOpening={handleAddOpening}
+        handleEditOpening={handleEditOpening}
+        type={type}
+        setType={setType}
+        handleEdit={handleEdit}
         logo={logo}
         setLogo={setLogo}
       />
@@ -517,6 +590,45 @@ const Addopening = () => {
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Duration :</strong> {company.duration}
                   </li>
+                  {company.requirements.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Requirements :</strong>{" "}
+                      {company.requirements.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {company.jobdescription.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Job Description :</strong>{" "}
+                      {company.jobdescription.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {company.selectionprocess.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Selection Process :</strong>{" "}
+                      {company.selectionprocess.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {company.ppt && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>PPT :</strong> {company.ppt}
+                    </li>
+                  )}
+                  {company.test && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Test :</strong> {company.test}
+                    </li>
+                  )}
+                  {company.interview && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Interview :</strong> {company.interview}
+                    </li>
+                  )}
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Apply By :</strong>{" "}
                     {company.applyby.split("T")[1].split(".")[0] +
@@ -618,6 +730,14 @@ const Addopening = () => {
                     Stud. List
                   </button>
                 </div>
+                <button
+                  onClick={() => {
+                    setType("Edit");
+                    handleEdit(item._id);
+                  }}
+                  className="bg-purple-500 text-white w-full border-2 border-black rounded-md mt-2">
+                  Edit
+                </button>
                 <button
                   onClick={() => {
                     handleDelete(item._id);

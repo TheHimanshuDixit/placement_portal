@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
-import { FaCalendarAlt, FaExternalLinkAlt } from "react-icons/fa";
-import { FaMoneyCheckAlt } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaExternalLinkAlt,
+  FaMoneyCheckAlt,
+} from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTE } from "tw-elements";
 import { Link } from "react-router-dom";
@@ -26,10 +29,13 @@ const Openings = () => {
     branch: "",
     gender: "",
   });
-
   const [resume, setResume] = useState("");
   const [getResume, setGetResume] = useState("");
   const [loading, setLoading] = useState(true);
+
+  // New states for filter functionality
+  const [filterCompany, setFilterCompany] = useState("");
+  const [filterRole, setFilterRole] = useState("");
 
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
@@ -40,7 +46,6 @@ const Openings = () => {
         `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
       );
       const data = await response.json();
-      // console.log(data.data);
       setAllCompany(data.data);
 
       let ongoingOpen = data.data.filter((item) => {
@@ -138,26 +143,28 @@ const Openings = () => {
     });
     setGetResume(result.resume);
     setPlaced(result.placed);
-    for (let i = 0; i < allCompany.length; i++) {
-      if (
-        result.companys.includes(allCompany[i]._id) &&
-        allCompany[i].ctc > comp
-      ) {
-        setComp(allCompany[i].ctc);
+    for (const company of allCompany) {
+      if (result.companys.includes(company._id) && company.ctc > comp) {
+        setComp(company.ctc);
       }
     }
-    // setLoading(false);
   };
 
   const handleCompTime = (time) => {
     const d1 = new Date(time);
     const d2 = new Date();
-    if (d1 < d2) {
-      return true;
-    } else {
-      return false;
-    }
+    return d1 < d2;
   };
+
+  // Compute the filtered openings based on filter inputs
+  const filteredOpen = open.filter((item) => {
+    return (
+      (filterCompany === "" ||
+        item.name.toLowerCase().includes(filterCompany.toLowerCase())) &&
+      (filterRole === "" ||
+        item.role.toLowerCase().includes(filterRole.toLowerCase()))
+    );
+  });
 
   return loading ? (
     <GlowingLoader />
@@ -505,8 +512,25 @@ const Openings = () => {
           <h1 className="text-2xl font-bold mb-4 text-center underline">
             Jobs/Internships
           </h1>
+          {/* Filter Section */}
+          <div className="mb-4 flex justify-center space-x-4">
+            <input
+              type="text"
+              placeholder="Filter by Company Name"
+              value={filterCompany}
+              onChange={(e) => setFilterCompany(e.target.value)}
+              className="border p-2 rounded"
+            />
+            <input
+              type="text"
+              placeholder="Filter by Role"
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+              className="border p-2 rounded"
+            />
+          </div>
           <div className="flex justify-evenly align-middle flex-wrap">
-            {open.map((item) => (
+            {filteredOpen.map((item) => (
               <div
                 key={item._id}
                 className="bg-gray-100 p-4 rounded-lg w-1/5 m-2">

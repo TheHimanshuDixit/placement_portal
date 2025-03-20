@@ -3,7 +3,6 @@ const router = express.Router();
 const Opening = require("../models/Opening");
 const Student = require("../models/Student");
 const College = require("../models/College");
-const Application = require("../models/Application");
 
 const calculateStatistics = (packages) => {
   const highest = Math.max(...packages);

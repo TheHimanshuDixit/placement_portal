@@ -47,7 +47,7 @@ const OpeningSchema = new Schema({
     type: String,
     required: true,
   },
-  batch:{
+  batch: {
     type: String,
     required: true,
   },
@@ -63,13 +63,34 @@ const OpeningSchema = new Schema({
     type: String,
     required: true,
   },
-  progress:{
+  progress: {
     type: String,
-    default: "Ongoing"
+    default: "Ongoing",
   },
   applyby: {
     type: Date,
     required: true,
+  },
+  requirements: {
+    type: Array,
+  },
+  jobdescription: {
+    type: Array,
+  },
+  selectionprocess: {
+    type: Array,
+  },
+  ppt: {
+    type: String,
+    default: "To be announced",
+  },
+  test: {
+    type: String,
+    default: "To be announced",
+  },
+  interview: {
+    type: String,
+    default: "To be announced",
   },
   date: {
     type: Date,

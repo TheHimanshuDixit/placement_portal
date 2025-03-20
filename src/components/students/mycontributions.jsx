@@ -154,9 +154,7 @@ const Mycontributions = () => {
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div>
       <div
         data-te-modal-init

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import "react-datepicker/dist/react-datepicker.css";
 import GlowingLoader from "../loader";
+import { useNavigate } from "react-router-dom";
 
 const Attendance = () => {
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [company, setCompany] = useState(null);
   const [companies, setCompanies] = useState([]);
@@ -14,12 +17,14 @@ const Attendance = () => {
   const [attendance, setAttendance] = useState({});
   const [registeredStudents, setRegisteredStudents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [placementEvents, setPlacementEvents] = useState([]);
+  const [allcompanies, setAllCompanies] = useState([]);
 
-  const placementEvents = [
-    { value: "ppt", label: "PPT" },
-    { value: "oa", label: "Online Assessment (OA)" },
-    { value: "interview", label: "Interview" },
-  ];
+  // const placementEvents = [
+  //   { value: "ppt", label: "PPT" },
+  //   { value: "oa", label: "Online Assessment (OA)" },
+  //   { value: "interview", label: "Interview" },
+  // ];
 
   const handleAttendanceToggle = (studentId) => {
     setAttendance((prevState) => ({
@@ -33,7 +38,10 @@ const Attendance = () => {
     for (let student in attendance) {
       if (attendance[student] === true) attendanceData.push(student);
     }
-    // console.log(date.toISOString());
+    if (event === null) {
+      alert("Attendance not marked. Please select event");
+      return;
+    }
 
     const data = {
       company: company.value,
@@ -41,18 +49,14 @@ const Attendance = () => {
       date: date.toISOString(),
       studentList: attendanceData,
     };
-    // console.log(data);
     setLoading(true);
-    const result = await fetch(
-      `${process.env.REACT_APP_DEV_URI}/api/student`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    ).then((res) => res.json());
+    const result = await fetch(`${process.env.REACT_APP_DEV_URI}/api/student`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
 
     if (result.message === "success") {
       alert("Attendance marked successfully");
@@ -68,13 +72,25 @@ const Attendance = () => {
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
     setLoading(true);
+    const ongoingEvents = allcompanies.filter(
+      (company) => company._id === selectedOption.value
+    );
+    const reqEvents = [];
+    if (ongoingEvents.ppt !== "To be announced")
+      reqEvents.push({ value: "ppt", label: "PPT" });
+    if (ongoingEvents.test !== "To be announced")
+      reqEvents.push({ value: "oa", label: "Online Assessment (OA)" });
+    if (ongoingEvents.interview !== "To be announced")
+      reqEvents.push({ value: "interview", label: "Interview" });
+    setPlacementEvents(reqEvents);
+
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/application/get/${selectedOption.value}`
     );
     const RS = await data.json();
     const reqRS = [];
-    for (let i = 0; i < RS.data.length; i++) {
-      reqRS.push({ id: RS.data[i].email, name: RS.data[i].name });
+    for (const student of RS.data) {
+      reqRS.push({ id: student.email, name: student.name });
     }
     setRegisteredStudents(reqRS);
     setLoading(false);
@@ -90,15 +106,27 @@ const Attendance = () => {
       const allOngoingEvents = openings.data.filter(
         (opening) => opening.progress === "Ongoing"
       );
+      setAllCompanies(allOngoingEvents);
       let res = [];
       allOngoingEvents.forEach((event) => {
-        res.push({ value: event._id, label: event.name });
+        res.push({ value: event._id, label: event.name + " - " + event.jobId });
       });
       setCompanies(res);
       setLoading(false);
     };
     handleFetch();
   }, []);
+
+  useEffect(() => {
+    let temp = allcompanies.filter((c) => c._id === company.value);
+    if (event && event.value === "ppt") {
+      setDate(new Date(temp[0].ppt));
+    } else if (event && event.value === "oa") {
+      setDate(new Date(temp[0].test));
+    } else if (event && event.value === "interview") {
+      setDate(new Date(temp[0].interview));
+    }
+  }, [event]);
 
   return loading ? (
     <GlowingLoader />
@@ -107,6 +135,11 @@ const Attendance = () => {
       <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
         Mark Attendance for Placement Drive
       </h1>
+      <button
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+        onClick={() => navigate("/view-attendance")}>
+        View Attendance Records
+      </button>
 
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="mb-6">
@@ -127,13 +160,17 @@ const Attendance = () => {
           <label className="block text-gray-700 text-lg font-bold mb-2">
             Select Ongoing Drive Event
           </label>
-          <Select
-            options={placementEvents}
-            value={event}
-            onChange={setEvent}
-            className="w-full"
-            placeholder="Choose event..."
-          />
+          {placementEvents.length && placementEvents.length > 0 ? (
+            <Select
+              options={placementEvents}
+              value={event}
+              onChange={setEvent}
+              className="w-full"
+              placeholder="Choose event..."
+            />
+          ) : (
+            <div className="text-center text-gray-800">No events available</div>
+          )}
         </div>
 
         {/* Select Date */}
@@ -141,10 +178,9 @@ const Attendance = () => {
           <label className="block text-gray-700 text-lg font-bold mb-2">
             Select Date
           </label>
-          <DatePicker
-            selected={date}
+          <DateTimePicker
+            value={date}
             onChange={(date) => setDate(date)}
-            dateFormat="MMMM d, yyyy"
             className="w-full border border-gray-300 rounded-lg p-2"
           />
         </div>
