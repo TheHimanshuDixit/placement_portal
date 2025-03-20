@@ -36,6 +36,7 @@ const Openings = () => {
   // New states for filter functionality
   const [filterCompany, setFilterCompany] = useState("");
   const [filterRole, setFilterRole] = useState("");
+  const [match, setMatch] = useState([]);
 
   useEffect(() => {
     initTE({ Modal, Ripple, Input });
@@ -55,6 +56,23 @@ const Openings = () => {
       setLoading(false);
     })();
   }, [open]);
+
+  const handleFetchAI = async () => {
+    if (!localStorage.getItem("authToken")) {
+      window.location.href = "/login";
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/openai/`,
+      {
+        method: "GET",
+        headers: {
+          "auth-token": localStorage.getItem("authToken"),
+        },
+      } // Add the token to the headers
+    );
+    const data = await response.json();
+    setMatch(data.message);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -528,15 +546,28 @@ const Openings = () => {
               onChange={(e) => setFilterRole(e.target.value)}
               className="border p-2 rounded"
             />
+            <button
+              onClick={handleFetchAI}
+              className="bg-blue-500 text-white px-4 py-2 rounded-xl"
+              data-te-ripple-init
+              data-te-ripple-color="light"
+              type="button">
+              Match Your Resume
+            </button>
           </div>
           <div className="flex justify-evenly align-middle flex-wrap">
-            {filteredOpen.map((item) => (
+            {filteredOpen.map((item, index) => (
               <div
                 key={item._id}
                 className="bg-gray-100 p-4 rounded-lg w-1/5 m-2">
                 <div className="flex justify-between items-center align-middle">
                   <div className="w-2/3">
                     <h2 className="text-xl font-bold mb-2 p-2">{item.name}</h2>
+                    {match && match.length > 0 && (
+                      <span className="text-sm mb-2 pl-2 flex justify-between items-center">
+                        Match : {match[index].score}
+                      </span>
+                    )}
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
                       <p>{item.role}</p>
                       <button
