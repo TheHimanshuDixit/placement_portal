@@ -77,7 +77,7 @@ async function job() {
   }
 }
 
-function scheduleJob() {
+function eventSchedulerJob() {
   console.log("Scheduling job to run every minute");
   // schedule the job to run every day at 12:00 AM then what is cron expression for that
   // * * * * * * => every second
@@ -90,4 +90,4 @@ function scheduleJob() {
   schedule.scheduleJob("* * * * * *", job);
 }
 
-module.exports = { scheduleJob };
+module.exports = { eventSchedulerJob };

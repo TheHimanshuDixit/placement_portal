@@ -1,108 +1,68 @@
-const express = require("express");
-const router = express.Router();
 const Opening = require("../models/Opening");
 const Student = require("../models/Student");
 const College = require("../models/College");
+const { calculateStatistics } = require("../utils/calculateStatistics");
 
-const calculateStatistics = (packages) => {
-  const highest = Math.max(...packages);
-  const lowest = Math.min(...packages);
-  const sum = packages.reduce((acc, pkg) => acc + pkg, 0);
-  const average = sum / packages.length;
-  const median = packages.sort((a, b) => a - b)[
-    Math.floor(packages.length / 2)
-  ];
-  return { highest, lowest, median, average };
-};
-
-// GET /api/stats/yearly
-router.get("/", async (req, res) => {
+const getYearlyStatistics = async (req, res) => {
   try {
-    // Fetch all students and openings
-    let students = await Student.find();
-    let openings = await Opening.find();
-    let colleges = await College.find();
-
-    // Helper object to track data for each year
+    const students = await Student.find();
+    const openings = await Opening.find();
+    const colleges = await College.find();
     let data = {};
 
-    // Process student data to calculate placed percentage by year
     students.forEach((student) => {
       const year = student.year;
       if (!data[year]) {
-        data[year] = { year: year, placed: 0, totalStudents: 0, companies: 0 };
+        data[year] = { year, placed: 0, totalStudents: 0, companies: 0 };
       }
-      if (student.placed) {
-        data[year].placed++;
-      }
+      if (student.placed) data[year].placed++;
     });
 
-    // Process opening data to calculate the number of companies by year
     openings.forEach((opening) => {
       const year = opening.batch;
       if (!data[year]) {
-        data[year] = { year: year, placed: 0, totalStudents: 0, companies: 0 };
+        data[year] = { year, placed: 0, totalStudents: 0, companies: 0 };
       }
       data[year].companies++;
     });
 
-    // Process college data to calculate the number of students by year
     colleges.forEach((college) => {
-      const en = college.enroll;
-      let year = 0;
-      if (en.length === 8) {
-        let temp = en.slice(0, 2);
-        temp = "20" + temp;
-        year = parseInt(temp);
-        year += 4;
-      } else if (en.length === 10) {
-        let temp = en.slice(2, 2);
-        temp = "20" + temp;
-        year = parseInt(temp);
-        year += 4;
-      }
+      const enroll = college.enroll;
+      let year =
+        enroll.length === 8
+          ? parseInt(`20${enroll.slice(0, 2)}`) + 4
+          : parseInt(`20${enroll.slice(2, 2)}`) + 4;
       if (!data[year]) {
-        data[year] = { year: year, placed: 0, totalStudents: 0, companies: 0 };
+        data[year] = { year, placed: 0, totalStudents: 0, companies: 0 };
       }
       data[year].totalStudents++;
     });
 
-    // Calculate placed percentage for each year and format the result
-    let result = Object.values(data).map((item) => {
-      const placedPercentage =
-        item.totalStudents > 0
-          ? Math.round((item.placed / item.totalStudents) * 100)
-          : 0;
-      return {
+    const result = Object.values(data)
+      .map((item) => ({
         year: item.year,
-        placed: placedPercentage,
+        placed:
+          item.totalStudents > 0
+            ? Math.round((item.placed / item.totalStudents) * 100)
+            : 0,
         companies: item.companies,
-      };
-    });
+      }))
+      .sort((a, b) => a.year - b.year);
 
-    // Sort result by year (optional)
-    result.sort((a, b) => a.year - b.year);
-
-    // Return the result
     res.json(result);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
-});
+};
 
-// GET /api/stats/yearly-details
-router.get("/dashboard", async (req, res) => {
+const getDashboardStatistics = async (req, res) => {
   try {
-    // Fetch all necessary data
-    let students = await Student.find();
-    let openings = await Opening.find();
-    let colleges = await College.find();
+    const students = await Student.find();
+    const openings = await Opening.find();
+    const colleges = await College.find();
+    let data = {},
+      yearData = {};
 
-    let yearData = {};
-    let data = {};
-
-    // Group the students, openings, and applications by year
     students.forEach((student) => {
       const year = student.year;
       if (!data[year]) {
@@ -125,9 +85,8 @@ router.get("/dashboard", async (req, res) => {
             (o) => o._id.toString() === companyId.toString()
           );
           if (opening) {
-            if (!data[year].offers[opening.name])
-              data[year].offers[opening.name] = 0;
-            data[year].offers[opening.name]++;
+            data[year].offers[opening.name] =
+              (data[year].offers[opening.name] || 0) + 1;
           }
         });
       }
@@ -149,34 +108,24 @@ router.get("/dashboard", async (req, res) => {
           companiesList: [],
         };
       }
-      if (!data[year].roles[role]) data[year].roles[role] = 0;
-      if (!data[year].month[month]) data[year].month[month] = 0;
-      data[year].roles[role]++;
-      data[year].month[month]++;
+      data[year].roles[role] = (data[year].roles[role] || 0) + 1;
+      data[year].month[month] = (data[year].month[month] || 0) + 1;
       data[year].companies++;
       data[year].packages.push(parseInt(opening.ctc));
       data[year].companiesList.push({
         name: opening.name,
         package: opening.ctc,
         placements: data[year].offers[opening.name] || 0,
-        visitDate: opening.date.toISOString().split("T")[0], // Format date as "YYYY-MM-DD"
+        visitDate: opening.date.toISOString().split("T")[0],
       });
     });
 
     colleges.forEach((college) => {
-      const en = college.enroll;
-      let year = 0;
-      if (en.length === 8) {
-        let temp = en.slice(0, 2);
-        temp = "20" + temp;
-        year = parseInt(temp);
-        year += 4;
-      } else if (en.length === 10) {
-        let temp = en.slice(2, 2);
-        temp = "20" + temp;
-        year = parseInt(temp);
-        year += 4;
-      }
+      const enroll = college.enroll;
+      let year =
+        enroll.length === 8
+          ? parseInt(`20${enroll.slice(0, 2)}`) + 4
+          : parseInt(`20${enroll.slice(2, 2)}`) + 4;
       if (!data[year]) {
         data[year] = {
           year,
@@ -189,12 +138,10 @@ router.get("/dashboard", async (req, res) => {
       data[year].totalStudents++;
     });
 
-    // Construct the final yearData
     for (let year in data) {
       const { highest, lowest, median, average } = calculateStatistics(
         data[year].packages
       );
-
       yearData[year] = {
         statistics: {
           highest,
@@ -233,12 +180,10 @@ router.get("/dashboard", async (req, res) => {
       };
     }
 
-    // Return the constructed yearData
     res.json(yearData);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
-});
+};
 
-module.exports = router;
+module.exports = { getYearlyStatistics, getDashboardStatistics };
