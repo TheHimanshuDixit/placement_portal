@@ -35,7 +35,7 @@ const generateMatchScores = async (openings, resumeText) => {
     const prompt = `You are well trained in resume matching and have a good understanding of the openings. I'll give you some companies details and one resume. You have to analyze the resume and openings carefully and generate a match percentage for each opening in JSON format: [{Id: id, score: percentage}]. If the data is incorrect, return null. The student's resume: ${resumeText}. These are the following openings: ${openingsPrompt}. Please generate the desired result.`;
 
     const result = await model.generateContent(prompt);
-    const responseText = await result.response.text();
+    const responseText = result.response.text();
 
     return responseText !== null ? JSON.parse(responseText) : null;
   } catch (error) {

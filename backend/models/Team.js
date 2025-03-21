@@ -30,5 +30,4 @@ const TeamSchema = new Schema({
 });
 
 const Team = mongoose.model("team", TeamSchema);
-// Team.createIndexes();
 module.exports = Team;
