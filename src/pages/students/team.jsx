@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import GlowingLoader from "../loader";
+import GlowingLoader from "../../components/loader";
 
 const Team = () => {
   const [teams, setTeams] = useState([]);

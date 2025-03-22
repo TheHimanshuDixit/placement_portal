@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Ripple, Input, Collapse, initTE } from "tw-elements";
+import { Modal, Ripple, Input, Collapse, initTWE } from "tw-elements";
 import { FaEdit } from "react-icons/fa";
-import { IoIosRemoveCircle } from "react-icons/io";
-import { IoIosAddCircle } from "react-icons/io";
-import GlowingLoader from "../loader";
+import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 
 const Mycontributions = () => {
   const [contributionList, setContributionList] = useState([]);
@@ -28,7 +26,11 @@ const Mycontributions = () => {
       window.location.href = "/login";
     }
 
-    initTE({ Collapse, Modal, Ripple, Input });
+    initTWE(
+      { Collapse, Modal, Ripple, Input },
+      { allowReinits: true },
+      { checkOtherImports: true }
+    );
 
     fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/getbyid`, {
       method: "GET",
@@ -157,14 +159,14 @@ const Mycontributions = () => {
   return (
     <div>
       <div
-        data-te-modal-init
+        data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
         id="exampleModalLong"
         tabIndex="-1"
         aria-labelledby="exampleModalLongLabel"
         aria-hidden="true">
         <div
-          data-te-modal-dialog-ref
+          data-twe-modal-dialog-ref
           className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
           <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
@@ -176,7 +178,7 @@ const Mycontributions = () => {
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                data-te-modal-dismiss
+                data-twe-modal-dismiss
                 aria-label="Close">
                 <span className="[&>svg]:h-6 [&>svg]:w-6">
                   <svg
@@ -198,13 +200,13 @@ const Mycontributions = () => {
             <div className="relative p-4" style={{ minHeight: "500px" }}>
               <div className="mx-auto block max-w-md rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <form>
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <textarea
                       type="text"
                       name="question"
                       defaultValue={contri.question}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput7"
                       placeholder="Question"></textarea>
                     <label
@@ -214,13 +216,13 @@ const Mycontributions = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <textarea
                       type="text"
                       name="answer"
                       onChange={handleChange}
                       defaultValue={contri.answer}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput8"
                       placeholder="Answer"></textarea>
                     <label
@@ -230,13 +232,13 @@ const Mycontributions = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="company"
                       value={contri.company}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput9"
                       placeholder="Company"
                     />
@@ -247,13 +249,13 @@ const Mycontributions = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="role"
                       value={contri.role}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput12"
                       placeholder="Role"
                     />
@@ -264,13 +266,13 @@ const Mycontributions = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="year"
                       value={contri.year}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput10"
                       placeholder="Year"
                     />
@@ -281,13 +283,13 @@ const Mycontributions = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="round"
                       value={contri.round}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput11"
                       placeholder="Round"
                     />
@@ -298,13 +300,13 @@ const Mycontributions = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="topic"
                       value={contri.topic}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput11"
                       placeholder="Topics"
                     />
@@ -322,9 +324,9 @@ const Mycontributions = () => {
               <button
                 type="button"
                 className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light">
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light">
                 Close
               </button>
               <button
@@ -337,9 +339,9 @@ const Mycontributions = () => {
                   }
                 }}
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light">
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light">
                 {which}
               </button>
             </div>
@@ -349,10 +351,10 @@ const Mycontributions = () => {
 
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-xl hidden"
-        data-te-toggle="modal"
-        data-te-target="#exampleModalLong"
-        data-te-ripple-init
-        data-te-ripple-color="light"
+        data-twe-toggle="modal"
+        data-twe-target="#exampleModalLong"
+        data-twe-ripple-init
+        data-twe-ripple-color="light"
         type="button">
         Apply
       </button>
@@ -382,19 +384,19 @@ const Mycontributions = () => {
                         topic: [],
                       });
                     }}
-                    data-te-toggle="modal"
-                    data-te-target="#exampleModalLong"
+                    data-twe-toggle="modal"
+                    data-twe-target="#exampleModalLong"
                   />
                 </span>
                 <button
-                  className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
+                  className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-twe-collapse-collapsed])]:text-primary [&:not([data-twe-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-twe-collapse-collapsed])]:text-primary-400"
                   type="button"
-                  data-te-collapse-init
-                  data-te-target="#flush-collapseOne"
+                  data-twe-collapse-init
+                  data-twe-target="#flush-collapseOne"
                   aria-expanded="false"
                   aria-controls="flush-collapseOne">
-                  Example Question
-                  <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
+                  Example Question{" "}
+                  <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-twe-collapse-collapsed]]:rotate-0 group-[[data-twe-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-twe-collapse-collapsed]]:fill-[#eee]">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -413,10 +415,10 @@ const Mycontributions = () => {
               <div
                 id="flush-collapseOne"
                 className="!visible border-0"
-                data-te-collapse-item
-                data-te-collapse-show
+                data-twe-collapse-item
+                data-twe-collapse-show
                 aria-labelledby="flush-headingOne"
-                data-te-parent="#accordionFlushExample">
+                data-twe-parent="#accordionFlushExample">
                 <div className="px-5 py-4">
                   Click below question to see answer
                 </div>
@@ -445,8 +447,8 @@ const Mycontributions = () => {
                           });
                           setIdd(key._id);
                         }}
-                        data-te-toggle="modal"
-                        data-te-target="#exampleModalLong"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModalLong"
                         className="text-xl mr-2 cursor-pointer"
                       />
                       <IoIosRemoveCircle
@@ -455,11 +457,11 @@ const Mycontributions = () => {
                       />
                     </span>
                     <button
-                      className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
+                      className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-twe-collapse-collapsed])]:text-primary [&:not([data-twe-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-twe-collapse-collapsed])]:text-primary-400"
                       type="button"
-                      data-te-collapse-init
-                      data-te-collapse-collapsed
-                      data-te-target={`#flush-${key._id}`}
+                      data-twe-collapse-init
+                      data-twe-collapse-collapsed
+                      data-twe-target={`#flush-${key._id}`}
                       aria-expanded="false"
                       aria-controls={`flush-${key._id}`}>
                       {key.question}
@@ -486,7 +488,7 @@ const Mycontributions = () => {
                           );
                         })}
                       </div>
-                      <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-te-collapse-collapsed]]:fill-[#eee]">
+                      <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-twe-collapse-collapsed]]:rotate-0 group-[[data-twe-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-[#8FAEE0] dark:group-[[data-twe-collapse-collapsed]]:fill-[#eee]">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 16 16">
@@ -501,9 +503,9 @@ const Mycontributions = () => {
                   <div
                     id={`flush-${key._id}`}
                     className="!visible hidden border-0"
-                    data-te-collapse-item
+                    data-twe-collapse-item
                     aria-labelledby={key.question}
-                    data-te-parent="#accordionFlushExample">
+                    data-twe-parent="#accordionFlushExample">
                     <div className="py-4 px-5 text-neutral-500 dark:text-neutral-300">
                       {key.answer}
                     </div>

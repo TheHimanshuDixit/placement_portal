@@ -70,7 +70,7 @@ const loginTeamMember = async (req, res) => {
 
     const authAdminToken = jwt.sign({ email }, token, { expiresIn: "1d" });
 
-    res.json({ message: "Login successful", authAdminToken });
+    res.json({ message: "success", authAdminToken });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

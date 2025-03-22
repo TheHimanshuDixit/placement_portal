@@ -11,8 +11,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import Dashboard from "./dashboard";
-import GlowingLoader from "../loader";
+import Dashboard from "../../components/admin/dashboard";
+import GlowingLoader from "../../components/loader";
 
 const Record = () => {
   // Data for both charts

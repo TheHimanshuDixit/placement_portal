@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "tailwindcss/tailwind.css";
-import GlowingLoader from "../loader";
+import GlowingLoader from "../../components/loader";
 
 const Myattendence = () => {
   const [companies, setCompanies] = useState([]);

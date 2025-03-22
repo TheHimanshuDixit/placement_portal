@@ -1,148 +1,114 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { initFlowbite } from "flowbite";
 import { CgProfile } from "react-icons/cg";
 
 const Header = () => {
-  const [click, setClick] = useState("/");
-  const [onProfile, setOnProfile] = useState(false);
+  const [activePage, setActivePage] = useState("/");
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setActivePage(window.location.pathname);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     window.location.href = "/login";
   };
 
-  const handleClick = (path) => {
-    setClick(path);
-  };
-
-  useEffect(() => {
-    initFlowbite();
-    handleClick(window.location.pathname);
-  }, []);
-
   return (
-    <>
-      <header>
-        <nav className="px-4 lg:px-6 py-2.5 dark:bg-gray-800 border-b-2 shadow-md">
-          <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <Link to="/" className="flex items-center">
-              <img
-                src="./Images/logo.png"
-                className="mr-3 h-6 sm:h-9"
-                alt="Flowbite Logo"
-              />
-              <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                JIIT:T&P Portal
-              </span>
-            </Link>
-            <div className="flex items-center lg:order-2">
-              {!localStorage.getItem("authToken") && (
+    <nav className="flex-no-wrap relative flex w-full items-center justify-between bg-zinc-50 py-2 shadow-md dark:bg-neutral-700 lg:py-4">
+      <div className="flex w-full flex-wrap items-center justify-between px-3">
+        {/* Hamburger button for mobile */}
+        <button
+          className="lg:hidden px-2 text-black/50 dark:text-neutral-200"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle navigation">
+          <svg className="w-7" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              fillRule="evenodd"
+              d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex items-center text-neutral-900 dark:text-neutral-200">
+          <img src="./Images/logo.png" alt="Logo" className="mr-3 h-6 sm:h-9" />
+          <span className="text-xl font-semibold">JIIT:T&P Portal</span>
+        </Link>
+
+        {/* Navigation Links */}
+        <div className={`${isMenuOpen ? "flex" : "hidden"} flex-grow lg:flex`}>
+          <ul className="list-none me-auto flex flex-col lg:flex-row">
+            {[
+              { name: "Home", path: "/" },
+              { name: "About", path: "/about" },
+              { name: "T&P Team", path: "/team" },
+              { name: "Internships/Jobs", path: "/openings" },
+              { name: "Contribute", path: "/contribute" },
+              { name: "Contact", path: "/contact" },
+            ].map((item) => (
+              <li key={item.path} className="lg:pe-2">
                 <Link
-                  to="/login"
-                  className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                  Log in
+                  to={item.path}
+                  onClick={() => setActivePage(item.path)}
+                  className={`block py-2 px-3 transition ${
+                    activePage === item.path
+                      ? "text-blue-500"
+                      : "text-gray-700 hover:text-black"
+                  } dark:text-white/60 dark:hover:text-white/80`}>
+                  {item.name}
                 </Link>
-              )}
-              {localStorage.getItem("authToken") && (
-                <CgProfile
-                  onMouseOver={() => {
-                    setOnProfile(true);
-                  }}
-                  onMouseLeave={() => {
-                    setOnProfile(false);
-                  }}
-                  className="text-3xl lg:text-3xl text-primary-700 hover:text-primary-800"
-                />
-              )}
-              {onProfile && (
-                <div
-                  onMouseOver={() => {
-                    setOnProfile(true);
-                  }}
-                  onMouseLeave={() => {
-                    setOnProfile(false);
-                  }}
-                  className="absolute right-2 -top-1 mt-12 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-md z-50">
-                  <ul>
-                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="/myprofile">My Profile</Link>
-                    </li>
-                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="/myapplications">My Applications</Link>
-                    </li>
-                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="/myattendence">My Attendance</Link>
-                    </li>
-                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="/mycontributions">My Contributions</Link>
-                    </li>
-                    <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                      <Link to="#" onClick={handleLogout}>
-                        Logout
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-              <button
-                data-collapse-toggle="mobile-menu-2"
-                type="button"
-                className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                aria-controls="mobile-menu-2"
-                aria-expanded="false">
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className="w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                    clipRule="evenodd"></path>
-                </svg>
-                <svg
-                  className="hidden w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"></path>
-                </svg>
-              </button>
-            </div>
-            <div
-              className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
-              id="mobile-menu-2">
-              <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                {[
-                  { name: "Home", path: "/" },
-                  { name: "About", path: "/about" },
-                  { name: "T&P Team", path: "/team" },
-                  { name: "Internships/Jobs", path: "/openings" },
-                  { name: "Contribute", path: "/contribute" },
-                  { name: "Contact", path: "/contact" },
-                ].map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      to={item.path}
-                      onClick={() => handleClick(item.path)}
-                      className={`${
-                        click === item.path ? "text-blue-700" : "text-gray-700"
-                      } block py-2 pr-4 pl-3  border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}>
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Profile & Logout */}
+        <div className="relative flex items-center">
+          {localStorage.getItem("authToken") ? (
+            <CgProfile
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className="text-3xl text-primary-700 cursor-pointer"
+            />
+          ) : (
+            <Link
+              to="/login"
+              className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+              Log in
+            </Link>
+          )}
+
+          {isProfileOpen && (
+            <div className="absolute right-0 mt-12 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-md z-50">
+              <ul>
+                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  <Link to="/myprofile">My Profile</Link>
+                </li>
+                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  <Link to="/myapplications">My Applications</Link>
+                </li>
+                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  <Link to="/myattendence">My Attendance</Link>
+                </li>
+                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  <Link to="/mycontributions">My Contributions</Link>
+                </li>
+                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                  <button onClick={handleLogout} className="w-full text-left">
+                    Logout
+                  </button>
+                </li>
               </ul>
             </div>
-          </div>
-        </nav>
-      </header>
-    </>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 };
 

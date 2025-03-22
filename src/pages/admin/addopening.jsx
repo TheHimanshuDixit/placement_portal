@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { FaCircleInfo } from "react-icons/fa6";
-import { Modal, Ripple, Input, initTE } from "tw-elements";
-import Openingform from "./openingform";
+import { Modal, Ripple, Input, initTWE } from "tw-elements";
+import Openingform from "../../components/admin/openingform";
 import { FaDownload, FaCalendarAlt, FaMoneyCheckAlt } from "react-icons/fa";
-import GlowingLoader from "../loader";
+import GlowingLoader from "../../components/loader";
 
 const Addopening = () => {
   const [open, setOpen] = useState([]);
@@ -58,7 +58,11 @@ const Addopening = () => {
       window.location.href = "/login";
     }
 
-    initTE({ Modal, Ripple, Input });
+    initTWE(
+      { Modal, Ripple, Input },
+      { allowReinits: true },
+      { checkOtherImports: true }
+    );
     data();
   }, [update]);
 
@@ -78,14 +82,11 @@ const Addopening = () => {
     const stdlist = await fetch(`${process.env.REACT_APP_DEV_URI}/api/auth`);
     const std = await stdlist.json();
 
-    for (let i = 0; i < result.data.length; i++) {
-      for (let j = 0; j < std.length; j++) {
-        result.data[i].offerStatus = "Not Offered";
-        if (
-          std[j].email === result.data[i].email &&
-          std[j].companys.includes(id)
-        ) {
-          result.data[i].offerStatus = "Offered";
+    for (const item of result.data) {
+      item.offerStatus = "Not Offered";
+      for (const student of std) {
+        if (student.email === item.email && student.companys.includes(id)) {
+          item.offerStatus = "Offered";
           break;
         }
       }
@@ -318,9 +319,9 @@ const Addopening = () => {
     ).then((res) => res.json());
     setLoading(false);
     if (data.message === "success") {
-      for (let i = 0; i < open.length; i++) {
-        if (open[i]._id === id) {
-          open[i].progress = p;
+      for (const item of open) {
+        if (item._id === id) {
+          item.progress = p;
           break;
         }
       }
@@ -334,10 +335,9 @@ const Addopening = () => {
       [studentId]: !prevState[studentId],
     }));
 
-    for (let i = 0; i < regList.length; i++) {
-      if (regList[i].email === studentId) {
-        regList[i].offerStatus =
-          regList[i].offerStatus === "Offered" ? "Not Offered" : "Offered";
+    for (const item of regList) {
+      if (item.email === studentId) {
+        item.offerStatus = item.offerStatus === "Offered" ? "Not Offered" : "Offered";
         break;
       }
     }
@@ -346,7 +346,7 @@ const Addopening = () => {
   const handleSubmitOffers = async () => {
     setCheck(false);
     const emails = [];
-    for (let e in emailOffer) {
+    for (const e of Object.keys(emailOffer)) {
       if (emailOffer[e] === true) {
         emails.push(e);
       }
@@ -391,14 +391,14 @@ const Addopening = () => {
         setLogo={setLogo}
       />
       <div
-        data-te-modal-init
+        data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
         id="exampleModalLong1"
         tabIndex="-1"
         aria-labelledby="exampleModalLongLabel"
         aria-hidden="true">
         <div
-          data-te-modal-dialog-ref
+          data-twe-modal-dialog-ref
           className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
           <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
@@ -415,9 +415,9 @@ const Addopening = () => {
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                data-te-modal-dismiss
+                data-twe-modal-dismiss
                 aria-label="Close">
-                <span
+                <button
                   className="[&>svg]:h-6 [&>svg]:w-6"
                   onClick={() => {
                     setCheck(false);
@@ -434,7 +434,7 @@ const Addopening = () => {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                </span>
+                </button>
               </button>
             </div>
 
@@ -481,9 +481,9 @@ const Addopening = () => {
               <button
                 type="button"
                 className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
                 onClick={() => {
                   setCheck(false);
                 }}>
@@ -492,9 +492,9 @@ const Addopening = () => {
               <button
                 type="button"
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
                 onClick={handleSubmitOffers}>
                 Submit
               </button>
@@ -503,14 +503,14 @@ const Addopening = () => {
         </div>
       </div>
       <div
-        data-te-modal-init
+        data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
         id="exampleModalLong2"
         tabIndex="-1"
         aria-labelledby="exampleModalLongLabel"
         aria-hidden="true">
         <div
-          data-te-modal-dialog-ref
+          data-twe-modal-dialog-ref
           className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
           <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
@@ -522,9 +522,9 @@ const Addopening = () => {
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                data-te-modal-dismiss
+                data-twe-modal-dismiss
                 aria-label="Close">
-                <span
+                <button
                   className="[&>svg]:h-6 [&>svg]:w-6"
                   onClick={() => {
                     setCheck(false);
@@ -541,7 +541,7 @@ const Addopening = () => {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                </span>
+                </button>
               </button>
             </div>
 
@@ -646,9 +646,9 @@ const Addopening = () => {
               <button
                 type="button"
                 className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
                 onClick={() => {
                   setCheck(false);
                 }}>
@@ -661,10 +661,10 @@ const Addopening = () => {
 
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-xl hidden"
-        data-te-toggle="modal"
-        data-te-target="#exampleModalLong"
-        data-te-ripple-init
-        data-te-ripple-color="light"
+        data-twe-toggle="modal"
+        data-twe-target="#exampleModalLong"
+        data-twe-ripple-init
+        data-twe-ripple-color="light"
         type="button">
         Apply
       </button>
@@ -685,8 +685,8 @@ const Addopening = () => {
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
                       <p>{item.role}</p>
                       <button
-                        data-te-toggle="modal"
-                        data-te-target="#exampleModalLong2"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModalLong2"
                         onClick={() => {
                           setCompany(item);
                           setCheck(true);
@@ -722,10 +722,10 @@ const Addopening = () => {
                       handleIt(item._id);
                     }}
                     className="bg-blue-500 text-white px-3 py-1 rounded-md border-2 border-black text-sm"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
-                    data-te-toggle="modal"
-                    data-te-target="#exampleModalLong1"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light"
+                    data-twe-toggle="modal"
+                    data-twe-target="#exampleModalLong1"
                     type="button">
                     Stud. List
                   </button>

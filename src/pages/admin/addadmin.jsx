@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Teamdisplay from "./teamdisplay";
-import GlowingLoader from "../loader";
+import Teamdisplay from "../../components/admin/teamdisplay";
+import GlowingLoader from "../../components/loader";
 
 const Addadmin = () => {
   const [img, setImg] = useState("");
@@ -71,13 +71,10 @@ const Addadmin = () => {
     formData.append("position", teamDetail.position);
     formData.append("password", teamDetail.password);
 
-    const res = await fetch(
-      `${process.env.REACT_APP_DEV_URI}/api/team/add`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const res = await fetch(`${process.env.REACT_APP_DEV_URI}/api/team/add`, {
+      method: "POST",
+      body: formData,
+    });
 
     const data = await res.json();
     console.log(data);
@@ -119,15 +116,15 @@ const Addadmin = () => {
         } else {
           alert("Team Member Edited Successfully");
           setType("Add");
-          for (let i = 0; i < teamMembers.length; i++) {
-            if (teamMembers[i]._id === editId) {
-              teamMembers[i].name =
-                teamDetail.firstName + " " + teamDetail.lastName;
-              teamMembers[i].email = teamDetail.email;
-              teamMembers[i].position = teamDetail.position;
-              teamMembers[i].image = teamDetail.image;
-              teamDetail.password.length > 0 &&
-                (teamMembers[i].password = teamDetail.password);
+          for (const member of teamMembers) {
+            if (member._id === editId) {
+              member.name = teamDetail.firstName + " " + teamDetail.lastName;
+              member.email = teamDetail.email;
+              member.position = teamDetail.position;
+              member.image = teamDetail.image;
+              if (teamDetail.password.length > 0) {
+                member.password = teamDetail.password;
+              }
             }
           }
           setTeamDetail({
@@ -234,7 +231,7 @@ const Addadmin = () => {
                       type="text"
                       value={teamDetail.position}
                       onChange={handleChange}
-                      autoComplete="position"
+                      autoComplete=""
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -268,7 +265,7 @@ const Addadmin = () => {
                       type="password"
                       value={teamDetail.password}
                       onChange={handleChange}
-                      autoComplete="password"
+                      autoComplete="current-password"
                       className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>

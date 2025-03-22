@@ -6,9 +6,9 @@ import {
   FaMoneyCheckAlt,
 } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
-import { Modal, Ripple, Input, initTE } from "tw-elements";
+import { Modal, Ripple, Input, initTWE } from "tw-elements";
 import { Link } from "react-router-dom";
-import GlowingLoader from "../loader";
+import GlowingLoader from "../../components/loader";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
@@ -39,7 +39,11 @@ const Openings = () => {
   const [match, setMatch] = useState([]);
 
   useEffect(() => {
-    initTE({ Modal, Ripple, Input });
+    initTWE(
+      { Modal, Ripple, Input },
+      { allowReinits: true },
+      { checkOtherImports: true }
+    );
 
     // eslint-disable-next-line
     const data = (async () => {
@@ -189,14 +193,14 @@ const Openings = () => {
   ) : (
     <>
       <div
-        data-te-modal-init
+        data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
         id="exampleModalLong"
         tabIndex="-1"
         aria-labelledby="exampleModalLongLabel"
         aria-hidden="true">
         <div
-          data-te-modal-dialog-ref
+          data-twe-modal-dialog-ref
           className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
           <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
@@ -208,7 +212,7 @@ const Openings = () => {
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                data-te-modal-dismiss
+                data-twe-modal-dismiss
                 aria-label="Close">
                 <span className="[&>svg]:h-6 [&>svg]:w-6">
                   <svg
@@ -230,13 +234,13 @@ const Openings = () => {
             <div className="relative p-4" style={{ minHeight: "500px" }}>
               <div className="mx-auto block max-w-md rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
                 <form>
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="name"
                       value={apply.name}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput7"
                       placeholder="Name"
                     />
@@ -247,13 +251,13 @@ const Openings = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="email"
                       name="email"
                       value={apply.email}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput8"
                       placeholder="Email address"
                     />
@@ -264,13 +268,13 @@ const Openings = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="enroll"
                       value={apply.enroll}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput9"
                       placeholder="Enrollnment"
                     />
@@ -281,13 +285,13 @@ const Openings = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="phone"
                       value={apply.phone}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput12"
                       placeholder="Phone"
                     />
@@ -298,13 +302,13 @@ const Openings = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="branch"
                       value={apply.branch}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput10"
                       placeholder="Branch"
                     />
@@ -315,13 +319,13 @@ const Openings = () => {
                     </label>
                   </div>
 
-                  <div className="relative mb-6" data-te-input-wrapper-init>
+                  <div className="relative mb-6" data-twe-input-wrapper-init>
                     <input
                       type="text"
                       name="gender"
                       value={apply.gender}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput11"
                       placeholder="Gender"
                     />
@@ -363,17 +367,17 @@ const Openings = () => {
               <button
                 type="button"
                 className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light">
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light">
                 Close
               </button>
               <button
                 type="button"
                 onClick={handleClick}
                 className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                data-te-ripple-init
-                data-te-ripple-color="light">
+                data-twe-ripple-init
+                data-twe-ripple-color="light">
                 Apply
               </button>
             </div>
@@ -381,14 +385,14 @@ const Openings = () => {
         </div>
       </div>
       <div
-        data-te-modal-init
+        data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
         id="exampleModalLong2"
         tabIndex="-1"
         aria-labelledby="exampleModalLongLabel"
         aria-hidden="true">
         <div
-          data-te-modal-dialog-ref
+          data-twe-modal-dialog-ref
           className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
           <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
@@ -400,9 +404,9 @@ const Openings = () => {
               <button
                 type="button"
                 className="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                data-te-modal-dismiss
+                data-twe-modal-dismiss
                 aria-label="Close">
-                <span
+                <button
                   className="[&>svg]:h-6 [&>svg]:w-6"
                   onClick={() => {
                     setCheck(false);
@@ -419,7 +423,7 @@ const Openings = () => {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                </span>
+                </button>
               </button>
             </div>
 
@@ -486,9 +490,9 @@ const Openings = () => {
               <button
                 type="button"
                 className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light"
+                data-twe-modal-dismiss
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
                 onClick={() => {
                   setCheck(false);
                 }}>
@@ -499,11 +503,11 @@ const Openings = () => {
                 className={`ms-1 inline-block rounded ${
                   handleCompTime(company.applyby) ? "bg-gray-500" : "bg-primary"
                 } px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong`}
-                // data-te-modal-dismiss
-                data-te-toggle="modal"
-                data-te-target="#exampleModalLong"
-                data-te-ripple-init
-                data-te-ripple-color="light"
+                // data-twe-modal-dismiss
+                data-twe-toggle="modal"
+                data-twe-target="#exampleModalLong"
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
                 disabled={handleCompTime(company.applyby)}
                 onClick={() => {
                   setCheck(false);
@@ -517,10 +521,10 @@ const Openings = () => {
 
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-xl hidden"
-        data-te-toggle="modal"
-        data-te-target="#exampleModalLong"
-        data-te-ripple-init
-        data-te-ripple-color="light"
+        data-twe-toggle="modal"
+        data-twe-target="#exampleModalLong"
+        data-twe-ripple-init
+        data-twe-ripple-color="light"
         type="button">
         Apply
       </button>
@@ -549,8 +553,8 @@ const Openings = () => {
             <button
               onClick={handleFetchAI}
               className="bg-blue-500 text-white px-4 py-2 rounded-xl"
-              data-te-ripple-init
-              data-te-ripple-color="light"
+              data-twe-ripple-init
+              data-twe-ripple-color="light"
               type="button">
               Match Your Resume
             </button>
@@ -571,8 +575,8 @@ const Openings = () => {
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
                       <p>{item.role}</p>
                       <button
-                        data-te-toggle="modal"
-                        data-te-target="#exampleModalLong2"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModalLong2"
                         onClick={() => {
                           setCompany(item);
                           setCheck(true);
@@ -620,10 +624,10 @@ const Openings = () => {
                         ? "bg-gray-500"
                         : "bg-blue-500"
                     } text-white px-4 py-2 rounded-xl`}
-                    data-te-toggle="modal"
-                    data-te-target="#exampleModalLong"
-                    data-te-ripple-init
-                    data-te-ripple-color="light"
+                    data-twe-toggle="modal"
+                    data-twe-target="#exampleModalLong"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light"
                     type="button">
                     Apply
                   </button>

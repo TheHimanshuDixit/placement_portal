@@ -5,7 +5,7 @@ import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import GlowingLoader from "../loader";
+import GlowingLoader from "../../components/loader";
 import { useNavigate } from "react-router-dom";
 
 const Attendance = () => {
@@ -18,13 +18,7 @@ const Attendance = () => {
   const [registeredStudents, setRegisteredStudents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [placementEvents, setPlacementEvents] = useState([]);
-  const [allcompanies, setAllCompanies] = useState([]);
-
-  // const placementEvents = [
-  //   { value: "ppt", label: "PPT" },
-  //   { value: "oa", label: "Online Assessment (OA)" },
-  //   { value: "interview", label: "Interview" },
-  // ];
+  const [allCompanies, setAllCompanies] = useState([]);
 
   const handleAttendanceToggle = (studentId) => {
     setAttendance((prevState) => ({
@@ -72,7 +66,7 @@ const Attendance = () => {
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
     setLoading(true);
-    const ongoingEvents = allcompanies.filter(
+    const ongoingEvents = allCompanies.filter(
       (company) => company._id === selectedOption.value
     );
     const reqEvents = [];
@@ -118,7 +112,7 @@ const Attendance = () => {
   }, []);
 
   useEffect(() => {
-    let temp = allcompanies.filter((c) => c._id === company.value);
+    let temp = allCompanies.filter((c) => c._id === company.value);
     if (event && event.value === "ppt") {
       setDate(new Date(temp[0].ppt));
     } else if (event && event.value === "oa") {
@@ -126,7 +120,7 @@ const Attendance = () => {
     } else if (event && event.value === "interview") {
       setDate(new Date(temp[0].interview));
     }
-  }, [event]);
+  }, [event, allCompanies, company]);
 
   return loading ? (
     <GlowingLoader />
@@ -143,10 +137,13 @@ const Attendance = () => {
 
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-bold mb-2">
+          <label
+            htmlFor="company-select"
+            className="block text-gray-700 text-lg font-bold mb-2">
             Select Placement Drive Company
           </label>
           <Select
+            id="company-select"
             options={companies}
             value={company}
             onChange={handleSelectChange}
@@ -157,11 +154,14 @@ const Attendance = () => {
 
         {/* Select Ongoing Drive Event */}
         <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-bold mb-2">
+          <label
+            htmlFor="event-select"
+            className="block text-gray-700 text-lg font-bold mb-2">
             Select Ongoing Drive Event
           </label>
           {placementEvents.length && placementEvents.length > 0 ? (
             <Select
+              id="event-select"
               options={placementEvents}
               value={event}
               onChange={setEvent}
@@ -175,10 +175,13 @@ const Attendance = () => {
 
         {/* Select Date */}
         <div className="mb-6">
-          <label className="block text-gray-700 text-lg font-bold mb-2">
+          <label
+            htmlFor="date-select"
+            className="block text-gray-700 text-lg font-bold mb-2">
             Select Date
           </label>
           <DateTimePicker
+            id="date-select"
             value={date}
             onChange={(date) => setDate(date)}
             className="w-full border border-gray-300 rounded-lg p-2"
@@ -187,7 +190,9 @@ const Attendance = () => {
 
         {/* Registered Students */}
         <div className="mt-6">
-          <label className="block text-gray-700 text-lg font-bold mb-4">
+          <label
+            htmlFor="student-select"
+            className="block text-gray-700 text-lg font-bold mb-4">
             Registered Students
           </label>
           {registeredStudents.length > 0 ? (

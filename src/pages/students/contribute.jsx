@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, initTE } from "tw-elements";
+import { Collapse, initTWE } from "tw-elements";
 
 const Contribute = () => {
   const [contributionList, setContributionList] = useState([]);
@@ -12,7 +12,7 @@ const Contribute = () => {
   });
 
   useEffect(() => {
-    initTE({ Collapse });
+    initTWE( { Collapse }, { allowReinits: true }, { checkOtherImports: true });
 
     fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/get`)
       .then((res) => res.json())
@@ -123,9 +123,9 @@ const Contribute = () => {
                     <button
                       className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition hover:z-[2] focus:z-[3] focus:outline-none"
                       type="button"
-                      data-te-collapse-init
-                      data-te-collapse-collapsed
-                      data-te-target={`#flush-${key._id}`}
+                      data-twe-collapse-init
+                      data-twe-collapse-collapsed
+                      data-twe-target={`#flush-${key._id}`}
                       aria-expanded="false"
                       aria-controls={`flush-${key._id}`}>
                       {key.question}
@@ -150,7 +150,7 @@ const Contribute = () => {
                           </div>
                         ))}
                       </div>
-                      <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0">
+                      <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-[[data-twe-collapse-collapsed]]:rotate-0">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 16 16">
@@ -165,9 +165,9 @@ const Contribute = () => {
                   <div
                     id={`flush-${key._id}`}
                     className="!visible hidden border-0"
-                    data-te-collapse-item
+                    data-twe-collapse-item
                     aria-labelledby={key.question}
-                    data-te-parent="#accordionFlushExample">
+                    data-twe-parent="#accordionFlushExample">
                     <div className="py-4 px-5 text-neutral-500">
                       {key.answer}
                     </div>

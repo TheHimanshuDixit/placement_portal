@@ -1,31 +1,30 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./components/students/home";
-import Login from "./components/students/login";
-import Signup from "./components/students/signup";
-import Openings from "./components/students/openings";
+import Home from "./pages/students/home";
+import Login from "./pages/auth/login";
+import Signup from "./pages/auth/signup";
+import Openings from "./pages/students/openings";
 import Header from "./components/students/header";
 import Footer from "./components/students/footer";
-import Contact from "./components/students/contact";
-import Team from "./components/students/team";
-import About from "./components/students/about";
-import Contribute from "./components/students/contribute";
-import Error from "./components/students/error";
+import Contact from "./pages/students/contact";
+import Team from "./pages/students/team";
+import About from "./pages/students/about";
+import Contribute from "./pages/students/contribute";
+import Error from "./pages/students/errorPage";
 import ScrollToTop from "./components/students/scrollTotop";
-import Admin from "./components/admin/home";
+import Admin from "./pages/admin/home";
 import Navbar from "./components/admin/navbar";
 import FooterAdmin from "./components/admin/footer";
-import Myapplications from "./components/students/myapplications";
-import Myprofile from "./components/students/myprofile";
-import Mycontributions from "./components/students/mycontributions";
-import Forgotpassword from "./components/students/forgotpassword";
-import Addadmin from "./components/admin/addadmin";
-import Addopening from "./components/admin/addopening";
-import Highlights from "./components/admin/highlights";
-import Studetails from "./components/admin/studetails";
-import Attendance from "./components/admin/attendence";
-import Record from "./components/admin/record";
-import Myattendence from "./components/students/myattendence";
+import Myapplications from "./pages/students/myapplications";
+import Myprofile from "./pages/students/myprofile";
+import Mycontributions from "./pages/students/mycontributions";
+import Forgotpassword from "./pages/auth/forgotpassword";
+import Addadmin from "./pages/admin/addadmin";
+import Addopening from "./pages/admin/addopening";
+import Studetails from "./pages/admin/studetails";
+import Attendance from "./pages/admin/attendence";
+import Record from "./pages/admin/record";
+import Myattendence from "./pages/students/myattendence";
 import ViewAttendance from "./components/admin/viewattendance";
 import StudentList from "./components/admin/enrolledstudents";
 
@@ -68,15 +67,7 @@ function App() {
               </>
             }
           />
-          <Route
-            exact
-            path="/forgot"
-            element={
-              <>
-                <Forgotpassword />
-              </>
-            }
-          />
+          <Route exact path="/forgot" element={<Forgotpassword />} />
           <Route
             exact
             path="/openings"
@@ -208,16 +199,6 @@ function App() {
             }
           />
           <Route
-            path="/highlight"
-            element={
-              <>
-                <Navbar />
-                <Highlights />
-                <FooterAdmin />
-              </>
-            }
-          />
-          <Route
             path="/studdetails"
             element={
               <>
@@ -238,7 +219,7 @@ function App() {
             }
           />
           <Route
-            path="/attendence"
+            path="/attendance"
             element={
               <>
                 <Navbar />
