@@ -1,130 +1,170 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
+import {
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaBriefcase,
+  FaUsers,
+  FaClipboardList,
+  FaDatabase,
+  FaList,
+} from "react-icons/fa";
+import { toast, Toaster } from "react-hot-toast";
 
 const Navbar = () => {
+  const [activePage, setActivePage] = useState("/admin");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [activeNavItem, setActiveNavItem] = useState("admin");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    setActiveNavItem(() => {
-      switch (window.location.pathname) {
-        case "/admin":
-          return "admin";
-        case "/addadmin":
-          return "addadmin";
-        case "/addopening":
-          return "addopening";
-        case "/studdetails":
-          return "studdetails";
-        case "/attendance":
-          return "attendance";
-        case "/record":
-          return "record";
-        default:
-          return "";
-      }
-    });
-  }, []);
+    setActivePage(pathname);
+  }, [pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("authAdminToken");
-    window.location.href = "/login";
+    toast.success("Logged out successfully");
+    navigate("/login");
   };
 
   return (
-    <nav className="flex-no-wrap relative flex w-full items-center justify-between bg-zinc-50 py-2 shadow-md dark:bg-neutral-700 lg:py-4">
-      <div className="flex w-full flex-wrap items-center justify-between px-3">
-        {/* Hamburger button for mobile */}
-        <button
-          className="lg:hidden px-2 text-black/50 dark:text-neutral-200"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle navigation">
-          <svg className="w-7" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
+    <nav className="w-full bg-white shadow-md dark:bg-gray-900 z-50 border-b dark:border-gray-800">
+      <Toaster />
+      <div className="flex items-center justify-between px-6 py-4 border-b-2">
+        {/* Logo */}
+        <Link
+          to="/admin"
+          className="flex items-center text-gray-900 dark:text-white">
+          <img src="./Images/logo.png" alt="Logo" className="mr-3 h-8" />
+          <span className="text-xl font-semibold">JIIT:T&P Portal</span>
+        </Link>
 
-        {/* Navbar Content */}
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex gap-6">
+          {[
+            { name: "Home", path: "/admin", icon: <FaHome /> },
+            { name: "T&P Team", path: "/addadmin", icon: <FaUsers /> },
+            {
+              name: "Internships/Jobs",
+              path: "/addopening",
+              icon: <FaBriefcase />,
+            },
+            {
+              name: "Student Details",
+              path: "/studdetails",
+              icon: <FaList />,
+            },
+            {
+              name: "Attendance",
+              path: "/attendance",
+              icon: <FaClipboardList />,
+            },
+            { name: "Statistics", path: "/record", icon: <FaDatabase /> },
+          ].map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setActivePage(item.path)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-300 ${
+                activePage === item.path
+                  ? "text-blue-500 bg-gray-200 dark:bg-gray-700"
+                  : "text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}>
+              {item.icon} {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Profile & Mobile Menu */}
+        <div className="flex items-center gap-4">
+          {localStorage.getItem("authAdminToken") ? (
+            <CgProfile
+              onMouseOver={() => setIsProfileOpen(true)}
+              onMouseOut={() => setIsProfileOpen(false)}
+              className="text-3xl text-blue-600 cursor-pointer hover:scale-110 transition-all"
+            />
+          ) : (
+            <Link
+              to="/login"
+              className="px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-500 transition">
+              Log in
+            </Link>
+          )}
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="lg:hidden text-gray-900 dark:text-white text-2xl"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="lg:hidden flex flex-col items-center bg-white dark:bg-gray-900 pb-4 shadow-md transition-all animate-slideInDown">
+          {[
+            { name: "Home", path: "/admin", icon: <FaHome /> },
+            { name: "T&P Team", path: "/addadmin", icon: <FaUsers /> },
+            {
+              name: "Internships/Jobs",
+              path: "/addopening",
+              icon: <FaBriefcase />,
+            },
+            {
+              name: "Student Details",
+              path: "/studdetails",
+              icon: <FaList />,
+            },
+            {
+              name: "Attendance",
+              path: "/attendance",
+              icon: <FaClipboardList />,
+            },
+            { name: "Statistics", path: "/record", icon: <FaDatabase /> },
+          ].map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsMenuOpen(false)}
+              className="border-b-2 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-center flex justify-center items-center gap-2">
+              {item.icon} {item.name}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {/* Profile Dropdown */}
+      {isProfileOpen && (
         <div
-          className={`${
-            isMenuOpen ? "flex" : "hidden"
-          } flex-grow basis-[100%] lg:flex lg:basis-auto`}>
-          {/* Logo */}
-          <Link
-            to="/admin"
-            className="flex items-center text-neutral-900 dark:text-neutral-200">
-            <img
-              src="./Images/logo.png"
-              alt="Logo"
-              className="mr-3 h-6 sm:h-9"
-            />
-            <span className="text-xl font-semibold">JIIT:T&P Portal</span>
-          </Link>
-
-          {/* Navigation Links */}
-          <ul className="list-none me-auto flex flex-col lg:flex-row">
-            {[
-              { name: "Home", path: "/admin", key: "admin" },
-              { name: "T&P Team", path: "/addadmin", key: "addadmin" },
-              {
-                name: "Internships/Jobs",
-                path: "/addopening",
-                key: "addopening",
-              },
-              {
-                name: "Students Details",
-                path: "/studdetails",
-                key: "studdetails",
-              },
-              { name: "Attendance", path: "/attendance", key: "attendance" },
-              { name: "Statistics", path: "/record", key: "record" },
-            ].map((item) => (
-              <li key={item.key} className="lg:pe-2">
-                <Link
-                  to={item.path}
-                  onClick={() => setActiveNavItem(item.key)}
-                  className={`block py-2 px-3 transition ${
-                    activeNavItem === item.key
-                      ? "text-blue-500"
-                      : "text-gray-700 hover:text-black"
-                  } dark:text-white/60 dark:hover:text-white/80`}>
-                  {item.name}
+          className="z-10 absolute right-3 top-12 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg animate-fadeIn"
+          onMouseOver={() => setIsProfileOpen(true)}
+          onFocus={() => setIsProfileOpen(true)}
+          onMouseOut={() => setIsProfileOpen(false)}
+          onBlur={() => setIsProfileOpen(false)}
+          role="menu"
+          tabIndex={0}>
+          <ul>
+            {["Admin"].map((item) => (
+              <li
+                key={item}
+                className="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <Link to={`/${item.toLowerCase().replace(/ /g, "")}`}>
+                  {item}
                 </Link>
               </li>
             ))}
+            <li className="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <button onClick={handleLogout} className="w-full text-left">
+                Logout
+              </button>
+            </li>
           </ul>
         </div>
-
-        {/* Profile & Logout */}
-        {localStorage.getItem("authAdminToken") && (
-          <div className="relative flex items-center">
-            <CgProfile
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="text-3xl text-primary-700 cursor-pointer"
-            />
-            {isProfileOpen && (
-              <div className="absolute top-9 right-0 w-32 p-2 bg-white shadow-md rounded-md dark:bg-gray-800">
-                <Link
-                  to="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
-                  Admin
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      )}
     </nav>
   );
 };

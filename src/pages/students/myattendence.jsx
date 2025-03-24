@@ -1,11 +1,15 @@
-// Myattendence.js
-
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "tailwindcss/tailwind.css";
 import GlowingLoader from "../../components/loader";
+import {
+  FaBuilding,
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 
-const Myattendence = () => {
+const MyAttendance = () => {
   const [companies, setCompanies] = useState([]);
   const [attendanceData, setAttendanceData] = useState({});
   const [selectedCompany, setSelectedCompany] = useState(null);
@@ -69,20 +73,31 @@ const Myattendence = () => {
   const renderAttendanceTable = () => {
     const data = attendanceData[selectedCompany] || [];
     return (
-      <table className="w-full text-center border border-gray-300 mt-4">
-        <thead className="bg-blue-100">
-          <tr>
-            <th className="py-2 px-4 border border-gray-300">Event</th>
-            <th className="py-2 px-4 border border-gray-300">Date</th>
-            <th className="py-2 px-4 border border-gray-300">Status</th>
+      <table className="w-full text-center border border-gray-300 mt-4 rounded-lg overflow-hidden shadow-md">
+        <thead className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+          <tr className="grid grid-cols-3">
+            <th className="py-3 px-4">Event</th>
+            <th className="py-3 px-4">Date</th>
+            <th className="py-3 px-4">Status</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
-            <tr key={index} className="bg-white even:bg-gray-100">
-              <td className="py-2 px-4 border border-gray-300">{item.event}</td>
-              <td className="py-2 px-4 border border-gray-300">{item.date}</td>
-              <td className="py-2 px-4 border border-gray-300">
+            <tr
+              key={index}
+              className="bg-white even:bg-gray-100 grid grid-cols-3">
+              <td className="py-3 px-4 flex  items-center justify-center gap-2">
+                <FaBuilding className="text-blue-500" /> {item.event}
+              </td>
+              <td className="py-3 px-4 flex items-center justify-center gap-2">
+                <FaCalendarAlt className="text-gray-600" /> {item.date}
+              </td>
+              <td className="py-3 px-4 flex items-center justify-center gap-2">
+                {item.status === "Present" ? (
+                  <FaCheckCircle className="text-green-500" />
+                ) : (
+                  <FaTimesCircle className="text-red-500" />
+                )}
                 {item.status}
               </td>
             </tr>
@@ -95,15 +110,15 @@ const Myattendence = () => {
   return loading ? (
     <GlowingLoader />
   ) : (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+    <div className="max-w-3xl mx-auto p-6 h-screen">
+      <h1 className="text-4xl font-extrabold text-center mb-10 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
         Placement Attendance
       </h1>
       <div className="flex flex-wrap gap-4 justify-center">
         {companies.map((company) => (
           <button
             key={company.id}
-            className="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="py-3 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all"
             onClick={() => openModal(company.name)}>
             {company.name}
           </button>
@@ -113,15 +128,15 @@ const Myattendence = () => {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        className="bg-white p-6 rounded-lg max-w-lg mx-auto shadow-lg outline-none"
+        className="bg-white p-6 rounded-lg max-w-lg mx-auto shadow-2xl outline-none animate-fadeIn"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <h2 className="text-2xl font-bold text-center mb-6">
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
           {selectedCompany}
         </h2>
         {renderAttendanceTable()}
         <button
           onClick={closeModal}
-          className="mt-6 py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition w-full">
+          className="mt-6 py-3 px-6 bg-red-500 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transform transition-all w-full">
           Close
         </button>
       </Modal>
@@ -129,4 +144,4 @@ const Myattendence = () => {
   );
 };
 
-export default Myattendence;
+export default MyAttendance;

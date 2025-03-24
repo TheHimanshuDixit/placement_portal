@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
-import { FaCircleInfo } from "react-icons/fa6";
+import { FaCircleInfo, FaDownload } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
-import Openingform from "../../components/admin/openingform";
-import { FaDownload, FaCalendarAlt, FaMoneyCheckAlt } from "react-icons/fa";
+import Openingform from "../../components/admin/openingForm";
 import GlowingLoader from "../../components/loader";
+import {
+  FaMoneyCheckAlt,
+  FaCalendarAlt,
+  FaEdit,
+  FaTrashAlt,
+} from "react-icons/fa";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 const Addopening = () => {
   const [open, setOpen] = useState([]);
@@ -16,6 +24,7 @@ const Addopening = () => {
   const [update, setUpdate] = useState(true);
   const [emailOffer, setEmailOffer] = useState({});
   const [type, setType] = useState("Add");
+  const navigate = useNavigate();
 
   const [newOpening, setNewOpening] = useState({
     name: "",
@@ -55,7 +64,7 @@ const Addopening = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
-      window.location.href = "/login";
+      navigate("/login");
     }
 
     initTWE(
@@ -64,7 +73,8 @@ const Addopening = () => {
       { checkOtherImports: true }
     );
     data();
-  }, [update]);
+    // eslint-disable-next-line
+  }, []);
 
   const handleIt = async (id) => {
     const response = await fetch(
@@ -108,18 +118,19 @@ const Addopening = () => {
     // eslint-disable-next-line
     const result = await response.json();
     setLoading(false);
-    if (result.message === "success") {
-      alert("Deleted Successfully");
+    if (result.success === "success") {
+      toast.success("Deleted Successfully");
       setOpen(open.filter((item) => item._id !== id));
-      window.location.reload();
     } else {
-      alert("Error in Deleting");
+      toast.error(result.error || "Error in Deleting");
     }
   };
 
   const handleEdit = async (id) => {
     setType("Edit");
     setNewOpening(open.filter((item) => item._id === id)[0]);
+    toast.success("Edit mode enabled");
+    window.scrollTo({ top: 90, behavior: "smooth" });
   };
 
   const handleEditOpening = async () => {
@@ -137,8 +148,8 @@ const Addopening = () => {
     // eslint-disable-next-line
     const result = await response.json();
 
-    if (result.message === "success") {
-      alert("Updated Successfully");
+    if (result.success === "success") {
+      toast.success("Updated Successfully");
       setOpen(
         open.map((item) =>
           item._id === newOpening._id ? { ...newOpening } : item
@@ -167,17 +178,14 @@ const Addopening = () => {
         test: "",
         interview: "",
       });
-      window.location.reload();
-    }
-
-    if (result.message === "error") {
-      alert("Error in Updating");
+    } else {
+      toast.error(result.error || "Error in Updating");
     }
   };
 
   const handleAddOpening = async () => {
     if (!logo) {
-      alert("Please upload a logo");
+      toast.error("Please upload a logo");
       return;
     }
 
@@ -195,7 +203,7 @@ const Addopening = () => {
       !newOpening.batch ||
       newOpening.branch.length === 0
     ) {
-      alert("Please fill all the required fields");
+      toast.error( "Please fill all the fields");
       return;
     }
 
@@ -236,8 +244,8 @@ const Addopening = () => {
     // eslint-disable-next-line
     const result = await response.json();
     setLoading(false);
-    if (result.message === "success") {
-      alert("Added Successfully");
+    if (result.success === "success") {
+      toast.success("Added Successfully");
       setOpen([...open, newOpening]);
       setNewOpening({
         name: "",
@@ -262,9 +270,8 @@ const Addopening = () => {
         test: "",
         interview: "",
       });
-      window.location.reload();
     } else {
-      alert("Error in Adding");
+      toast.error(result.error || "Error in Adding");
     }
   };
 
@@ -318,7 +325,7 @@ const Addopening = () => {
       }
     ).then((res) => res.json());
     setLoading(false);
-    if (data.message === "success") {
+    if (data.success === "success") {
       for (const item of open) {
         if (item._id === id) {
           item.progress = p;
@@ -337,7 +344,8 @@ const Addopening = () => {
 
     for (const item of regList) {
       if (item.email === studentId) {
-        item.offerStatus = item.offerStatus === "Offered" ? "Not Offered" : "Offered";
+        item.offerStatus =
+          item.offerStatus === "Offered" ? "Not Offered" : "Offered";
         break;
       }
     }
@@ -368,16 +376,14 @@ const Addopening = () => {
     );
     const result = await response.json();
     setLoading(false);
-    if (result.message === "success") {
-      alert("Successfully updated Database");
+    if (result.success === "success") {
+      toast.success("Offers Submitted Successfully");
     } else {
-      alert("There is some error");
+      toast.error(result.error || "Error in Submitting Offers");
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <>
       <Openingform
         newOpening={newOpening}
@@ -460,8 +466,7 @@ const Addopening = () => {
                             item.offerStatus === "Offered"
                               ? "bg-green-500 text-white"
                               : "bg-gray-500 text-white"
-                          }`}
-                          disabled={item.offerStatus === "Offered"}>
+                          }`}>
                           {item.offerStatus === "Offered"
                             ? "Offered"
                             : "Not Offered"}
@@ -480,7 +485,7 @@ const Addopening = () => {
             <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
               <button
                 type="button"
-                className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+                className="inline-block rounded bg-blue-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-blue-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:bg-blue-400 dark:active:bg-blue-400"
                 data-twe-modal-dismiss
                 data-twe-ripple-init
                 data-twe-ripple-color="light"
@@ -491,7 +496,7 @@ const Addopening = () => {
               </button>
               <button
                 type="button"
-                className="ms-1 inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                className="ms-1 inline-block rounded bg-blue-600 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-blue-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-blue-2 focus:bg-primary-accent-300 focus:shadow-blue-2 focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-blue-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                 data-twe-modal-dismiss
                 data-twe-ripple-init
                 data-twe-ripple-color="light"
@@ -645,7 +650,7 @@ const Addopening = () => {
             <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
               <button
                 type="button"
-                className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+                className="inline-block rounded bg-blue-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-blue-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:bg-blue-400 dark:active:bg-blue-400"
                 data-twe-modal-dismiss
                 data-twe-ripple-init
                 data-twe-ripple-color="light"
@@ -671,19 +676,23 @@ const Addopening = () => {
 
       <div className="bg-white">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold mb-4 text-center underline">
+          <h1 className="text-2xl font-bold mb-4 text-center underline text-gray-800">
             Jobs/Internships
           </h1>
-          <div className="flex justify-evenly align-middle flex-wrap">
+          <div className="flex justify-evenly items-center flex-wrap">
             {open.map((item) => (
-              <div
+              <motion.div
                 key={item._id}
-                className="bg-gray-100 p-4 rounded-lg w-1/5 m-2">
-                <div className="flex justify-between items-center align-middle">
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-gray-100 p-4 rounded-lg w-72 m-2 shadow-lg">
+                <div className="flex justify-between items-center">
                   <div className="w-2/3">
-                    <h2 className="text-xl font-bold mb-2 p-2">{item.name}</h2>
+                    <h2 className="text-xl font-bold mb-2 p-2 text-gray-800">
+                      {item.name}
+                    </h2>
                     <div className="text-sm mb-2 pl-2 flex justify-between items-center">
-                      <p>{item.role}</p>
+                      <p className="text-gray-700">{item.role}</p>
                       <button
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModalLong2"
@@ -691,37 +700,38 @@ const Addopening = () => {
                           setCompany(item);
                           setCheck(true);
                         }}
-                        type="button">
-                        <FaCircleInfo className="hover:cursor-pointer" />
+                        type="button"
+                        className="text-blue-500 hover:text-blue-700 transition">
+                        <FaCircleInfo className="text-xl" />
                       </button>
                     </div>
                   </div>
                   <img
                     src={item.logo}
                     alt={item.comp_name}
-                    className="h-16 w-16 "
+                    className="h-16 w-16 rounded-full object-contain"
                   />
                 </div>
-                <hr className="none mb-6 text-xl border-t-2 border-black" />
-                <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaMoneyCheckAlt className="mr-2" /> {item.stipend}/Month
+                <hr className="my-4 border-t-2 border-gray-300" />
+                <div className="text-sm mb-2 flex items-center gap-2">
+                  <FaMoneyCheckAlt className="text-green-500" />{" "}
+                  <span className="text-gray-800">{item.stipend}/Month</span>
                 </div>
-                <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <IoLocation className="mr-2" />
-                  {item.mode}
+                <div className="text-sm mb-2 flex items-center gap-2">
+                  <IoLocation className="text-blue-500" />{" "}
+                  <span className="text-gray-800">{item.mode}</span>
                 </div>
-                <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaCalendarAlt className="mr-2" /> {item.duration}
+                <div className="text-sm mb-2 flex items-center gap-2">
+                  <FaCalendarAlt className="text-yellow-500" />{" "}
+                  <span className="text-gray-800">{item.duration}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div className="text-sm border-2 border-black rounded-md bg-slate-300 font-bold uppercase w-1/2 text-center">
+                <div className="flex justify-between items-center mt-4">
+                  <div className="text-sm border-2 border-gray-800 rounded-md bg-slate-300 font-bold uppercase w-1/2 text-center py-1">
                     {item.type}
                   </div>
                   <button
-                    onClick={() => {
-                      handleIt(item._id);
-                    }}
-                    className="bg-blue-500 text-white px-3 py-1 rounded-md border-2 border-black text-sm"
+                    onClick={() => handleIt(item._id)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded-md border-2 border-gray-800 text-sm shadow-md hover:bg-blue-600 transition-all"
                     data-twe-ripple-init
                     data-twe-ripple-color="light"
                     data-twe-toggle="modal"
@@ -730,33 +740,31 @@ const Addopening = () => {
                     Stud. List
                   </button>
                 </div>
-                <button
-                  onClick={() => {
-                    setType("Edit");
-                    handleEdit(item._id);
-                  }}
-                  className="bg-purple-500 text-white w-full border-2 border-black rounded-md mt-2">
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    handleDelete(item._id);
-                  }}
-                  className="bg-red-500 text-white w-full border-2 border-black rounded-md mt-2">
-                  Delete
-                </button>
-
-                {/* Status Button */}
-                <button
-                  onClick={() => toggleDriveStatus(item._id, item.progress)}
-                  className={`w-full border-2 border-black rounded-md mt-2 ${
-                    item.progress === "Ongoing"
-                      ? "bg-green-500"
-                      : "bg-yellow-500"
-                  } text-white`}>
-                  {item.progress}
-                </button>
-              </div>
+                <div className="flex flex-col gap-2 mt-2">
+                  <button
+                    onClick={() => {
+                      setType("Edit");
+                      handleEdit(item._id);
+                    }}
+                    className="bg-purple-500 text-white w-full border-2 border-gray-800 rounded-md text-sm shadow-md hover:bg-purple-600 transition-all flex items-center justify-center py-1">
+                    <FaEdit className="inline mr-1" /> Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="bg-red-500 text-white w-full border-2 border-gray-800 rounded-md text-sm shadow-md hover:bg-red-600 transition-all flex items-center justify-center py-1">
+                    <FaTrashAlt className="inline mr-1" /> Delete
+                  </button>
+                  <button
+                    onClick={() => toggleDriveStatus(item._id, item.progress)}
+                    className={`w-full border-2 border-gray-800 rounded-md text-white text-sm shadow-md transition-all ${
+                      item.progress === "Ongoing"
+                        ? "bg-green-500 hover:bg-green-600"
+                        : "bg-yellow-500 hover:bg-yellow-600"
+                    } flex items-center justify-center py-1`}>
+                    {item.progress}
+                  </button>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>

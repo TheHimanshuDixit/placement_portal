@@ -11,12 +11,16 @@ const addTeamMember = async (req, res) => {
     const { name, position, email, password } = req.body;
 
     if (!req.file) {
-      return res.status(400).json({ message: "File is required" });
+      return res
+        .status(400)
+        .json({  error: "File is required" });
     }
 
     let existingMember = await Team.findOne({ email });
     if (existingMember) {
-      return res.status(400).json({ message: "Team member already exists" });
+      return res
+        .status(400)
+        .json({ error: "Team member already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -27,9 +31,11 @@ const addTeamMember = async (req, res) => {
       const upload = await cloudinary.uploader.upload(req.file.path);
       url = upload.secure_url;
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "File upload failed", error: error.message });
+      return res.status(500).json({
+        result: "success",
+        message: "File upload failed",
+        error: error.message,
+      });
     }
 
     const teamMember = new Team({
@@ -45,12 +51,15 @@ const addTeamMember = async (req, res) => {
     const authAdminToken = jwt.sign({ email }, token, { expiresIn: "1d" });
 
     res.status(201).json({
+      success: "success",
       message: "Team member added successfully",
       data: teamMember,
       authAdminToken,
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 };
 
@@ -60,19 +69,25 @@ const loginTeamMember = async (req, res) => {
     const teamMember = await Team.findOne({ email });
 
     if (!teamMember) {
-      return res.status(401).json({ message: "Invalid email" });
+      return res
+        .status(401)
+        .json({ error: "Invalid email" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, teamMember.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid password" });
+      return res
+        .status(401)
+        .json({ error: "Invalid password" });
     }
 
     const authAdminToken = jwt.sign({ email }, token, { expiresIn: "1d" });
 
-    res.json({ message: "success", authAdminToken });
+    res.json({ success: "success", message: "Login successful", authAdminToken });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 };
 
@@ -90,7 +105,9 @@ const getTeamMemberById = async (req, res) => {
     const teamMember = await Team.findById(req.params.id);
 
     if (!teamMember) {
-      return res.status(404).json({ message: "Team member not found" });
+      return res
+        .status(404)
+        .json({ error: "Team member not found" });
     }
 
     res.json({ data: teamMember });
@@ -103,7 +120,9 @@ const updateTeamMember = async (req, res) => {
   try {
     let teamMember = await Team.findById(req.params.id);
     if (!teamMember) {
-      return res.status(404).json({ message: "Team member not found" });
+      return res
+        .status(404)
+        .json({  error: "Team member not found" });
     }
 
     let updateData = { ...req.body };
@@ -116,7 +135,11 @@ const updateTeamMember = async (req, res) => {
     await Team.updateOne({ _id: req.params.id }, { $set: updateData });
 
     teamMember = await Team.findById(req.params.id);
-    res.json({ message: "Update successful", data: teamMember });
+    res.json({
+      success: "success",
+      message: "Update successful",
+      data: teamMember,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -127,10 +150,16 @@ const deleteTeamMember = async (req, res) => {
     const teamMember = await Team.findByIdAndDelete(req.params.id);
 
     if (!teamMember) {
-      return res.status(404).json({ message: "Team member not found" });
+      return res
+        .status(404)
+        .json({ error: "Team member not found" });
     }
 
-    res.json({ message: "Team member deleted successfully", data: teamMember });
+    res.json({
+      success: "success",
+      message: "Team member deleted successfully",
+      data: teamMember,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

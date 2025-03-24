@@ -1,43 +1,73 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import { motion } from "framer-motion";
+import {
+  FaUser,
+  FaCalendarAlt,
+  FaClipboardList,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
+import { FiRefreshCw } from "react-icons/fi";
+import { toast, Toaster } from "react-hot-toast";
+import GlowingLoader from "../loader";
 
 const ViewAttendance = () => {
   const [company, setCompany] = useState(null);
   const [companies, setCompanies] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
-      );
-      const data = await response.json();
-      const allCompanies = data.data.map((event) => ({
-        value: event._id,
-        label: event.name+" - "+event.jobId,
-      }));
-      setCompanies(allCompanies);
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
+        );
+        const data = await response.json();
+        const allCompanies = data.data.map((event) => ({
+          value: event._id,
+          label: `${event.name} - ${event.jobId}`,
+        }));
+        setCompanies(allCompanies);
+      } catch (error) {
+        toast.error( "Failed to fetch companies");
+        console.error("Failed to fetch companies", error);
+      }
     };
     fetchCompanies();
   }, []);
 
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
-    const response = await fetch(
-      `${process.env.REACT_APP_DEV_URI}/api/student/${selectedOption.value}`
-    );
-    const data = await response.json();
-    console.log(data);
-    setAttendanceData(data.data);
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URI}/api/student/${selectedOption.value}`
+      );
+      const data = await response.json();
+      setAttendanceData(data.data || []);
+    } catch (error) {
+      console.error("Failed to fetch attendance data", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        View Attendance Records
-      </h1>
+  return loading ? (
+    <GlowingLoader />
+  ) : (
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 py-10 flex flex-col items-center">
+      <Toaster />
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-3xl font-extrabold text-center text-gray-800 mb-6 flex items-center gap-2">
+        <FaClipboardList className="text-blue-500" /> View Attendance Records
+      </motion.h1>
 
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+      <div className="max-w-4xl w-full mx-auto bg-white p-6 rounded-xl shadow-xl">
         <Select
           options={companies}
           value={company}
@@ -46,36 +76,76 @@ const ViewAttendance = () => {
           placeholder="Select Company..."
         />
 
-        <table className="w-full border-collapse border">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border px-4 py-2">Sr No</th>
-              <th className="border px-4 py-2">Student Name</th>
-              <th className="border px-4 py-2">Event</th>
-              <th className="border px-4 py-2">Date</th>
-              <th className="border px-4 py-2">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attendanceData && attendanceData.length > 0 ? (
-              attendanceData.map((item, index) => (
-                <tr key={index} className="border">
-                  <td className="border px-4 py-2">{index + 1}</td>
-                  <td className="border px-4 py-2">{item.name}</td>
-                  <td className="border px-4 py-2">{item.event.event}</td>
-                  <td className="border px-4 py-2">{item.event.date}</td>
-                  <td className="border px-4 py-2">{item.event.status}</td>
+        {loading ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center text-gray-600 text-lg flex items-center justify-center gap-2">
+            <FiRefreshCw className="animate-spin text-blue-500" /> Loading
+            attendance records...
+          </motion.div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse shadow-md">
+              <thead className="bg-blue-500 text-white text-lg sticky top-0">
+                <tr>
+                  <th className="border px-6 py-3 text-center">Sr No</th>
+                  <th className="border px-6 py-3 text-center">Name</th>
+                  <th className="border px-6 py-3 text-center">Event</th>
+                  <th className="border px-6 py-3 text-center">Date</th>
+                  <th className="border px-6 py-3 text-center">Status</th>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center">
-                  No records found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {attendanceData.length > 0 ? (
+                  attendanceData.map((item, index) => {
+                    const rowClass =
+                      index % 2 === 0 ? "bg-blue-50" : "bg-white";
+                    return (
+                      <motion.tr
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                        className={`border ${rowClass} hover:bg-blue-100 transition`}>
+                        <td className="border px-6 py-3 text-center">
+                          {index + 1}
+                        </td>
+                        <td className="border px-6 py-3 text-center flex items-center justify-center gap-2">
+                          <FaUser className="text-blue-500" /> {item.name}
+                        </td>
+                        <td className="border px-6 py-3 text-center">
+                          {item.event.event}
+                        </td>
+                        <td className="border px-6 py-3 text-center flex items-center justify-center gap-2">
+                          <FaCalendarAlt className="text-yellow-500" />{" "}
+                          {item.event.date.split("T")[0]}{" "}
+                          {item.event.date.split("T")[1]
+                            ? item.event.date.split("T")[1].split(".")[0]
+                            : ""}
+                        </td>
+                        <td className="border px-6 py-3 text-center font-bold text-green-600">
+                          {item.event.status === "Present" ? (
+                            <FaCheckCircle className="text-green-500 inline-block" />
+                          ) : (
+                            <FaTimesCircle className="text-red-500 inline-block" />
+                          )}
+                          {item.event.status}
+                        </td>
+                      </motion.tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4 text-gray-500">
+                      No records found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

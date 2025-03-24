@@ -34,7 +34,9 @@ const addOpening = async (req, res) => {
 
     let existingOpening = await Opening.findOne({ jobId });
     if (existingOpening) {
-      return res.status(400).json({ message: "Opening already exists" });
+      return res
+        .status(400)
+        .json({  error: "Opening already exists" });
     }
 
     const newOpening = new Opening({
@@ -85,13 +87,13 @@ const addOpening = async (req, res) => {
 
     if (mailResponse.success) {
       res.json({
+        success: "success",
         message: "Opening added and email sent successfully",
         data: newOpening,
       });
     } else {
       res.json({
-        message: "Opening added but email failed",
-        error: mailResponse.error,
+        error: "Opening added but email failed",
       });
     }
   } catch (error) {
@@ -102,7 +104,7 @@ const addOpening = async (req, res) => {
 const getAllOpenings = async (req, res) => {
   try {
     const openings = await Opening.find();
-    res.json({ message: "success", data: openings });
+    res.json({ success: "success", data: openings });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -112,9 +114,11 @@ const getOpeningById = async (req, res) => {
   try {
     const opening = await Opening.findOne({ jobId: req.params.oid });
     if (!opening) {
-      return res.status(404).json({ message: "Opening not found" });
+      return res
+        .status(404)
+        .json({ error: "Opening not found" });
     }
-    res.json({ message: "success", data: opening });
+    res.json({ success: "success", data: opening });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -124,11 +128,17 @@ const deleteOpening = async (req, res) => {
   try {
     const opening = await Opening.findById(req.params.oid);
     if (!opening) {
-      return res.status(404).json({ message: "Opening does not exist" });
+      return res
+        .status(404)
+        .json({ error: "Opening does not exist" });
     }
 
     await Opening.deleteOne({ _id: req.params.oid });
-    res.json({ message: "Opening deleted successfully", data: opening });
+    res.json({
+      success: "success",
+      message: "Opening deleted successfully",
+      data: opening,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -138,7 +148,9 @@ const updateOpening = async (req, res) => {
   try {
     const opening = await Opening.findById(req.params.oid);
     if (!opening) {
-      return res.status(404).json({ message: "Opening does not exist" });
+      return res
+        .status(404)
+        .json({ error: "Opening does not exist" });
     }
 
     const updatedData = {
@@ -167,7 +179,11 @@ const updateOpening = async (req, res) => {
     };
 
     await Opening.updateOne({ _id: req.params.oid }, { $set: updatedData });
-    res.json({ message: "Opening updated successfully", data: updatedData });
+    res.json({
+      success: "success",
+      message: "Opening updated successfully",
+      data: updatedData,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

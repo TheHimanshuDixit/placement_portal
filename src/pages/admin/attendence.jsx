@@ -4,9 +4,11 @@ import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { FaCheck, FaTimes, FaUsers } from "react-icons/fa";
 import GlowingLoader from "../../components/loader";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { toast, Toaster } from "react-hot-toast";
 
 const Attendance = () => {
   const navigate = useNavigate();
@@ -28,12 +30,11 @@ const Attendance = () => {
   };
 
   const handleSubmit = async () => {
-    const attendanceData = [];
-    for (let student in attendance) {
-      if (attendance[student] === true) attendanceData.push(student);
-    }
-    if (event === null) {
-      alert("Attendance not marked. Please select event");
+    const attendanceData = Object.keys(attendance).filter(
+      (student) => attendance[student]
+    );
+    if (!event) {
+      toast.error( "Please select an event to mark attendance");
       return;
     }
 
@@ -52,13 +53,13 @@ const Attendance = () => {
       body: JSON.stringify(data),
     }).then((res) => res.json());
 
-    if (result.message === "success") {
-      alert("Attendance marked successfully");
+    if (result.success === "success") {
+      toast.success("Attendance marked successfully");
       setAttendance({});
       setEvent(null);
       setCompany(null);
     } else {
-      alert("Failed to mark attendance");
+      toast.error(result.error || "Failed to mark attendance");
     }
     setLoading(false);
   };
@@ -66,8 +67,8 @@ const Attendance = () => {
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
     setLoading(true);
-    const ongoingEvents = allCompanies.filter(
-      (company) => company._id === selectedOption.value
+    const ongoingEvents = allCompanies.find(
+      (c) => c._id === selectedOption.value
     );
     const reqEvents = [];
     if (ongoingEvents.ppt !== "To be announced")
@@ -82,11 +83,9 @@ const Attendance = () => {
       `${process.env.REACT_APP_DEV_URI}/api/application/get/${selectedOption.value}`
     );
     const RS = await data.json();
-    const reqRS = [];
-    for (const student of RS.data) {
-      reqRS.push({ id: student.email, name: student.name });
-    }
-    setRegisteredStudents(reqRS);
+    setRegisteredStudents(
+      RS.data.map((student) => ({ id: student.email, name: student.name }))
+    );
     setLoading(false);
   };
 
@@ -97,45 +96,48 @@ const Attendance = () => {
         `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
       );
       const openings = await data.json();
-      const allOngoingEvents = openings.data.filter(
+      const ongoingEvents = openings.data.filter(
         (opening) => opening.progress === "Ongoing"
       );
-      setAllCompanies(allOngoingEvents);
-      let res = [];
-      allOngoingEvents.forEach((event) => {
-        res.push({ value: event._id, label: event.name + " - " + event.jobId });
-      });
-      setCompanies(res);
+      setAllCompanies(ongoingEvents);
+      setCompanies(
+        ongoingEvents.map((event) => ({
+          value: event._id,
+          label: `${event.name} - ${event.jobId}`,
+        }))
+      );
       setLoading(false);
     };
     handleFetch();
   }, []);
 
   useEffect(() => {
-    let temp = allCompanies.filter((c) => c._id === company.value);
-    if (event && event.value === "ppt") {
-      setDate(new Date(temp[0].ppt));
-    } else if (event && event.value === "oa") {
-      setDate(new Date(temp[0].test));
-    } else if (event && event.value === "interview") {
-      setDate(new Date(temp[0].interview));
-    }
-  }, [event, allCompanies, company]);
+    if (!event || !company) return;
+    const temp = allCompanies.find((c) => c._id === company.value);
+    if (event.value === "ppt") setDate(new Date(temp.ppt));
+    else if (event.value === "oa") setDate(new Date(temp.test));
+    else if (event.value === "interview") setDate(new Date(temp.interview));
+  }, [event, company, allCompanies]);
 
   return loading ? (
     <GlowingLoader />
   ) : (
-    <div className="min-h-screen bg-pink-50 p-8">
-      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
-        Mark Attendance for Placement Drive
-      </h1>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 p-8 flex flex-col items-center">
+      <Toaster />
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-3xl font-extrabold text-center text-gray-800 mb-6 flex items-center gap-2">
+        <FaUsers className="text-blue-500" /> Mark Attendance for Placement
+        Drive
+      </motion.h1>
       <button
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+        className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-all"
         onClick={() => navigate("/view-attendance")}>
         View Attendance Records
       </button>
-
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <div className="max-w-4xl w-full bg-white p-8 rounded-lg shadow-lg mt-6">
         <div className="mb-6">
           <label
             htmlFor="company-select"
@@ -151,29 +153,21 @@ const Attendance = () => {
             placeholder="Choose company..."
           />
         </div>
-
-        {/* Select Ongoing Drive Event */}
         <div className="mb-6">
           <label
             htmlFor="event-select"
             className="block text-gray-700 text-lg font-bold mb-2">
             Select Ongoing Drive Event
           </label>
-          {placementEvents.length && placementEvents.length > 0 ? (
-            <Select
-              id="event-select"
-              options={placementEvents}
-              value={event}
-              onChange={setEvent}
-              className="w-full"
-              placeholder="Choose event..."
-            />
-          ) : (
-            <div className="text-center text-gray-800">No events available</div>
-          )}
+          <Select
+            id="event-select"
+            options={placementEvents}
+            value={event}
+            onChange={setEvent}
+            className="w-full"
+            placeholder="Choose event..."
+          />
         </div>
-
-        {/* Select Date */}
         <div className="mb-6">
           <label
             htmlFor="date-select"
@@ -183,12 +177,10 @@ const Attendance = () => {
           <DateTimePicker
             id="date-select"
             value={date}
-            onChange={(date) => setDate(date)}
+            onChange={setDate}
             className="w-full border border-gray-300 rounded-lg p-2"
           />
         </div>
-
-        {/* Registered Students */}
         <div className="mt-6">
           <label
             htmlFor="student-select"
@@ -210,13 +202,11 @@ const Attendance = () => {
                   onClick={() => handleAttendanceToggle(student.id)}>
                   {attendance[student.id] ? (
                     <>
-                      <FaCheck />
-                      Present
+                      <FaCheck /> Present
                     </>
                   ) : (
                     <>
-                      <FaTimes />
-                      Absent
+                      <FaTimes /> Absent
                     </>
                   )}
                 </button>
@@ -228,11 +218,9 @@ const Attendance = () => {
             </div>
           )}
         </div>
-
-        {/* Submit Button */}
         {registeredStudents.length > 0 && (
           <button
-            className="mt-8 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg mx-auto block text-lg font-bold"
+            className="mt-8 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md transition-all"
             onClick={handleSubmit}>
             Submit Attendance
           </button>

@@ -3,9 +3,16 @@ import { MdDelete } from "react-icons/md";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
 import { Link, useNavigate } from "react-router-dom";
-import { FaExternalLinkAlt } from "react-icons/fa";
+import {
+  FaExternalLinkAlt,
+  FaUserCheck,
+  FaFileExcel,
+  FaLock,
+} from "react-icons/fa";
+import { motion } from "framer-motion";
 import * as XLSX from "xlsx";
 import GlowingLoader from "../../components/loader";
+import { toast, Toaster } from "react-hot-toast";
 const Studetails = () => {
   const ref = useRef(null);
   const navigate = useNavigate();
@@ -27,7 +34,7 @@ const Studetails = () => {
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
-      window.location.href = "/login";
+      navigate("/login");
     }
     initTWE(
       { Modal, Ripple, Input },
@@ -82,13 +89,14 @@ const Studetails = () => {
       setStudList(data);
     };
     fetchStudData();
+    // eslint-disable-next-line
   }, []);
 
   const handleClick = async (e) => {
     e.preventDefault();
     const { enroll, pwd } = students;
     if (!enroll || !pwd) {
-      alert("Please fill all the fields");
+      toast.error( "Please fill all the fields");
       return;
     }
     setLoading(true);
@@ -104,12 +112,14 @@ const Studetails = () => {
     );
     const data = await res.json();
     setLoading(false);
-    if (data.message === "success") {
-      alert("Student added successfully");
+    if (data.success === "success") {
+      toast.success("Student added successfully");
 
       setStudents({ enroll: "", pwd: "" });
     } else {
-      alert("");
+      toast
+        .error("Failed to add student")
+        .then(() => setStudents({ enroll: "", pwd: "" }));
     }
   };
 
@@ -131,12 +141,12 @@ const Studetails = () => {
     const data = await res.json();
     console.log(data);
     setLoading(false);
-    if (data.message === "User deleted") {
-      alert("Student deleted successfully");
+    if (data.success === "success") {
+      toast.success("Student deleted successfully");
       const updatedList = studList.filter((stud) => stud._id !== id);
       setStudList(updatedList);
     } else {
-      alert("Something went wrong");
+      toast.error(data.error || "Failed to delete student");
     }
   };
 
@@ -227,7 +237,7 @@ const Studetails = () => {
     }
     setLoading(true);
     const data = await fetch(
-      `${process.env.REACT_APP_DEV_URI}/api/college//multiadd`,
+      `${process.env.REACT_APP_DEV_URI}/api/college/multiadd`,
       {
         method: "POST",
         headers: {
@@ -238,19 +248,21 @@ const Studetails = () => {
     );
     const res = await data.json();
     setLoading(false);
-    if (res) {
-      alert("Students added successfully");
+    if (res.success === "success") {
+      toast.success("Students added successfully");
       setAllStudents([]);
     } else {
-      alert("Something went wrong");
+      toast.error(res.error || "Error adding students");
     }
   };
 
   return loading ? (
     <GlowingLoader />
   ) : (
-    <div className="bg-pink-50">
+    <div className="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen p-8">
+      <Toaster />
       <div className="max-w-screen-lg m-auto">
+        {/* Form Container */}
         <div
           data-twe-modal-init
           className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -314,8 +326,7 @@ const Studetails = () => {
                               ? placedCompany.join(", ")
                               : "Pending"}{" "}
                             <br />
-                            <strong>Package :</strong> {pack || 0} LPA{" "}
-                            <br />
+                            <strong>Package :</strong> {pack || 0} LPA <br />
                           </li>
                         ) : null;
                       })}
@@ -365,7 +376,7 @@ const Studetails = () => {
               <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 p-4 dark:border-white/10">
                 <button
                   type="button"
-                  className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
+                  className="inline-block rounded bg-blue-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-blue-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:bg-blue-400 dark:active:bg-blue-400"
                   onClick={() => {
                     setStudData([]);
                   }}
@@ -388,67 +399,80 @@ const Studetails = () => {
           type="button">
           Apply
         </button>
-        <form className="p-10">
+        <motion.form
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white bg-opacity-90 backdrop-blur-md p-10 rounded-2xl shadow-2xl">
           <div className="space-y-12">
-            <div className="border-b border-gray-900/10 pb-12 flex justify-between">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-900/10 pb-12">
               <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
                 Add Student Enrollment
               </h2>
               {/* Upload Excel Button */}
-              <div className="flex justify-end">
-                <input
-                  type="file"
-                  accept=".xlsx, .xls"
-                  onChange={handleFileUpload}
-                  className="w-1/2 text-sm mr-2 font-semibold text-white bg-blue-600 rounded-md px-3 py-2 shadow-sm hover:bg-blue-500 cursor-pointer"
-                />
+              <div className="flex items-center gap-4 mt-4 sm:mt-0">
+                <label className="flex items-center gap-2 cursor-pointer bg-blue-600 text-white font-semibold rounded-md px-3 py-2 shadow-sm hover:bg-blue-500 transition">
+                  <FaFileExcel className="text-xl" />
+                  <input
+                    type="file"
+                    accept=".xlsx, .xls"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />{" "}
+                  Upload Excel
+                </label>
                 <button
                   onClick={handleClickFileUpload}
-                  className="text-sm font-semibold text-white bg-blue-600 rounded-md px-3 py-2 shadow-sm hover:bg-blue-500 cursor-pointer">
-                  Add Student
+                  className="text-sm font-semibold text-white bg-blue-600 rounded-md px-3 py-2 shadow-sm hover:bg-blue-500 transition">
+                  Add Students
                 </button>
               </div>
             </div>
+
             <div className="border-b border-gray-900/10 pb-12">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                {/* Enrollment Number */}
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="enroll"
-                    className="block text-sm font-medium leading-6 text-gray-900">
+                    className="block text-sm font-medium text-gray-800">
                     Enrollment Number <span className="text-red-500">*</span>
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 flex items-center rounded-md border-2 border-gray-300 bg-white bg-opacity-70 px-3 py-2 shadow-md focus-within:border-blue-500 transition">
+                    <FaUserCheck className="text-gray-500 mr-2" />
                     <input
                       type="text"
                       name="enroll"
                       value={students.enroll}
-                      onChange={(e) => {
-                        setStudents({ ...students, enroll: e.target.value });
-                      }}
+                      onChange={(e) =>
+                        setStudents({ ...students, enroll: e.target.value })
+                      }
                       id="enroll"
-                      autoComplete=""
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400"
+                      placeholder="Enter Enrollment Number"
                     />
                   </div>
                 </div>
-
+                {/* Password */}
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="pwd"
-                    className="block text-sm font-medium leading-6 text-gray-900">
+                    className="block text-sm font-medium text-gray-800">
                     Password <span className="text-red-500">*</span>
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 flex items-center rounded-md border-2 border-gray-300 bg-white bg-opacity-70 px-3 py-2 shadow-md focus-within:border-blue-500 transition">
+                    <FaLock className="text-gray-500 mr-2" />
                     <input
                       type="text"
                       name="pwd"
                       value={students.pwd}
-                      onChange={(e) => {
-                        setStudents({ ...students, pwd: e.target.value });
-                      }}
+                      onChange={(e) =>
+                        setStudents({ ...students, pwd: e.target.value })
+                      }
                       id="pwd"
                       autoComplete="current-password"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="w-full bg-transparent outline-none text-gray-800 placeholder-gray-400"
+                      placeholder="Enter Password"
                     />
                   </div>
                 </div>
@@ -456,87 +480,93 @@ const Studetails = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-x-6">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
             <button
               type="button"
               onClick={(e) => {
                 setStudents({ enroll: "", pwd: "" });
               }}
-              className="text-sm font-semibold leading-6 text-gray-900">
+              className="text-sm font-semibold text-gray-800 hover:underline transition">
               Cancel
             </button>
             <button
               type="submit"
               onClick={handleClick}
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition">
               Save
             </button>
             <button
               onClick={() => navigate("/college-students")}
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition">
               Display all enrolled students
             </button>
           </div>
-        </form>
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
+        </motion.form>
+
+        {/* Student List Display */}
+        <div className="mt-10 border-t pt-10 border-gray-900/10 pb-12">
+          <h2 className="font-semibold leading-7 text-gray-900 text-2xl mb-4">
             Students Details
           </h2>
-        </div>
-        <div>
-          <ul className="divide-y divide-gray-100">
-            {studList.length > 0 &&
-              studList.map((stud, index) => {
-                return (
-                  <li
-                    key={stud._id}
-                    className="flex justify-between gap-x-6 py-5 items-center">
-                    <div className="flex min-w-0 gap-x-4 items-center">
-                      <strong>{index + 1}. </strong>
-                      {/* Profile Image */}
-                      <img
-                        src={stud.image} // Replace 'defaultImageURL' with a placeholder image if needed
-                        alt="Profile"
-                        className="h-10 w-10 rounded-full object-cover"
-                      />
-                      <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">
-                          {stud.name}
-                        </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                          {stud.email}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                      <div className="flex justify-center items-center">
-                        <p className="text-sm leading-6 text-gray-900">
-                          {stud.enrollnment}
-                        </p>
-                        <button className="ml-2 text-xl" type="button">
-                          <BiSolidUserDetail
-                            onClick={() => {
-                              handleView(stud.email);
-                            }}
-                          />
-                        </button>
-                        <div>
-                          <MdDelete
-                            onClick={() => {
-                              handleDelete(stud._id);
-                            }}
-                            className="ml-1 text-xl cursor-pointer"
-                          />
-                        </div>
-                      </div>
-                      <p className="mt-1 text-xs leading-5 text-gray-500">
-                        Batch :{" "}
-                        <time dateTime="2023-01-23T13:23Z">{stud.year}</time>
+          <ul className="divide-y divide-gray-200">
+            {studList.length > 0 ? (
+              studList.map((stud, index) => (
+                <motion.li
+                  key={stud._id}
+                  className="flex flex-col sm:flex-row items-center justify-between gap-4 py-5 px-4 bg-white rounded-lg shadow-sm hover:shadow-md transition"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}>
+                  <div className="flex min-w-0 gap-x-4 items-center">
+                    <strong>{index + 1}. </strong>
+                    {/* Profile Image */}
+                    <img
+                      src={stud.image}
+                      alt="Profile"
+                      className="h-10 w-10 rounded-full object-cover border border-gray-300"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-gray-800">
+                        {stud.name}
+                      </p>
+                      <p className="mt-1 truncate text-xs text-gray-500">
+                        {stud.email}
                       </p>
                     </div>
-                  </li>
-                );
-              })}
+                  </div>
+                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm text-gray-800">
+                        {stud.enrollnment}
+                      </p>
+                      <button
+                        type="button"
+                        className="ml-2 text-xl hover:text-blue-600 transition"
+                        onClick={() => handleView(stud.email)}>
+                        <BiSolidUserDetail />
+                      </button>
+                      <button
+                        type="button"
+                        className="ml-1 text-xl hover:text-red-600 transition"
+                        onClick={() => handleDelete(stud._id)}>
+                        <MdDelete />
+                      </button>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-500">
+                      Batch:{" "}
+                      <time dateTime="2023-01-23T13:23Z">{stud.year}</time>
+                    </p>
+                  </div>
+                </motion.li>
+              ))
+            ) : (
+              <div className="flex items-center justify-center h-32">
+                <p className="text-sm font-semibold text-gray-800">
+                  No team members available
+                </p>
+              </div>
+            )}
           </ul>
         </div>
       </div>

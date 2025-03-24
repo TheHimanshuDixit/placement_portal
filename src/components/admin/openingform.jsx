@@ -1,4 +1,29 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { motion } from "framer-motion";
+import {
+  FaBuilding,
+  FaIdBadge,
+  FaFileImage,
+  FaMoneyCheckAlt,
+  FaMoneyBillWave,
+  FaMapMarkedAlt,
+  FaLayerGroup,
+  FaBriefcase,
+  FaExclamationTriangle,
+  FaGraduationCap,
+  FaUserGraduate,
+  FaUniversity,
+  FaVenusMars,
+  FaClock,
+  FaList,
+  FaFileAlt,
+  FaClipboard,
+  FaChalkboardTeacher,
+  FaLaptopCode,
+  FaRegCalendarAlt,
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Openingform = ({
   newOpening,
@@ -7,34 +32,40 @@ const Openingform = ({
   handleEditOpening,
   type,
   setType,
-  handleEdit,
-  logo,
   setLogo,
 }) => {
+  const navigate = useNavigate();
   useEffect(() => {
     const authToken = localStorage.getItem("authAdminToken");
     if (!authToken) {
-      window.location.href = "/login";
+      navigate("/login");
     }
+    // eslint-disable-next-line
   }, []);
   return (
-    <div className="bg-pink-50">
+    <div className="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen p-8">
       <div className="max-w-screen-lg m-auto">
-        <form className="p-10">
-          <div className="space-y-12">
-            <div className="border-b border-gray-900/10 pb-12">
-              <h2 className="font-semibold leading-7 text-gray-900 text-2xl">
+        <motion.form
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white bg-opacity-90 backdrop-blur-md p-10 rounded-2xl shadow-2xl">
+          <div className="space-y-2">
+            <div className="border-b pb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
                 Add New Opening
               </h2>
             </div>
 
-            <div className="border-b border-gray-900/10 pb-12">
+            <div className="border-b pb-6">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                {/* Company Name */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Company Name <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaBuilding className="text-blue-600" /> Company Name{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -46,16 +77,19 @@ const Openingform = ({
                       }
                       type="text"
                       autoComplete="name"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter company name"
                     />
                   </div>
                 </div>
 
+                {/* Company Job ID */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="jobId"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Company Job ID <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaIdBadge className="text-blue-600" /> Company Job ID{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -66,33 +100,37 @@ const Openingform = ({
                         setNewOpening({ ...newOpening, jobId: e.target.value })
                       }
                       type="text"
-                      autoComplete="jobId"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter job ID"
                     />
                   </div>
                 </div>
 
+                {/* Company Logo */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="formFile"
-                    className="mb-2 inline-block text-sm font-medium text-gray-900">
-                    Add Company Logo <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1 mb-2">
+                    <FaFileImage className="text-blue-600" /> Add Company Logo{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     name="logo"
                     onChange={(e) => setLogo(e.target.files[0])}
-                    className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3  file:py-[0.32rem] file:text-surface focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none dark:border-white/70 dark:text-white  file:dark:text-white"
                     type="file"
                     id="formFile"
+                    className="block w-full text-gray-800 bg-white rounded-md border-2 border-gray-300 px-3 py-2 shadow-sm focus:border-blue-600 transition"
                   />
                 </div>
 
+                {/* Intern Stipend */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="stipend"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Intern Stipend (in INR){" "}
-                    <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaMoneyCheckAlt className="text-blue-600" /> Intern Stipend
+                    (in INR) <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -106,17 +144,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="stipend"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter intern stipend"
                     />
                   </div>
                 </div>
 
+                {/* CTC */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="ctc"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    CTC (in LPA) <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaMoneyBillWave className="text-blue-600" /> CTC (in LPA){" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -127,17 +168,20 @@ const Openingform = ({
                         setNewOpening({ ...newOpening, ctc: e.target.value })
                       }
                       type="text"
-                      autoComplete="ctc"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter CTC in LPA"
                     />
                   </div>
                 </div>
 
+                {/* Location */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="location"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Location <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaMapMarkedAlt className="text-blue-600" /> Location{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -151,17 +195,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="location"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter locations separated by commas"
                     />
                   </div>
                 </div>
+
+                {/* Type */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="type"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Intern, FTE, Intern+FTE{" "}
-                    <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaLayerGroup className="text-blue-600" /> Intern, FTE,
+                    Intern+FTE <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -172,16 +219,20 @@ const Openingform = ({
                         setNewOpening({ ...newOpening, type: e.target.value })
                       }
                       type="text"
-                      autoComplete="type"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter type (e.g. Intern, FTE, Intern+FTE)"
                     />
                   </div>
                 </div>
+
+                {/* Mode */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="mode"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Mode <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaBriefcase className="text-blue-600" /> Mode{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -192,16 +243,20 @@ const Openingform = ({
                         setNewOpening({ ...newOpening, mode: e.target.value })
                       }
                       type="text"
-                      autoComplete="mode"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter mode (e.g. Offline, Online)"
                     />
                   </div>
                 </div>
+
+                {/* Role */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="role"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Role <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaUserGraduate className="text-blue-600" /> Role{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -212,16 +267,20 @@ const Openingform = ({
                         setNewOpening({ ...newOpening, role: e.target.value })
                       }
                       type="text"
-                      autoComplete="role"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter role"
                     />
                   </div>
                 </div>
+
+                {/* Maximum Backlog */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="backlog"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Maximum Backlog <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaExclamationTriangle className="text-blue-600" /> Maximum
+                    Backlog <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -235,16 +294,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="backlog"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter maximum backlog allowed"
                     />
                   </div>
                 </div>
+
+                {/* CGPA Cutoff */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="cgpacritera"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    CGPA Cutoff <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaGraduationCap className="text-blue-600" /> CGPA Cutoff{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -258,16 +321,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="cgpacritera"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter CGPA cutoff"
                     />
                   </div>
                 </div>
+
+                {/* Batch */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="batch"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Batch <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaClipboard className="text-blue-600" /> Batch{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -275,22 +342,23 @@ const Openingform = ({
                       name="batch"
                       value={newOpening.batch}
                       onChange={(e) =>
-                        setNewOpening({
-                          ...newOpening,
-                          batch: e.target.value,
-                        })
+                        setNewOpening({ ...newOpening, batch: e.target.value })
                       }
                       type="text"
-                      autoComplete="cgpacritera"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter batch"
                     />
                   </div>
                 </div>
+
+                {/* Branch */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="branch"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Branch <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaUniversity className="text-blue-600" /> Branch{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -304,16 +372,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="branch"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter branches separated by commas"
                     />
                   </div>
                 </div>
+
+                {/* Gender */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="gender"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Gender <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaVenusMars className="text-blue-600" /> Gender{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -324,18 +396,22 @@ const Openingform = ({
                         setNewOpening({ ...newOpening, gender: e.target.value })
                       }
                       type="text"
-                      autoComplete="gender"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter gender"
                     />
                   </div>
                 </div>
+
+                {/* Duration */}
                 <div className="sm:col-span-6">
+                  <label
+                    htmlFor="duration"
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaClock className="text-blue-600" /> Duration{" "}
+                    <span className="text-red-500">*</span>
+                  </label>
                   <div className="mt-2">
-                    <label
-                      htmlFor="duration"
-                      className="block text-sm font-medium text-gray-900">
-                      Duration <span className="text-red-500">*</span>
-                    </label>
                     <input
                       id="duration"
                       name="duration"
@@ -347,17 +423,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="duration"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter duration (e.g., 6 months)"
                     />
                   </div>
                 </div>
+
+                {/* Last Date to Apply */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="applyby"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Last Date to Apply (YYYY-MM-DDTHH:MM:SSZ){" "}
-                    <span className="text-red-500">*</span>
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaRegCalendarAlt className="text-blue-600" /> Last Date to
+                    Apply <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-2">
                     <input
@@ -365,54 +444,58 @@ const Openingform = ({
                       name="applyby"
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
-                        const isoFormattedDate = selectedDate.toISOString(); // Convert to ISO 8601 format
-                        // remove miliseconds
+                        const isoFormattedDate = selectedDate.toISOString();
                         let format = isoFormattedDate.split(".")[0];
                         format += "Z";
-
-                        console.log(format);
                         setNewOpening({
                           ...newOpening,
                           applyby: format,
                         });
                       }}
                       type="datetime-local"
-                      autoComplete="applyby"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter last date to apply"
                     />
                   </div>
                 </div>
+
+                {/* Requirements */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="requirements"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Requirements
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaList className="text-blue-600" /> Requirements
                   </label>
                   <div className="mt-2">
-                    <input
+                    <textarea
+                      rows={5}
                       id="requirements"
                       name="requirements"
-                      value={newOpening.requirements}
+                      value={newOpening.requirements.join(",")}
                       onChange={(e) =>
                         setNewOpening({
                           ...newOpening,
                           requirements: e.target.value.split(","),
                         })
                       }
-                      type="text"
-                      autoComplete="requirements"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter requirements separated by commas"
                     />
                   </div>
                 </div>
+
+                {/* Job Description */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="jobdescription"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Job Description
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaFileAlt className="text-blue-600" /> Job Description
                   </label>
                   <div className="mt-2">
-                    <input
+                    <textarea
+                      rows={5}
                       id="jobdescription"
                       name="jobdescription"
                       value={newOpening.jobdescription}
@@ -423,19 +506,23 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="jobdescription"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter job description items separated by commas"
                     />
                   </div>
                 </div>
+
+                {/* Selection Process */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="selectionprocess"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Selection Process
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaClipboard className="text-blue-600" /> Selection Process
                   </label>
                   <div className="mt-2">
-                    <input
+                    <textarea
+                      rows={5}
                       id="selectionprocess"
                       name="selectionprocess"
                       value={newOpening.selectionprocess}
@@ -446,16 +533,20 @@ const Openingform = ({
                         })
                       }
                       type="text"
-                      autoComplete="selectionprocess"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
+                      placeholder="Enter selection process items separated by commas"
                     />
                   </div>
                 </div>
+
+                {/* Pre Placement Talk */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="ppt"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Pre Placement Talk(PPT)
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaChalkboardTeacher className="text-blue-600" /> Pre
+                    Placement Talk (PPT)
                   </label>
                   <div className="mt-2">
                     <input
@@ -463,28 +554,27 @@ const Openingform = ({
                       name="ppt"
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
-                        const isoFormattedDate = selectedDate.toISOString(); // Convert to ISO 8601 format
-                        // remove miliseconds
+                        const isoFormattedDate = selectedDate.toISOString();
                         let format = isoFormattedDate.split(".")[0];
                         format += "Z";
-
-                        console.log(format);
                         setNewOpening({
                           ...newOpening,
                           ppt: format,
                         });
                       }}
                       type="datetime-local"
-                      autoComplete="ppt"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
                     />
                   </div>
                 </div>
+
+                {/* Coding Test */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="test"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Coding Test
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaLaptopCode className="text-blue-600" /> Coding Test
                   </label>
                   <div className="mt-2">
                     <input
@@ -492,28 +582,27 @@ const Openingform = ({
                       name="test"
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
-                        const isoFormattedDate = selectedDate.toISOString(); // Convert to ISO 8601 format
-                        // remove miliseconds
+                        const isoFormattedDate = selectedDate.toISOString();
                         let format = isoFormattedDate.split(".")[0];
                         format += "Z";
-
-                        console.log(format);
                         setNewOpening({
                           ...newOpening,
                           test: format,
                         });
                       }}
                       type="datetime-local"
-                      autoComplete="branch"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
                     />
                   </div>
                 </div>
+
+                {/* Interview */}
                 <div className="sm:col-span-6">
                   <label
                     htmlFor="interview"
-                    className="block text-sm font-medium leading-6 text-gray-900">
-                    Interview
+                    className="text-sm font-medium text-gray-800 flex items-center gap-1">
+                    <FaRegCalendarAlt className="text-blue-600" /> Interview
                   </label>
                   <div className="mt-2">
                     <input
@@ -521,20 +610,17 @@ const Openingform = ({
                       name="interview"
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
-                        const isoFormattedDate = selectedDate.toISOString(); // Convert to ISO 8601 format
-                        // remove miliseconds
+                        const isoFormattedDate = selectedDate.toISOString();
                         let format = isoFormattedDate.split(".")[0];
                         format += "Z";
-
-                        console.log(format);
                         setNewOpening({
                           ...newOpening,
                           interview: format,
                         });
                       }}
                       type="datetime-local"
-                      autoComplete="branch"
-                      className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      autoComplete="on"
+                      className="outline-none px-3 block w-full rounded-md border-0 py-2 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm"
                     />
                   </div>
                 </div>
@@ -542,7 +628,7 @@ const Openingform = ({
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-x-6">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-6">
             <button
               type="button"
               onClick={() => {
@@ -570,20 +656,29 @@ const Openingform = ({
                 });
                 setType("Add");
               }}
-              className="text-sm font-semibold leading-6 text-gray-900">
+              className="text-sm font-semibold text-gray-800 hover:underline transition">
               Cancel
             </button>
             <button
               onClick={type === "Add" ? handleAddOpening : handleEditOpening}
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 transition">
               {type === "Add" ? "Add Opening" : "Edit Opening"}
             </button>
           </div>
-        </form>
+        </motion.form>
       </div>
     </div>
   );
+};
+Openingform.propTypes = {
+  newOpening: PropTypes.object.isRequired,
+  setNewOpening: PropTypes.func.isRequired,
+  handleAddOpening: PropTypes.func.isRequired,
+  handleEditOpening: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  setType: PropTypes.func.isRequired,
+  setLogo: PropTypes.func.isRequired,
 };
 
 export default Openingform;

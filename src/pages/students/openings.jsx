@@ -7,8 +7,8 @@ import {
 } from "react-icons/fa";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
-import { Link } from "react-router-dom";
-import GlowingLoader from "../../components/loader";
+import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
@@ -31,12 +31,15 @@ const Openings = () => {
   });
   const [resume, setResume] = useState("");
   const [getResume, setGetResume] = useState("");
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
 
   // New states for filter functionality
   const [filterCompany, setFilterCompany] = useState("");
   const [filterRole, setFilterRole] = useState("");
   const [match, setMatch] = useState([]);
+  const [alreadyApplied, setAlreadyApplied] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     initTWE(
@@ -45,6 +48,20 @@ const Openings = () => {
       { checkOtherImports: true }
     );
 
+    const checkApplied = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URI}/api/application/get`,
+        {
+          method: "GET",
+          headers: {
+            "auth-token": localStorage.getItem("authToken"),
+          },
+        }
+      );
+      const data = await response.json();
+      setAlreadyApplied(data.data);
+    };
+
     // eslint-disable-next-line
     const data = (async () => {
       const response = await fetch(
@@ -52,6 +69,9 @@ const Openings = () => {
       );
       const data = await response.json();
       setAllCompany(data.data);
+      if (localStorage.getItem("authToken")) {
+        checkApplied();
+      }
 
       let ongoingOpen = data.data.filter((item) => {
         return item.progress === "Ongoing";
@@ -59,12 +79,9 @@ const Openings = () => {
       setOpen(ongoingOpen);
       setLoading(false);
     })();
-  }, [open]);
+  }, []);
 
-  const handleFetchAI = async () => {
-    if (!localStorage.getItem("authToken")) {
-      window.location.href = "/login";
-    }
+  const fetchAI = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/openai/`,
       {
@@ -75,7 +92,18 @@ const Openings = () => {
       } // Add the token to the headers
     );
     const data = await response.json();
-    setMatch(data.message);
+    setMatch(data.success);
+  };
+
+  const handleFetchAI = async () => {
+    if (!localStorage.getItem("authToken")) {
+      navigate("/login");
+    }
+    toast.promise(fetchAI(), {
+      loading: "Matching your resume",
+      success: "Resume matched successfully",
+      error: "Error matching your resume",
+    });
   };
 
   const handleChange = (e) => {
@@ -91,12 +119,12 @@ const Openings = () => {
       apply.phone === "" ||
       apply.branch === ""
     ) {
-      alert("Please fill all the details");
+      toast.error("Please fill all fields");
       return;
     }
 
     if (!resume && !getResume) {
-      alert("Please upload your resume");
+      toast.error("Please upload your resume");
       return;
     }
 
@@ -128,15 +156,13 @@ const Openings = () => {
         }
       );
       const data = await response.json();
-      if (data.message === "success") {
-        alert("Applied Successfully");
+      if (data.success === "success") {
+        toast.success("Applied Successfully");
       } else {
-        alert("Already Applied");
+        toast.error(data.error || "Already Applied");
       }
-      console.log(data);
-      window.location.reload();
     } else {
-      alert("You are not eligible for this job");
+      toast.error( "You are not eligible for this company");
     }
   };
 
@@ -188,10 +214,9 @@ const Openings = () => {
     );
   });
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <>
+      <Toaster />
       <div
         data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -240,13 +265,13 @@ const Openings = () => {
                       name="name"
                       value={apply.name}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput7"
                       placeholder="Name"
                     />
                     <label
                       htmlFor="exampleInput7"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
                       Name <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -257,13 +282,13 @@ const Openings = () => {
                       name="email"
                       value={apply.email}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput8"
                       placeholder="Email address"
                     />
                     <label
                       htmlFor="exampleInput8"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
                       Email address <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -274,13 +299,13 @@ const Openings = () => {
                       name="enroll"
                       value={apply.enroll}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput9"
                       placeholder="Enrollnment"
                     />
                     <label
                       htmlFor="exampleInput9"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
                       Enrollment <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -291,13 +316,13 @@ const Openings = () => {
                       name="phone"
                       value={apply.phone}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput12"
                       placeholder="Phone"
                     />
                     <label
                       htmlFor="exampleInput12"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
                       Phone <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -308,13 +333,13 @@ const Openings = () => {
                       name="branch"
                       value={apply.branch}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput10"
                       placeholder="Branch"
                     />
                     <label
                       htmlFor="exampleInput10"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
                       Branch <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -325,13 +350,13 @@ const Openings = () => {
                       name="gender"
                       value={apply.gender}
                       onChange={handleChange}
-                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
+                      className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[twe-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-white dark:placeholder:text-neutral-300 dark:autofill:shadow-autofill dark:peer-focus:text-primary [&:not([data-twe-input-placeholder-active])]:placeholder:opacity-0"
                       id="exampleInput11"
                       placeholder="Gender"
                     />
                     <label
                       htmlFor="exampleInput11"
-                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out -translate-y-[0.9rem] scale-[0.8] peer-focus:text-primary motion-reduce:transition-none dark:text-neutral-300 dark:peer-focus:text-primary">
+                      className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary">
                       Gender <span className="text-red-500">*</span>
                     </label>
                   </div>
@@ -529,10 +554,10 @@ const Openings = () => {
         Apply
       </button>
 
-      <div className="bg-white">
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold mb-4 text-center underline">
-            Jobs/Internships
+      <div className="bg-gradient-to-b from-white via-gray-100 to-white text-gray-900 min-h-screen py-10">
+        <div className="container mx-auto px-6">
+          <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900 animate-fade-in">
+            🚀 Explore Exciting Openings
           </h1>
           {/* Filter Section */}
           <div className="mb-4 flex justify-center space-x-4">
@@ -541,14 +566,14 @@ const Openings = () => {
               placeholder="Filter by Company Name"
               value={filterCompany}
               onChange={(e) => setFilterCompany(e.target.value)}
-              className="border p-2 rounded"
+              className="p-3 rounded bg-gray-50 text-gray-900 w-1/3 border border-gray-300 shadow-sm"
             />
             <input
               type="text"
               placeholder="Filter by Role"
               value={filterRole}
               onChange={(e) => setFilterRole(e.target.value)}
-              className="border p-2 rounded"
+              className="p-3 rounded bg-gray-50 text-gray-900 w-1/3 border border-gray-300 shadow-sm"
             />
             <button
               onClick={handleFetchAI}
@@ -559,20 +584,15 @@ const Openings = () => {
               Match Your Resume
             </button>
           </div>
-          <div className="flex justify-evenly align-middle flex-wrap">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredOpen.map((item, index) => (
               <div
                 key={item._id}
-                className="bg-gray-100 p-4 rounded-lg w-1/5 m-2">
+                className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:border-blue-500 transition-all duration-300 ease-in-out">
                 <div className="flex justify-between items-center align-middle">
                   <div className="w-2/3">
                     <h2 className="text-xl font-bold mb-2 p-2">{item.name}</h2>
-                    {match && match.length > 0 && (
-                      <span className="text-sm mb-2 pl-2 flex justify-between items-center">
-                        Match : {match[index].score}
-                      </span>
-                    )}
-                    <div className="text-sm mb-2 pl-2 flex justify-between items-center">
+                    <div className="text-sm text-gray-600 mb-2 pl-2 flex justify-between items-center">
                       <p>{item.role}</p>
                       <button
                         data-twe-toggle="modal"
@@ -589,23 +609,44 @@ const Openings = () => {
                   <img
                     src={item.logo}
                     alt={item.comp_name}
-                    className="h-16 w-16"
+                    className="h-16 w-16 object-contain
+                     shadow-lg"
                   />
                 </div>
                 <hr className="none mb-6 text-xl border-t-2 border-black" />
-                <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaMoneyCheckAlt className="mr-2" />{" "}
-                  {item.stipend ? item.stipend : 0}/Month
-                </div>
-                <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <IoLocation className="mr-2" />
-                  {item.mode}
-                </div>
-                <div className="text-sm mb-2 flex justify-start items-center p-1">
-                  <FaCalendarAlt className="mr-2" /> {item.duration}
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-sm mb-2 flex justify-start items-center p-1">
+                      <FaMoneyCheckAlt className="mr-2" />{" "}
+                      {item.stipend ? item.stipend : 0}/Month
+                    </div>
+                    <div className="text-sm mb-2 flex justify-start items-center p-1">
+                      <IoLocation className="mr-2" />
+                      {item.mode}
+                    </div>
+                    <div className="text-sm mb-2 flex justify-start items-center p-1">
+                      <FaCalendarAlt className="mr-2" /> {item.duration}
+                    </div>
+                  </div>
+                  <div>
+                    {match && match.length > 0 && (
+                      <span
+                        className={`text-sm mb-2 pl-2 flex justify-between items-center rounded-xl border-2 p-3 ${(() => {
+                          if (match[index].score > 80)
+                            return "bg-green-200 border-green-500 text-green-500";
+                          if (match[index].score > 60)
+                            return "bg-yellow-200 border-yellow-500 text-yellow-500";
+                          if (match[index].score > 40)
+                            return "bg-orange-200 border-orange-500 text-orange-500";
+                          return "bg-red-200 border-red-500 text-red-500";
+                        })()}`}>
+                        Resume Match: 100%
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-sm border-2 border-black rounded-md bg-slate-300 font-bold uppercase w-1/2 text-center">
+                  <div className="text-sm border-2 border-black rounded-md bg-slate-300 font-bold uppercase w-1/2 text-center py-2">
                     {item.type}
                   </div>
                   <button
@@ -614,22 +655,31 @@ const Openings = () => {
                       setCutoff(item.cgpacritera);
                       setPack(item.ctc);
                       if (!localStorage.getItem("authToken")) {
-                        window.location.href = "/login";
+                        navigate("/login");
                       }
                       handleIt();
                     }}
-                    disabled={handleCompTime(item.applyby)}
-                    className={`${
-                      handleCompTime(item.applyby)
-                        ? "bg-gray-500"
-                        : "bg-blue-500"
-                    } text-white px-4 py-2 rounded-xl`}
+                    disabled={
+                      handleCompTime(item.applyby) ||
+                      alreadyApplied.find((x) => x.company === item._id)
+                    }
+                    className={`${(() => {
+                      if (alreadyApplied.find((x) => x.company === item._id))
+                        return "bg-blue-500";
+                      if (handleCompTime(item.applyby)) return "bg-gray-500";
+                      return "bg-green-500";
+                    })()} text-white px-4 py-2 rounded-xl`}
                     data-twe-toggle="modal"
                     data-twe-target="#exampleModalLong"
                     data-twe-ripple-init
                     data-twe-ripple-color="light"
                     type="button">
-                    Apply
+                    {(() => {
+                      if (alreadyApplied.find((x) => x.company === item._id))
+                        return "Applied";
+                      if (handleCompTime(item.applyby)) return "Closed";
+                      return "Apply";
+                    })()}
                   </button>
                 </div>
               </div>

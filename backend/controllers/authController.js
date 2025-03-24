@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
     const authToken = jwt.sign({ id: user._id }, tokenSecret, {
       expiresIn: "1d",
     });
-    res.json({ message: "success", authToken });
+    res.json({ success: "success", message: "User login successfully", authToken });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -60,7 +60,7 @@ const signUpUser = async (req, res) => {
     const authToken = jwt.sign({ id: newUser._id }, tokenSecret, {
       expiresIn: "1d",
     });
-    res.json({ message: "success", authToken });
+    res.json({ success: "success", message: "User created account successfully", authToken });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -75,7 +75,7 @@ const updatePassword = async (req, res) => {
 
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
-    res.json({ message: "Password updated successfully" });
+    res.json({ success: "success", message: "Password updated successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -96,7 +96,7 @@ const forgotPassword = async (req, res) => {
     );
 
     if (mailResponse.success) {
-      res.json({ message: "Email sent", otp });
+      res.json({ success: "success", message: "Email sent", otp });
     } else {
       res.status(500).json({ error: "Failed to send email" });
     }
@@ -111,7 +111,7 @@ const deleteUser = async (req, res) => {
 
     if (!user) return res.status(401).json({ error: "User not found" });
 
-    res.json({ message: "User deleted", user });
+    res.json({ success: "success", message: "User deleted successfully", user });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -156,7 +156,7 @@ const updateUserProfile = async (req, res) => {
       { $set: newStudent },
       { new: true }
     );
-    res.json({ message: "success", data: user });
+    res.json({ success: "success", message: "User profile updated", data: user });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -174,7 +174,7 @@ const markStudentsPlaced = async (req, res) => {
       );
     }
 
-    res.json({ message: "success" });
+    res.json({ success: "success", message: "Attendance marked successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

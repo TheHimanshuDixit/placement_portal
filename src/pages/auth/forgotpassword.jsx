@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Ripple, Input, initTWE } from "tw-elements";
 import GlowingLoader from "../../components/loader";
+import { toast, Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Forgotpassword = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +13,7 @@ const Forgotpassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     initTWE(
@@ -18,12 +21,20 @@ const Forgotpassword = () => {
       { allowReinits: true },
       { checkOtherImports: true }
     );
+    if (localStorage.getItem("authToken")) {
+      navigate("/");
+    }
+    if (localStorage.getItem("authAdminToken")) {
+      navigate("/admin");
+    }
+    // eslint-disable-next-line
   }, []);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
     if (email === "") {
-      return alert("Email is required");
+      toast.error( "Please fill the email field");
+      return;
     }
     setLoading(true);
     const data = await fetch(
@@ -38,7 +49,8 @@ const Forgotpassword = () => {
     );
     const response = await data.json();
     setLoading(false);
-    if (response.message === "Email sent") {
+    if (response.success === "success") {
+      toast.success("OTP sent to your email");
       setSent(true);
       setOtpSent(response.otp);
     }
@@ -47,7 +59,8 @@ const Forgotpassword = () => {
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      return alert("Password does not match");
+      toast.error("Passwords do not match");
+      return;
     }
     if (
       otp === "" ||
@@ -55,10 +68,12 @@ const Forgotpassword = () => {
       newPassword === "" ||
       confirmPassword === ""
     ) {
-      return alert("All fields are required");
+      toast.error("Please fill all the fields");
+      return;
     }
     if (parseInt(otp) !== parseInt(otpSent)) {
-      return alert("Invalid OTP");
+      toast.error("Invalid OTP");
+      return;
     }
     setLoading(true);
     const data = await fetch(
@@ -73,9 +88,11 @@ const Forgotpassword = () => {
     );
     const response = await data.json();
     setLoading(false);
-    if (response.message === "success") {
-      alert("Password updated successfully");
-      window.location.href = "/";
+    if (response.success === "success") {
+      toast.success("Password updated successfully");
+      navigate("/");
+    } else {
+      toast.error(response.error || "Failed to update password");
     }
   };
 
@@ -83,6 +100,7 @@ const Forgotpassword = () => {
     <GlowingLoader />
   ) : (
     <div className="h-[100vh] bg-blue-300">
+      <Toaster />
       <div className="py-20 block">
         <div className=" h-full mx-auto block max-w-sm rounded-lg bg-white p-6 shadow-4 dark:bg-surface-dark">
           <form>

@@ -6,14 +6,16 @@ const addCollege = async (req, res) => {
     const existingCollege = await College.findOne({ enroll });
 
     if (existingCollege) {
-      return res.status(400).json({ message: "College already exists" });
+      return res.status(400).json({ error: "College already exists" });
     }
 
     const college = new College({ enroll, pwd });
     await college.save();
-    res
-      .status(201)
-      .json({ message: "College added successfully", data: college });
+    res.status(201).json({
+      success: "success",
+      message: "College added successfully",
+      data: college,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -24,9 +26,9 @@ const addMultipleColleges = async (req, res) => {
     const colleges = req.body;
 
     if (!Array.isArray(colleges)) {
-      return res
-        .status(400)
-        .json({ message: "Input should be an array of objects" });
+      return res.status(400).json({
+        error: "Input should be an array of objects",
+      });
     }
 
     const addedColleges = [];
@@ -37,7 +39,7 @@ const addMultipleColleges = async (req, res) => {
       const existingCollege = await College.findOne({ enroll });
 
       if (existingCollege) {
-        existingColleges.push({ enroll, message: "College already exists" });
+        existingColleges.push(college);
       } else {
         const newCollege = new College({ enroll, pwd });
         await newCollege.save();
@@ -46,6 +48,7 @@ const addMultipleColleges = async (req, res) => {
     }
 
     res.json({
+      success: "success",
       message: "Operation completed",
       addedColleges,
       existingColleges,
@@ -61,14 +64,14 @@ const loginCollege = async (req, res) => {
     const college = await College.findOne({ enroll });
 
     if (!college) {
-      return res.status(404).json({ message: "College not found" });
+      return res.status(404).json({ error: "College not found" });
     }
 
     if (college.pwd !== pwd) {
-      return res.status(401).json({ message: "Invalid Password" });
+      return res.status(401).json({ error: "Invalid Password" });
     }
 
-    res.json({ message: "success", data: college });
+    res.json({ success: "success", message: "Logged in ", data: college });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -88,10 +91,10 @@ const getCollegeByEnroll = async (req, res) => {
     const college = await College.findOne({ enroll: req.params.enroll });
 
     if (!college) {
-      return res.status(404).json({ message: "College not found" });
+      return res.status(404).json({ error: "College not found" });
     }
 
-    res.json({ data: college });
+    res.json({ success: "success", data: college });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -106,10 +109,16 @@ const updateCollege = async (req, res) => {
     );
 
     if (!college) {
-      return res.status(404).json({ message: "College not found" });
+      return res
+        .status(404)
+        .json({  error: "College not found" });
     }
 
-    res.json({ message: "College updated successfully", data: college });
+    res.json({
+      result: "success",
+      message: "College updated successfully",
+      data: college,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -122,10 +131,16 @@ const deleteCollege = async (req, res) => {
     });
 
     if (!college) {
-      return res.status(404).json({ message: "College not found" });
+      return res
+        .status(404)
+        .json({  error: "College not found" });
     }
 
-    res.json({ message: "College deleted successfully", data: college });
+    res.json({
+      result: "success",
+      message: "College deleted successfully",
+      data: college,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

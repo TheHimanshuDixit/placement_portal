@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
-import GlowingLoader from "../../components/loader";
+import { useNavigate } from "react-router-dom";
 
 const Myapplications = () => {
   const [applications, setApplications] = useState([]);
-  // eslint-disable-next-line
-  const [open, setOpen] = useState([]);
-
-  // eslint-disable-next-line
   const [company, setCompany] = useState({});
   const [viewCompany, setViewCompany] = useState({});
   const [check, setCheck] = useState(false);
+  //eslint-disable-next-line
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     initTWE(
@@ -21,10 +19,10 @@ const Myapplications = () => {
     );
 
     if (!localStorage.getItem("authToken")) {
-      window.location.href = "/login";
+      navigate("/login");
     }
 
-    // Fetch the data from the server
+    // Fetch applications data from the server
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -45,26 +43,28 @@ const Myapplications = () => {
     };
     fetchData();
 
-    // eslint-disable-next-line
-    const data = (async () => {
+    // Fetch opening details to map companies
+    (async () => {
       const response = await fetch(
         `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
       );
       const data = await response.json();
-      setOpen(data.data);
       for (const item of data.data) {
-        company[item._id] = item;
+        setCompany((prev) => {
+          return {
+            ...prev,
+            [item._id]: item,
+          };
+        });
       }
-      console.log(company);
       setLoading(false);
     })();
     // eslint-disable-next-line
   }, []);
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <>
+      {/* Modal for Company Details */}
       <div
         data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -75,7 +75,7 @@ const Myapplications = () => {
         <div
           data-twe-modal-dialog-ref
           className="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
-          <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
+          <div className="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-opacity-80 backdrop-blur-md bg-clip-padding text-current shadow-4 outline-none dark:bg-surface-dark">
             <div className="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
               <h5
                 className="text-xl font-medium leading-normal text-surface dark:text-white"
@@ -134,15 +134,11 @@ const Myapplications = () => {
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Applicable for these branches :</strong>{" "}
-                    {viewCompany.branch.map((key) => {
-                      return key + ",";
-                    })}
+                    {viewCompany.branch.map((key) => key + ",")}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Location :</strong>{" "}
-                    {viewCompany.location.map((key) => {
-                      return key + ",";
-                    })}
+                    {viewCompany.location.map((key) => key + ",")}
                   </li>
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Gender :</strong> {viewCompany.gender}
@@ -202,7 +198,7 @@ const Myapplications = () => {
         type="button">
         Apply
       </button>
-      <div className="max-w-screen-lg m-auto my-10 border-4 p-2 px-4 rounded-2xl">
+      <div className="max-w-screen-lg m-auto my-10 border-4 p-2 px-4 rounded-2xl bg-white/80 backdrop-blur-md shadow-xl">
         <div className="px-4 sm:px-0">
           <h3 className="text-base font-semibold leading-7 text-gray-900">
             My Applications
@@ -211,10 +207,10 @@ const Myapplications = () => {
             Please review the status of your applications.
           </p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-6">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-              <div className="overflow-hidden">
+              <div className="overflow-hidden rounded-lg shadow-xl">
                 <table className="min-w-full text-left text-sm font-light text-surface dark:text-white">
                   <thead className="border-b border-neutral-200 font-medium dark:border-white/10">
                     <tr>
@@ -248,7 +244,7 @@ const Myapplications = () => {
                             {company[application.company]?.name}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
-                            {company[application.company]?.name}
+                            {company[application.company]?.jobId}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             {application.date.split("T")[1].split(".")[0] +
@@ -263,7 +259,7 @@ const Myapplications = () => {
                                 setCheck(true);
                                 setViewCompany(company[application.company]);
                               }}
-                              className="px-4 py-2 bg-primary text-white rounded-lg">
+                              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition">
                               View
                             </button>
                           </td>

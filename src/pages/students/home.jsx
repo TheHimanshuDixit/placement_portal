@@ -1,5 +1,5 @@
 import Carsoul from "../../components/students/carsoul";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Ripple, initTWE } from "tw-elements";
 import { useEffect, useState } from "react";
 import Testimonial from "../../components/students/testimonial";
@@ -7,8 +7,12 @@ import StepperComponent from "../../components/students/stepper";
 import TopRecruiters from "../../components/students/topRecruiters";
 
 export default function Home() {
+  const navigate = useNavigate();
   useEffect(() => {
     initTWE({ Ripple }, { allowReinits: true }, { checkOtherImports: true });
+    if (localStorage.getItem("authAdminToken") !== null) {
+      navigate("/admin");
+    }
 
     const mybutton = document.getElementById("btn-back-to-top");
     const scrollFunction = () => {
@@ -27,6 +31,8 @@ export default function Home() {
     mybutton.addEventListener("click", backToTop);
 
     window.addEventListener("scroll", scrollFunction);
+
+    // eslint-disable-next-line
   }, []);
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -37,8 +43,8 @@ export default function Home() {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
       />
-      <div>
-        <div className="relative isolate px-6 pt-14 lg:px-8">
+      <div className="border-2">
+        <div className="relative isolate px-6 lg:px-8">
           <div
             className="absolute inset-x-0 -top-60 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-0"
             aria-hidden="true">
@@ -90,7 +96,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-white dark:bg-gray-900 border-b-2">
         <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
           <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
             <div className="border-r-2 pr-8">

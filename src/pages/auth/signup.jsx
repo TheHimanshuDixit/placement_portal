@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Input, Ripple, initTWE } from "tw-elements";
 import GlowingLoader from "../../components/loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 const Signup = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     initTWE(
       { Input, Ripple },
       { allowReinits: true },
       { checkOtherImports: true }
     );
+    if (localStorage.getItem("authToken")) {
+      navigate("/");
+    }
+    if (localStorage.getItem("authAdminToken")) {
+      navigate("/admin");
+    }
+    // eslint-disable-next-line
   }, []);
 
   const [name, setName] = useState("");
@@ -36,7 +45,7 @@ const Signup = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     if (!name || !email || !enrollnment || !phoneno || !password) {
-      alert("Please fill all the fields");
+      toast.error("Please fill all the fields");
       return;
     }
     setLoading(true);
@@ -52,21 +61,21 @@ const Signup = () => {
     );
     const data = await response.json();
     setLoading(false);
-    if (data.message === "success") {
-      alert("Signup successful");
+    if (data.success === "success") {
+      toast.success("Signup successful");
       localStorage.setItem("authToken", data.authToken);
-      window.location.href = "/";
+      navigate("/");
     } else {
-      alert("Signup failed");
+      toast.error(data.error || "Signup failed");
     }
-    console.log(data);
   };
 
   return loading ? (
     <GlowingLoader />
   ) : (
     <div>
-      <section className="h-screen mx-auto max-w-screen-xl">
+      <Toaster />
+      <section className="my-10 mx-auto max-w-screen-xl p-10">
         <div className="h-full">
           <div className="flex h-full flex-wrap items-center justify-center lg:justify-between">
             <div className="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">

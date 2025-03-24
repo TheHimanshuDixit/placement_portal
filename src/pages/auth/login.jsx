@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Input, Ripple, initTWE } from "tw-elements";
 import GlowingLoader from "../../components/loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 const Login = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     initTWE(
       { Input, Ripple },
@@ -11,11 +13,12 @@ const Login = () => {
       { checkOtherImports: true }
     );
     if (localStorage.getItem("authToken")) {
-      window.location.href = "/";
+      navigate("/");
     }
     if (localStorage.getItem("authAdminToken")) {
-      window.location.href = "/admin";
+      navigate("/admin");
     }
+    // eslint-disable-next-line
   }, []);
 
   const [email, setEmail] = useState("");
@@ -33,7 +36,7 @@ const Login = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      alert("Please fill all the fields");
+      toast.error("Please fill all the fields");
       return;
     }
     setLoading(true);
@@ -48,11 +51,11 @@ const Login = () => {
       }
     );
     const data = await response.json();
-    if (data.message === "success") {
-      alert("Login successful");
+    if (data.success === "success") {
+      toast.success("Login successful");
       localStorage.setItem("authToken", data.authToken);
       setLoading(false);
-      window.location.href = "/";
+      navigate("/");
     } else {
       const respteam = await fetch(
         `${process.env.REACT_APP_DEV_URI}/api/team/login`,
@@ -65,13 +68,13 @@ const Login = () => {
         }
       );
       const data = await respteam.json();
-      if (data.message === "success") {
+      if (data.success === "success") {
         localStorage.setItem("authAdminToken", data.authAdminToken);
-        alert("Login successful");
+        toast.success("Login successful");
         setLoading(false);
-        window.location.href = "/admin";
+        navigate("/admin");
       } else {
-        alert("Login failed");
+        toast.error(data.error || "Invalid credentials");
       }
     }
     setLoading(false);
@@ -81,6 +84,7 @@ const Login = () => {
     <GlowingLoader />
   ) : (
     <section className="">
+      <Toaster />
       <div className="h-full px-6 py-24">
         <div className="w-3/4 m-auto flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
@@ -127,11 +131,11 @@ const Login = () => {
 
               <div className="mb-6 flex items-center justify-between">
                 <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]"></div>
-                <a
+                <Link
                   href="/forgot"
                   className="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600">
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
               <button

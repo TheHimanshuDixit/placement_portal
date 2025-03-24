@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { initTWE, Input, Ripple } from "tw-elements";
 import GlowingLoader from "../../components/loader";
 import FAQSection from "../../components/students/faqSection";
+import { toast, Toaster } from "react-hot-toast";
 
 const Contact = () => {
   useEffect(() => {
@@ -26,7 +27,7 @@ const Contact = () => {
 
   const handleSubmit = async () => {
     if (!name || !email || !message) {
-      alert("Please fill all the fields");
+      toast.error("Please fill all fields");
       return;
     }
     setLoading(true);
@@ -42,19 +43,21 @@ const Contact = () => {
     );
     const data = await response.json();
     setLoading(false);
-    if (data.message === "Email sent") {
-      alert("Email sent");
-      window.location.reload();
+    if (data.success === "success") {
+      setName("");
+      setEmail("");
+      setMessage("");
+      toast.success("Email sent successfully");
     } else {
-      alert("Error Occurs");
+      toast.error(data.error || "Email not sent");
     }
-    console.log(data);
   };
 
   return loading ? (
     <GlowingLoader />
   ) : (
     <div>
+      <Toaster />
       <div className="w-3/4 my-24 mx-auto md:px-6">
         <section className="mb-32">
           <div className="flex flex-wrap">
@@ -118,7 +121,7 @@ const Contact = () => {
                   data-twe-ripple-init
                   data-twe-ripple-color="light"
                   className="mb-6 inline-block w-full rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-                  Send
+                  Send Message 🚀
                 </button>
               </form>
             </div>

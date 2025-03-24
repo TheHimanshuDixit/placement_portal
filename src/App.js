@@ -1,32 +1,32 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/students/home";
 import Login from "./pages/auth/login";
 import Signup from "./pages/auth/signup";
+import Forgotpassword from "./pages/auth/forgotPassword";
+import Home from "./pages/students/home";
+import About from "./pages/students/about";
 import Openings from "./pages/students/openings";
+import Contact from "./pages/students/contact";
+import Error from "./pages/students/errorPage";
+import Contribute from "./pages/students/contribute";
+import Team from "./pages/students/team";
+import Myprofile from "./pages/students/myProfile";
+import Myapplications from "./pages/students/myApplications";
+import Mycontributions from "./pages/students/myContributions";
+import Myattendence from "./pages/students/myAttendence";
 import Header from "./components/students/header";
 import Footer from "./components/students/footer";
-import Contact from "./pages/students/contact";
-import Team from "./pages/students/team";
-import About from "./pages/students/about";
-import Contribute from "./pages/students/contribute";
-import Error from "./pages/students/errorPage";
-import ScrollToTop from "./components/students/scrollTotop";
+import ScrollToTop from "./components/students/scrollToTop";
 import Admin from "./pages/admin/home";
-import Navbar from "./components/admin/navbar";
-import FooterAdmin from "./components/admin/footer";
-import Myapplications from "./pages/students/myapplications";
-import Myprofile from "./pages/students/myprofile";
-import Mycontributions from "./pages/students/mycontributions";
-import Forgotpassword from "./pages/auth/forgotpassword";
-import Addadmin from "./pages/admin/addadmin";
-import Addopening from "./pages/admin/addopening";
-import Studetails from "./pages/admin/studetails";
+import Addadmin from "./pages/admin/addAdmin";
+import Addopening from "./pages/admin/addOpening";
+import Studetails from "./pages/admin/studentDetails";
 import Attendance from "./pages/admin/attendence";
 import Record from "./pages/admin/record";
-import Myattendence from "./pages/students/myattendence";
-import ViewAttendance from "./components/admin/viewattendance";
-import StudentList from "./components/admin/enrolledstudents";
+import Navbar from "./components/admin/navbar";
+import FooterAdmin from "./components/admin/footer";
+import ViewAttendance from "./components/admin/viewAttendance";
+import StudentList from "./components/admin/enrolledStudents";
 
 function App() {
   return (
@@ -136,7 +136,7 @@ function App() {
           />
           <Route
             exact
-            path="/myattendence"
+            path="/myattendance"
             element={
               <>
                 <Header />

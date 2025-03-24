@@ -44,7 +44,9 @@ const updateStudentAttendance = async (req, res) => {
       );
     }
 
-    res.status(200).json({ message: "Attendance updated successfully" });
+    res
+      .status(200)
+      .json({ success: "success", message: "Attendance updated successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

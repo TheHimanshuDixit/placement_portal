@@ -23,7 +23,13 @@ const addContribution = async (req, res) => {
     });
 
     await contribution.save();
-    res.status(201).json({ message: "success", data: contribution });
+    res
+      .status(201)
+      .json({
+        success: "success",
+        message: "Contribution added successfully",
+        data: contribution,
+      });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -59,7 +65,7 @@ const updateContribution = async (req, res) => {
       return res.status(404).json({ error: "Contribution not found" });
     }
 
-    res.status(200).json({ data: contribution });
+    res.status(200).json({ success: "success", data: contribution });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -73,12 +79,11 @@ const deleteContribution = async (req, res) => {
       return res.status(404).json({ error: "Contribution not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Contribution deleted successfully",
-        data: contribution,
-      });
+    res.status(200).json({
+      result: "success",
+      message: "Contribution deleted successfully",
+      data: contribution,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

@@ -1,113 +1,178 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
+import {
+  FaBars,
+  FaTimes,
+  FaHome,
+  FaInfoCircle,
+  FaBriefcase,
+  FaUsers,
+  FaPhone,
+  FaClipboardList,
+  FaHandsHelping,
+} from "react-icons/fa";
+import { toast, Toaster } from "react-hot-toast";
 
 const Header = () => {
   const [activePage, setActivePage] = useState("/");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    setActivePage(window.location.pathname);
-  }, []);
+    setActivePage(pathname);
+  }, [pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    window.location.href = "/login";
+    toast.success("Logged out successfully!");
+    navigate("/login");
   };
 
   return (
-    <nav className="flex-no-wrap relative flex w-full items-center justify-between bg-zinc-50 py-2 shadow-md dark:bg-neutral-700 lg:py-4">
-      <div className="flex w-full flex-wrap items-center justify-between px-3">
-        {/* Hamburger button for mobile */}
-        <button
-          className="lg:hidden px-2 text-black/50 dark:text-neutral-200"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle navigation">
-          <svg className="w-7" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-
+    <nav className="w-full bg-white shadow-md dark:bg-gray-900 z-50 border-b dark:border-gray-800">
+      <Toaster />
+      <div className="flex items-center justify-between px-6 py-4 border-b-2">
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center text-neutral-900 dark:text-neutral-200">
-          <img src="./Images/logo.png" alt="Logo" className="mr-3 h-6 sm:h-9" />
+          className="flex items-center text-gray-900 dark:text-white">
+          <img src="./Images/logo.png" alt="Logo" className="mr-3 h-8" />
           <span className="text-xl font-semibold">JIIT:T&P Portal</span>
         </Link>
 
-        {/* Navigation Links */}
-        <div className={`${isMenuOpen ? "flex" : "hidden"} flex-grow lg:flex`}>
-          <ul className="list-none me-auto flex flex-col lg:flex-row">
-            {[
-              { name: "Home", path: "/" },
-              { name: "About", path: "/about" },
-              { name: "T&P Team", path: "/team" },
-              { name: "Internships/Jobs", path: "/openings" },
-              { name: "Contribute", path: "/contribute" },
-              { name: "Contact", path: "/contact" },
-            ].map((item) => (
-              <li key={item.path} className="lg:pe-2">
-                <Link
-                  to={item.path}
-                  onClick={() => setActivePage(item.path)}
-                  className={`block py-2 px-3 transition ${
-                    activePage === item.path
-                      ? "text-blue-500"
-                      : "text-gray-700 hover:text-black"
-                  } dark:text-white/60 dark:hover:text-white/80`}>
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex gap-6">
+          {[
+            { name: "Home", path: "/", icon: <FaHome /> },
+            { name: "About", path: "/about", icon: <FaInfoCircle /> },
+            { name: "T&P Team", path: "/team", icon: <FaUsers /> },
+            {
+              name: "Internships/Jobs",
+              path: "/openings",
+              icon: <FaBriefcase />,
+            },
+            {
+              name: "Attendance",
+              path: "/myattendance",
+              icon: <FaClipboardList />,
+            },
+            {
+              name: "Contribute",
+              path: "/contribute",
+              icon: <FaHandsHelping />,
+            },
+            { name: "Contact", path: "/contact", icon: <FaPhone /> },
+          ].map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setActivePage(item.path)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-300 ${
+                activePage === item.path
+                  ? "text-blue-500 bg-gray-200 dark:bg-gray-700"
+                  : "text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              }`}>
+              {item.icon} {item.name}
+            </Link>
+          ))}
         </div>
 
-        {/* Profile & Logout */}
-        <div className="relative flex items-center">
+        {/* Profile & Mobile Menu */}
+        <div className="flex items-center gap-4">
           {localStorage.getItem("authToken") ? (
             <CgProfile
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="text-3xl text-primary-700 cursor-pointer"
+              onMouseOver={() => setIsProfileOpen(true)}
+              onMouseOut={() => setIsProfileOpen(false)}
+              className="text-3xl text-blue-600 cursor-pointer hover:scale-110 transition-all"
             />
           ) : (
             <Link
               to="/login"
-              className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+              className="px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-500 transition">
               Log in
             </Link>
           )}
 
-          {isProfileOpen && (
-            <div className="absolute right-0 mt-12 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-md z-50">
-              <ul>
-                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                  <Link to="/myprofile">My Profile</Link>
-                </li>
-                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                  <Link to="/myapplications">My Applications</Link>
-                </li>
-                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                  <Link to="/myattendence">My Attendance</Link>
-                </li>
-                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                  <Link to="/mycontributions">My Contributions</Link>
-                </li>
-                <li className="text-gray-800 dark:text-white py-2.5 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                  <button onClick={handleLogout} className="w-full text-left">
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
+          {/* Mobile Menu Toggle */}
+          <button
+            className="lg:hidden text-gray-900 dark:text-white text-2xl"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="lg:hidden flex flex-col items-center bg-white dark:bg-gray-900 pb-4 shadow-md transition-all animate-slideInDown">
+          {[
+            { name: "Home", path: "/", icon: <FaHome /> },
+            { name: "About", path: "/about", icon: <FaInfoCircle /> },
+            { name: "T&P Team", path: "/team", icon: <FaUsers /> },
+            {
+              name: "Internships/Jobs",
+              path: "/openings",
+              icon: <FaBriefcase />,
+            },
+            {
+              name: "Attendance",
+              path: "/myattendance",
+              icon: <FaClipboardList />,
+            },
+            {
+              name: "Contribute",
+              path: "/contribute",
+              icon: <FaHandsHelping />,
+            },
+            { name: "Contact", path: "/contact", icon: <FaPhone /> },
+          ].map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsMenuOpen(false)}
+              className="border-b-2 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-center flex justify-center items-center gap-2">
+              {item.icon} {item.name}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {/* Profile Dropdown */}
+      {isProfileOpen && (
+        <div
+          className="z-10 absolute right-3 top-12 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg animate-fadeIn"
+          onMouseOver={() => setIsProfileOpen(true)}
+          onFocus={() => setIsProfileOpen(true)}
+          onMouseOut={() => setIsProfileOpen(false)}
+          onBlur={() => setIsProfileOpen(false)}
+          role="menu"
+          tabIndex={0}>
+          <ul>
+            {[
+              "My Profile",
+              "My Applications",
+              "My Attendance",
+              "My Contributions",
+            ].map((item) => (
+              <li
+                key={item}
+                className="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <Link to={`/${item.toLowerCase().replace(/ /g, "")}`}>
+                  {item}
+                </Link>
+              </li>
+            ))}
+            <li className="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <button onClick={handleLogout} className="w-full text-left">
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };

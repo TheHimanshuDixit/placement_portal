@@ -36,7 +36,7 @@ const addApplication = async (req) => {
 
     const application = new Application(applicationData);
     await application.save();
-    return { message: "Success", data: application };
+    return { success: "success", message: "Application saved successfully", data: application };
   } catch (error) {
     console.error("Error fetching applications by company:", error);
     throw error;

@@ -3,7 +3,7 @@ import React from "react";
 const About = () => {
   return (
     <div>
-      <div className="bg- max-w-screen-xl mx-auto my-24 md:px-6">
+      <div className="bg-max-w-screen-xl mx-auto my-24 md:px-6">
         <section className="mb-32">
           <div className="flex flex-wrap">
             <div className="mb-12 w-full shrink-0 grow-0 basis-auto lg:mb-0 lg:w-5/12">
