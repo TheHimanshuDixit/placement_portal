@@ -8,6 +8,8 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 const MyAttendance = () => {
   const [companies, setCompanies] = useState([]);
@@ -15,6 +17,7 @@ const MyAttendance = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const token = localStorage.getItem("authToken");
@@ -57,6 +60,10 @@ const MyAttendance = () => {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("authToken")) {
+      toast.error("You need to login first!");
+      navigate("/login");
+    }
     fetchData();
   }, []);
 
@@ -111,6 +118,7 @@ const MyAttendance = () => {
     <GlowingLoader />
   ) : (
     <div className="max-w-3xl mx-auto p-6 h-screen">
+      <Toaster />
       <h1 className="text-4xl font-extrabold text-center mb-10 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
         Placement Attendance
       </h1>
