@@ -7,6 +7,7 @@ import {
   FaClipboardList,
   FaCheckCircle,
   FaTimesCircle,
+  FaClock,
 } from "react-icons/fa";
 import { FiRefreshCw } from "react-icons/fi";
 import { toast, Toaster } from "react-hot-toast";
@@ -132,6 +133,7 @@ const ViewAttendance = () => {
                         <td className="border px-6 py-3 text-center flex items-center justify-center gap-2">
                           <FaCalendarAlt className="text-yellow-500" />{" "}
                           {item.event.date.split("T")[0]}{" "}
+                          <FaClock className="text-yellow-500" />{" "}
                           {item.event.date.split("T")[1]
                             ? item.event.date.split("T")[1].split(".")[0]
                             : ""}

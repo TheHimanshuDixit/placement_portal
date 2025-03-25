@@ -85,14 +85,14 @@ const Login = () => {
     }
   };
 
-  return(
+  return (
     <section className="">
       <Toaster />
       <div className="h-full px-6 py-24">
         <div className="w-3/4 m-auto flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
             <img
-              src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+              src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
               className="w-full"
               alt="Phone"
             />
