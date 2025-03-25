@@ -3,7 +3,6 @@ import { IoLocation } from "react-icons/io5";
 import { FaCircleInfo, FaDownload } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
 import Openingform from "../../components/admin/openingForm";
-import GlowingLoader from "../../components/loader";
 import {
   FaMoneyCheckAlt,
   FaCalendarAlt,
@@ -50,6 +49,7 @@ const Addopening = () => {
     interview: "",
   });
 
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(false);
 
   const data = async () => {
@@ -203,7 +203,7 @@ const Addopening = () => {
       !newOpening.batch ||
       newOpening.branch.length === 0
     ) {
-      toast.error( "Please fill all the fields");
+      toast.error("Please fill all the fields");
       return;
     }
 
@@ -385,6 +385,7 @@ const Addopening = () => {
 
   return (
     <>
+      <Toaster />
       <Openingform
         newOpening={newOpening}
         setNewOpening={setNewOpening}

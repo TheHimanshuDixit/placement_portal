@@ -34,10 +34,95 @@ async function job() {
       const timeformat = date.toTimeString();
       const time = timeformat.split(" ")[0];
       const htmlContent = `
-        <h1>Application Deadline Approaching</h1>
-        <p>Application deadline for the opening ${opening.name}-${opening.jobId} is approaching. <a href=${process.env.URL}>Apply</a> before ${time} ${dateformat}</p>
-        <p>If you have already apply then ignore this mail</p>
-        <p>Thanks</p>
+        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Deadline Reminder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff5733, #c70039);
+            color: #ffffff;
+            padding: 25px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 35px;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .highlight {
+            color: #ff5733;
+            font-weight: bold;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            background-color: #f1f3f5;
+        }
+
+        .apply-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #ff5733;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            ⏳ Application Deadline Approaching ⏳
+        </div>
+        <div class="content">
+            <h2>📢 Important Reminder!</h2>
+            <p>The application deadline for <span class="highlight">${opening.name}</span> (Job ID: <span
+                    class="highlight">${opening.jobId}</span>) is approaching.</p>
+            <p><strong>⏳ Deadline:</strong> <span class="highlight">${time}, ${dateformat}</span></p>
+            <p>Ensure you submit your application before the deadline!</p>
+            <a href="${process.env.URL}" class="apply-btn">Apply Now</a>
+            <p>If you have already applied, kindly ignore this email.</p>
+            <p>Thanks,</p>
+            <p><strong>T&P Portal Team</strong></p>
+        </div>
+        <div class="footer">
+            &copy; 2025 T&P Portal. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>
       `;
       sendMailTo(studEmails, "Application Deadline Approaching", htmlContent);
     }

@@ -33,7 +33,7 @@ const Forgotpassword = () => {
   const handleSendOtp = async (e) => {
     e.preventDefault();
     if (email === "") {
-      toast.error( "Please fill the email field");
+      toast.error("Please fill the email field");
       return;
     }
     setLoading(true);
@@ -53,6 +53,14 @@ const Forgotpassword = () => {
       toast.success("OTP sent to your email");
       setSent(true);
       setOtpSent(response.otp);
+      setTimeout(() => {
+        setSent(false);
+        setOtpSent("");
+        setOtp("");
+        //after 5 minutes
+      }, 300000);
+    } else {
+      toast.error(response.error || "Failed to send OTP");
     }
   };
 

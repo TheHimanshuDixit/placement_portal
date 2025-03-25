@@ -26,12 +26,89 @@ async function job() {
       const timeformat = date.toTimeString();
       const time = timeformat.split(" ")[0];
       const htmlContent = `
-        <h1>Preplacement Talk of ${opening.name}-${opening.jobId} will be ${time} ${dateformat}. Be ready on time.</h1>
-        <p>Thanks</p>
+        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preplacement Talk Reminder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #ffffff;
+            padding: 25px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 35px;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .highlight {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            background-color: #f1f3f5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            🚀 Preplacement Talk Reminder 🚀
+        </div>
+        <div class="content">
+            <h2>📢 Important Update!</h2>
+            <p>The preplacement talk for <span class="highlight">${opening.name}</span> (Job ID: <span
+                    class="highlight">${opening.jobId}</span>) is scheduled for:</p>
+            <p><strong>🕒 Time:</strong> <span class="highlight">${time}</span></p>
+            <p><strong>📅 Date:</strong> <span class="highlight">${dateformat}</span></p>
+            <p>Make sure you are prepared on time. This is a great opportunity to learn more about the company and
+                the job role!</p>
+            <p>See you there! 🎯</p>
+            <p>Thanks,</p>
+            <p><strong>T&P Portal Team</strong></p>
+        </div>
+        <div class="footer">
+            &copy; 2025 T&P Portal. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>
       `;
       sendMailTo(
         applicantEmails,
-        `${opening.name}-${opening.jobId} Preplacement Talk`,
+        `T&P : ${opening.name}-${opening.jobId} Preplacement Talk`,
         htmlContent
       );
     }
@@ -44,12 +121,87 @@ async function job() {
       const timeformat = date.toTimeString();
       const time = timeformat.split(" ")[0];
       const htmlContent = `
-        <h1>Online Test of ${opening.name}-${opening.jobId} will be ${time} ${dateformat}. Be ready on time.</h1>
-        <p>Thanks</p>
+        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Test Reminder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff5733, #c70039);
+            color: #ffffff;
+            padding: 25px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 35px;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .highlight {
+            color: #ff5733;
+            font-weight: bold;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            background-color: #f1f3f5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            🎯 Online Test Reminder 🎯
+        </div>
+        <div class="content">
+            <h2>📢 Important Update!</h2>
+            <p>The online test for <span class="highlight">${opening.name}</span> (Job ID: <span class="highlight">${opening.jobId}</span>) is scheduled for:</p>
+            <p><strong>🕒 Time:</strong> <span class="highlight">${time}</span></p>
+            <p><strong>📅 Date:</strong> <span class="highlight">${dateformat}</span></p>
+            <p>Please ensure you are well-prepared and ready on time. Best of luck! 🍀</p>
+            <p>Thanks,</p>
+            <p><strong>T&P Portal Team</strong></p>
+        </div>
+        <div class="footer">
+            &copy; 2025 T&P Portal. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>
+
       `;
       sendMailTo(
         applicantEmails,
-        `${opening.name}-${opening.jobId} Test`,
+        `T&P : ${opening.name}-${opening.jobId} Test`,
         htmlContent
       );
     }
@@ -65,12 +217,87 @@ async function job() {
       const timeformat = date.toTimeString();
       const time = timeformat.split(" ")[0];
       const htmlContent = `
-        <h1>Interview of ${opening.name}-${opening.jobId} will be ${time} ${dateformat}. Be ready on time.</h1>
-        <p>Thanks</p>
+        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Reminder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: #ffffff;
+            padding: 25px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 35px;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .highlight {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            background-color: #f1f3f5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            🎯 Interview Reminder 🎯
+        </div>
+        <div class="content">
+            <h2>📢 Important Update!</h2>
+            <p>The interview for <span class="highlight">${opening.name}</span> (Job ID: <span class="highlight">${opening.jobId}</span>) is scheduled for:</p>
+            <p><strong>🕒 Time:</strong> <span class="highlight">${time}</span></p>
+            <p><strong>📅 Date:</strong> <span class="highlight">${dateformat}</span></p>
+            <p>Make sure you are well-prepared and on time. Wishing you all the best! 🌟</p>
+            <p>Thanks,</p>
+            <p><strong>T&P Portal Team</strong></p>
+        </div>
+        <div class="footer">
+            &copy; 2025 T&P Portal. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>
+
       `;
       sendMailTo(
         applicantEmails,
-        `${opening.name}-${opening.jobId} Interview`,
+        `T&P : ${opening.name}-${opening.jobId} Interview`,
         htmlContent
       );
     }

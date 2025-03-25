@@ -28,7 +28,11 @@ const loginUser = async (req, res) => {
     const authToken = jwt.sign({ id: user._id }, tokenSecret, {
       expiresIn: "1d",
     });
-    res.json({ success: "success", message: "User login successfully", authToken });
+    res.json({
+      success: "success",
+      message: "User login successfully",
+      authToken,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -60,7 +64,11 @@ const signUpUser = async (req, res) => {
     const authToken = jwt.sign({ id: newUser._id }, tokenSecret, {
       expiresIn: "1d",
     });
-    res.json({ success: "success", message: "User created account successfully", authToken });
+    res.json({
+      success: "success",
+      message: "User created account successfully",
+      authToken,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -91,8 +99,82 @@ const forgotPassword = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     const mailResponse = await sendMailTo(
       email,
-      "One Time Password",
-      `<h3>OTP : </h3><p>${otp}</p>`
+      "T&P : One Time Password",
+      `<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #007bff;
+            color: #ffffff;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: left;
+        }
+
+        .otp-code {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            border: 2px solid #007bff;
+            padding: 10px;
+            display: inline-block;
+            margin-top: 10px;
+            background-color: #e9f5ff;
+        }
+
+        .footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OTP Verification</h1>
+        </div>
+        <div class="content">
+            <p>Dear ${email},</p>
+            <p>Your One-Time Password (OTP) for verification is:</p>
+            <div class="otp-code">${otp}</div>
+            <p>Please enter this code to verify your identity. It is valid for a limited time only.</p>
+            <p>If you did not request this, please ignore this email.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 T&P Portal. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>`
     );
 
     if (mailResponse.success) {
@@ -111,7 +193,11 @@ const deleteUser = async (req, res) => {
 
     if (!user) return res.status(401).json({ error: "User not found" });
 
-    res.json({ success: "success", message: "User deleted successfully", user });
+    res.json({
+      success: "success",
+      message: "User deleted successfully",
+      user,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -156,7 +242,11 @@ const updateUserProfile = async (req, res) => {
       { $set: newStudent },
       { new: true }
     );
-    res.json({ success: "success", message: "User profile updated", data: user });
+    res.json({
+      success: "success",
+      message: "User profile updated",
+      data: user,
+    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

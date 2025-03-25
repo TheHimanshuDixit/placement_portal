@@ -67,13 +67,81 @@ const addOpening = async (req, res) => {
     await newOpening.save();
 
     const emailContent = `
-      <h4>New Opening for ${batch} batch</h4>
-      <h3>Opening Details:</h3>
-      <p>Name: ${name}</p>
-      <p>Job ID: ${jobId}</p>
-      <p>Monthly Stipend: ${stipend}/Month</p>
-      <p>CTC: ${ctc} LPA</p>
-      <a href=${process.env.URL}>Click here to apply</a>
+      <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Job Opening</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #007bff;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: left;
+        }
+
+        .footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Opening for ${batch} Batch</h1>
+        </div>
+        <div class="content">
+            <h3>Opening Details:</h3>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Job ID:</strong> ${jobId}</p>
+            <p><strong>Monthly Stipend:</strong> ${stipend}/Month</p>
+            <p><strong>CTC:</strong> ${ctc} LPA</p>
+            <a href="${process.env.URL}" class="btn">Click here to apply</a>
+        </div>
+        <div class="footer">
+            <p>&copy; 2025 T&P Portal. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>
     `;
 
     const allStudents = await Student.find();
@@ -81,7 +149,7 @@ const addOpening = async (req, res) => {
 
     const mailResponse = await sendMailTo(
       studentEmails,
-      "New Opening",
+      "T&P : New Opening",
       emailContent
     );
 
