@@ -9,6 +9,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { AiOutlineRobot } from "react-icons/ai";
 
 const Openings = () => {
   const [open, setOpen] = useState([]);
@@ -662,10 +663,13 @@ const Openings = () => {
             />
             <button
               onClick={handleFetchAI}
-              className="bg-blue-500 text-white px-4 py-2 rounded-xl"
+              className="relative px-6 py-3 text-white font-semibold flex items-center gap-2 rounded-full transition-all
+             bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg shadow-blue-400
+             hover:scale-105 hover:shadow-purple-500 animate-pulse"
               data-twe-ripple-init
               data-twe-ripple-color="light"
               type="button">
+              <AiOutlineRobot size={22} className="animate-spin-slow" />
               Match Your Resume
             </button>
           </div>
