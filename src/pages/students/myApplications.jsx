@@ -1,15 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Ripple, Input, initTWE } from "tw-elements";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Myapplications = () => {
   const [applications, setApplications] = useState([]);
   const [company, setCompany] = useState({});
   const [viewCompany, setViewCompany] = useState({});
   const [check, setCheck] = useState(false);
-  //eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URI}/api/application/get`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+        }
+      );
+      const data = await response.json();
+      setApplications(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     initTWE(
@@ -23,25 +41,11 @@ const Myapplications = () => {
     }
 
     // Fetch applications data from the server
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_DEV_URI}/api/application/get`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "auth-token": localStorage.getItem("authToken"),
-            },
-          }
-        );
-        const data = await response.json();
-        setApplications(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
+    toast.promise(fetchData(), {
+      loading: "Loading...",
+      success: "Data fetched successfully",
+      error: "Failed to fetch data",
+    });
 
     // Fetch opening details to map companies
     (async () => {
@@ -57,7 +61,6 @@ const Myapplications = () => {
           };
         });
       }
-      setLoading(false);
     })();
     // eslint-disable-next-line
   }, []);
@@ -65,6 +68,7 @@ const Myapplications = () => {
   return (
     <>
       {/* Modal for Company Details */}
+      <Toaster />
       <div
         data-twe-modal-init
         className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"

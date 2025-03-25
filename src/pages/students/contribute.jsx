@@ -22,16 +22,24 @@ const Contribute = () => {
   useEffect(() => {
     initTWE({ Collapse }, { allowReinits: true }, { checkOtherImports: true });
 
-    fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/get`)
-      .then((res) => res.json())
-      .then((data) => {
-        setContributionList(data.data);
-        setFilteredContributions(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Failed to fetch data");
-      });
+    toast.promise(
+      () =>
+        fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/get`)
+          .then((res) => res.json())
+          .then((data) => {
+            setContributionList(data.data);
+            setFilteredContributions(data.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error("Failed to fetch data");
+          }),
+      {
+        loading: "Loading...",
+        success: "Data fetched successfully",
+        error: "Failed to fetch data",
+      }
+    );
   }, []);
 
   const handleFilterChange = (e) => {

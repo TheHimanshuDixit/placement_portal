@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from "react";
-import GlowingLoader from "../../components/loader";
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaUserTie } from "react-icons/fa";
+import toast, { Toaster } from "react-hot-toast";
 
 const Team = () => {
   const [teams, setTeams] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     //eslint-disable-next-line
-    const data = (async () => {
-      setLoading(true);
-      const response = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/team/get`
-      );
-      const data = await response.json();
-      setLoading(false);
-      setTeams(data.data);
-    })();
+    toast.promise(
+      (async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_DEV_URI}/api/team/get`
+        );
+        const data = await response.json();
+        setTeams(data.data);
+      })(),
+      {
+        loading: "Loading...",
+        success: "Team data fetched successfully",
+        error: "Failed to fetch team data",
+      }
+    );
   }, []);
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div>
+      <Toaster />
       <div className="container my-12 mx-auto md:px-6">
         <section className="mb-32 text-center">
           <h2 className="mb-32 text-3xl font-bold">

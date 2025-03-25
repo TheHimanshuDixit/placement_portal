@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import * as XLSX from "xlsx";
-import GlowingLoader from "../../components/loader";
 import { toast, Toaster } from "react-hot-toast";
 const Studetails = () => {
   const ref = useRef(null);
@@ -30,7 +29,45 @@ const Studetails = () => {
   const [pack, setPack] = useState(0);
   const [placedCompany, setPlacedCompany] = useState([]);
   const [allStudents, setAllStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    const res = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/application/getall`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    setAppList(data.data);
+  };
+
+  const fetchCompData = async () => {
+    const res = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/opening/getall`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    setCompList(data.data);
+  };
+
+  const fetchStudData = async () => {
+    const res = await fetch(`${process.env.REACT_APP_DEV_URI}/api/auth`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    setStudList(data);
+  };
 
   useEffect(() => {
     if (!localStorage.getItem("authAdminToken")) {
@@ -42,52 +79,14 @@ const Studetails = () => {
       { checkOtherImports: true }
     );
 
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/application/getall`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await res.json();
-      setLoading(false);
-      setAppList(data.data);
-    };
-    fetchData();
+    toast.promise(fetchData(), {
+      loading: "Loading data...",
+      success: "Data loaded successfully",
+      error: "Failed to load data",
+    });
 
-    const fetchCompData = async () => {
-      setLoading(true);
-      const res = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await res.json();
-      setLoading(false);
-      setCompList(data.data);
-    };
+    
     fetchCompData();
-
-    const fetchStudData = async () => {
-      setLoading(true);
-      const res = await fetch(`${process.env.REACT_APP_DEV_URI}/api/auth`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      setLoading(false);
-      setStudList(data);
-    };
     fetchStudData();
     // eslint-disable-next-line
   }, []);
@@ -96,10 +95,20 @@ const Studetails = () => {
     e.preventDefault();
     const { enroll, pwd } = students;
     if (!enroll || !pwd) {
-      toast.error( "Please fill all the fields");
+      toast.error("Please fill all the fields");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const res = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/college/add`,
       {
@@ -111,7 +120,6 @@ const Studetails = () => {
       }
     );
     const data = await res.json();
-    setLoading(false);
     if (data.success === "success") {
       toast.success("Student added successfully");
 
@@ -128,7 +136,17 @@ const Studetails = () => {
     if (!x) {
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const res = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/delete/${id}`,
       {
@@ -140,7 +158,6 @@ const Studetails = () => {
     );
     const data = await res.json();
     console.log(data);
-    setLoading(false);
     if (data.success === "success") {
       toast.success("Student deleted successfully");
       const updatedList = studList.filter((stud) => stud._id !== id);
@@ -235,7 +252,17 @@ const Studetails = () => {
       alert("Please upload a file first");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/college/multiadd`,
       {
@@ -247,7 +274,6 @@ const Studetails = () => {
       }
     );
     const res = await data.json();
-    setLoading(false);
     if (res.success === "success") {
       toast.success("Students added successfully");
       setAllStudents([]);
@@ -256,9 +282,7 @@ const Studetails = () => {
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen p-8">
       <Toaster />
       <div className="max-w-screen-lg m-auto">

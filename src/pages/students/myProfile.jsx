@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import GlowingLoader from "../../components/loader";
 import { toast, Toaster } from "react-hot-toast";
 
 const Myprofile = () => {
@@ -25,51 +24,54 @@ const Myprofile = () => {
 
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("authToken"),
+          },
+        }
+      );
+      const data = await res.json();
+      setProfile({
+        enroll: data.enrollnment,
+        coverletter: data.coverletter,
+        email: data.email,
+        college: data.college,
+        phone: data.phoneno,
+        branch: data.branch,
+        gender: data.gender,
+        year: data.year,
+        cgpa: data.cgpa,
+        backlogs: data.backlogs,
+      });
+      setGetResume(data.resume);
+      setFname(data.name.split(" ")[0]);
+      setLname(data.name.split(" ")[1]);
+      setImagePreview(data.image);
+    } catch (error) {
+      console.log(error);
+      toast.error("Profile not found");
+    }
+  };
 
   useEffect(() => {
     if (!localStorage.getItem("authToken")) {
       navigate("/login");
     }
 
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "auth-token": localStorage.getItem("authToken"),
-            },
-          }
-        );
-        const data = await res.json();
-        setLoading(false);
-        setProfile({
-          enroll: data.enrollnment,
-          coverletter: data.coverletter,
-          email: data.email,
-          college: data.college,
-          phone: data.phoneno,
-          branch: data.branch,
-          gender: data.gender,
-          year: data.year,
-          cgpa: data.cgpa,
-          backlogs: data.backlogs,
-        });
-        setGetResume(data.resume);
-        setFname(data.name.split(" ")[0]);
-        setLname(data.name.split(" ")[1]);
-        setImagePreview(data.image);
-      } catch (error) {
-        console.log(error);
-        toast.error("Profile not found");
-      }
-    };
+    
 
-    fetchProfile();
+    toast.promise(fetchProfile(), {
+      loading: "Loading...",
+      success: "Profile fetched successfully",
+      error: "Failed to fetch profile",
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -103,9 +105,19 @@ const Myprofile = () => {
     if (profileImage) {
       formData.append("image", profileImage);
     }
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
 
     try {
-      setLoading(true);
       const res = await fetch(
         `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
         {
@@ -117,11 +129,9 @@ const Myprofile = () => {
         }
       );
       const data = await res.json();
-      setLoading(false);
       if (data.success === "success") {
         toast.success("Profile updated successfully");
-      }
-      else{
+      } else {
         toast.error(data.error || "Profile update failed");
       }
     } catch (error) {
@@ -130,9 +140,7 @@ const Myprofile = () => {
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="max-w-screen-lg mx-auto my-10 p-8 rounded-2xl border-4 bg-white/70 backdrop-blur-md shadow-xl">
       <Toaster />
       <form>

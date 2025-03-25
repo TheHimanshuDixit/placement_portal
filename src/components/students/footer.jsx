@@ -25,13 +25,13 @@ const Footer = () => {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 text-sm">
             <div>
-              <h2 className="mb-4 font-semibold">Resources</h2>
+              <h2 className="mb-4 font-semibold">Important</h2>
               <ul>
                 <li className="mb-2 hover:underline">
                   <Link to="/">T&P Portal</Link>
                 </li>
                 <li className="hover:underline">
-                  <Link to="https://tailwindcss.com/">Tailwind CSS</Link>
+                  <Link to="/contact">Contact Us</Link>
                 </li>
               </ul>
             </div>
@@ -39,7 +39,7 @@ const Footer = () => {
               <h2 className="mb-4 font-semibold">Follow Us</h2>
               <ul>
                 <li className="mb-2 hover:underline">
-                  <Link to="https://github.com/TheHimanshuDixit/placement_portal">
+                  <Link to="https://github.com/TheHimanshuDixit/placement_portal" target="_blank">
                     GitHub
                   </Link>
                 </li>

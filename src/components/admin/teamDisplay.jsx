@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { MdDelete, MdModeEditOutline } from "react-icons/md";
-import GlowingLoader from "../loader";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,6 @@ const Teamdisplay = ({
   editId,
   setEditId,
 }) => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const authToken = localStorage.getItem("authAdminToken");
@@ -30,7 +28,17 @@ const Teamdisplay = ({
     );
     if (x) {
       try {
-        setLoading(true);
+        toast.success("Please wait...", {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#333",
+          },
+        });
         const response = await fetch(
           `${process.env.REACT_APP_DEV_URI}/api/team/delete/${id}`,
           {
@@ -51,15 +59,11 @@ const Teamdisplay = ({
         }
       } catch (error) {
         toast.error("Error deleting team member");
-      } finally {
-        setLoading(false);
-      }
+      } 
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div>
       <Toaster />
       {teamMembers.length > 0 ? (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Input, Ripple, initTWE } from "tw-elements";
-import GlowingLoader from "../../components/loader";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 
@@ -23,7 +22,6 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const onchange = (e) => {
     if (e.target.type === "email") {
@@ -39,7 +37,17 @@ const Login = () => {
       toast.error("Please fill all the fields");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/login`,
       {
@@ -54,7 +62,6 @@ const Login = () => {
     if (data.success === "success") {
       toast.success("Login successful");
       localStorage.setItem("authToken", data.authToken);
-      setLoading(false);
       navigate("/");
     } else {
       const respteam = await fetch(
@@ -71,18 +78,14 @@ const Login = () => {
       if (data.success === "success") {
         localStorage.setItem("authAdminToken", data.authAdminToken);
         toast.success("Login successful");
-        setLoading(false);
         navigate("/admin");
       } else {
         toast.error(data.error || "Invalid credentials");
       }
     }
-    setLoading(false);
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return(
     <section className="">
       <Toaster />
       <div className="h-full px-6 py-24">

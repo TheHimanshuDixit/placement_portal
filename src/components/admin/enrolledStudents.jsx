@@ -9,27 +9,31 @@ const StudentList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_DEV_URI}/api/college/get`
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URI}/api/college/get`
+      );
+      const data = await response.json();
+      if (data?.data) {
+        const sortedStudents = data.data.sort((a, b) =>
+          a.enroll.localeCompare(b.enroll)
         );
-        const data = await response.json();
-        if (data?.data) {
-          const sortedStudents = data.data.sort((a, b) =>
-            a.enroll.localeCompare(b.enroll)
-          );
-          setStudents(sortedStudents);
-        }
-      } catch (err) {
-        toast.error("Failed to fetch students. Please try again later.");
-        setError("Failed to fetch students. Please try again later.");
-      } finally {
-        setLoading(false);
+        setStudents(sortedStudents);
       }
-    };
-    fetchStudents();
+    } catch (err) {
+      toast.error("Failed to fetch students. Please try again later.");
+      setError("Failed to fetch students. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    toast.promise(fetchStudents(), {
+      loading: "Loading students...",
+      success: "Students loaded successfully.",
+      error: "Failed to fetch students. Please try again later.",
+    });
   }, []);
 
   const renderContent = () => {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import "tailwindcss/tailwind.css";
-import GlowingLoader from "../../components/loader";
 import {
   FaBuilding,
   FaCalendarAlt,
   FaCheckCircle,
+  FaClock,
   FaTimesCircle,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,6 @@ const MyAttendance = () => {
   const [attendanceData, setAttendanceData] = useState({});
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -39,9 +38,10 @@ const MyAttendance = () => {
             const companyName = item.company.name;
             acc[companyName] = item.event.map((e) => ({
               event: e.event,
-              date: new Date(e.date).toLocaleDateString("en-GB"),
+              date: new Date(e.date).toLocaleDateString("en-GB")+" "+new Date(e.date).toLocaleTimeString("en-GB"),
               status: "Present",
             }));
+            console.log(acc);
             return acc;
           }, {});
 
@@ -53,7 +53,6 @@ const MyAttendance = () => {
 
           setCompanies(fetchedCompanies);
           setAttendanceData(fetchedAttendanceData);
-          setLoading(false);
         })
         .catch((error) => console.error(error));
     }
@@ -64,7 +63,12 @@ const MyAttendance = () => {
       toast.error("You need to login first!");
       navigate("/login");
     }
-    fetchData();
+    toast.promise(fetchData(), {
+      loading: "Loading...",
+      success: "Data fetched successfully",
+      error: "Failed to fetch data",
+    });
+    // eslint-disable-next-line
   }, []);
 
   const openModal = (company) => {
@@ -92,12 +96,19 @@ const MyAttendance = () => {
           {data.map((item, index) => (
             <tr
               key={index}
-              className="bg-white even:bg-gray-100 grid grid-cols-3">
-              <td className="py-3 px-4 flex  items-center justify-center gap-2">
+              className="bg-white even:bg-gray-100 grid grid-cols-3 w-full">
+              <td className="py-3 px-4 flex items-center justify-center gap-2">
                 <FaBuilding className="text-blue-500" /> {item.event}
               </td>
-              <td className="py-3 px-4 flex items-center justify-center gap-2">
-                <FaCalendarAlt className="text-gray-600" /> {item.date}
+              <td className="py-3 px-4 flex flex-col justify-center gap-2">
+                <div className="flex justify-center items-center gap-2">
+                  <FaCalendarAlt className="text-gray-600" />{" "}
+                  {item.date.split(" ")[0]}
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <FaClock className="text-gray-600" />{" "}
+                  {item.date.split(" ")[1]}
+                </div>
               </td>
               <td className="py-3 px-4 flex items-center justify-center gap-2">
                 {item.status === "Present" ? (
@@ -114,9 +125,7 @@ const MyAttendance = () => {
     );
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="max-w-3xl mx-auto p-6 h-screen">
       <Toaster />
       <h1 className="text-4xl font-extrabold text-center mb-10 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">

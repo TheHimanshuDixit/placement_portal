@@ -50,15 +50,12 @@ const Addopening = () => {
   });
 
   // eslint-disable-next-line
-  const [loading, setLoading] = useState(false);
 
   const data = async () => {
-    setLoading(true);
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
     );
     const data = await response.json();
-    setLoading(false);
     setOpen(data.data);
   };
 
@@ -72,7 +69,11 @@ const Addopening = () => {
       { allowReinits: true },
       { checkOtherImports: true }
     );
-    data();
+    toast.promise(data(), {
+      loading: "Loading...",
+      success: "Data Loaded",
+      error: "Error in Loading",
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -105,7 +106,17 @@ const Addopening = () => {
   };
 
   const handleDelete = async (id) => {
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/opening/delete/${id}`,
       {
@@ -117,7 +128,6 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
-    setLoading(false);
     if (result.success === "success") {
       toast.success("Deleted Successfully");
       setOpen(open.filter((item) => item._id !== id));
@@ -134,6 +144,17 @@ const Addopening = () => {
   };
 
   const handleEditOpening = async () => {
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/opening/update/${newOpening._id}`,
       {
@@ -207,7 +228,17 @@ const Addopening = () => {
       return;
     }
 
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const formData = new FormData();
     formData.append("file", logo);
     formData.append("name", newOpening.name);
@@ -243,7 +274,6 @@ const Addopening = () => {
     );
     // eslint-disable-next-line
     const result = await response.json();
-    setLoading(false);
     if (result.success === "success") {
       toast.success("Added Successfully");
       setOpen([...open, newOpening]);
@@ -276,12 +306,21 @@ const Addopening = () => {
   };
 
   const handleDownload = async () => {
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/application/get/${regList[0].company}`
     );
     const data = await response.json();
-    setLoading(false);
     const csv = data.data.map((item, index) => {
       return {
         SrNo: index + 1,
@@ -313,7 +352,17 @@ const Addopening = () => {
     } else {
       p = "Ongoing";
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/opening/update/${id}`,
       {
@@ -324,14 +373,16 @@ const Addopening = () => {
         body: JSON.stringify({ progress: p }),
       }
     ).then((res) => res.json());
-    setLoading(false);
     if (data.success === "success") {
+      toast.success("Status Updated Successfully");
       for (const item of open) {
         if (item._id === id) {
           item.progress = p;
           break;
         }
       }
+    } else {
+      toast.error(data.error || "Error in Updating Status");
     }
     setUpdate(!update);
   };
@@ -363,7 +414,17 @@ const Addopening = () => {
       company: regList[0].company,
       students: emails,
     };
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/placed`,
       {
@@ -375,7 +436,6 @@ const Addopening = () => {
       }
     );
     const result = await response.json();
-    setLoading(false);
     if (result.success === "success") {
       toast.success("Offers Submitted Successfully");
     } else {

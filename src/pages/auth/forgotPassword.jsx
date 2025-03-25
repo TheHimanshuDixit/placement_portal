@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Ripple, Input, initTWE } from "tw-elements";
-import GlowingLoader from "../../components/loader";
 import { toast, Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +11,6 @@ const Forgotpassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [sent, setSent] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,7 +34,17 @@ const Forgotpassword = () => {
       toast.error("Please fill the email field");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/forgot`,
       {
@@ -48,7 +56,6 @@ const Forgotpassword = () => {
       }
     );
     const response = await data.json();
-    setLoading(false);
     if (response.success === "success") {
       toast.success("OTP sent to your email");
       setSent(true);
@@ -83,7 +90,17 @@ const Forgotpassword = () => {
       toast.error("Invalid OTP");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/updatepassword`,
       {
@@ -95,7 +112,6 @@ const Forgotpassword = () => {
       }
     );
     const response = await data.json();
-    setLoading(false);
     if (response.success === "success") {
       toast.success("Password updated successfully");
       navigate("/");
@@ -104,9 +120,7 @@ const Forgotpassword = () => {
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="h-[100vh] bg-blue-300">
       <Toaster />
       <div className="py-20 block">

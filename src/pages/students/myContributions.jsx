@@ -20,9 +20,6 @@ const Mycontributions = () => {
   const [idd, setIdd] = useState("");
 
   const [which, setWhich] = useState("");
-
-  // eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,22 +33,28 @@ const Mycontributions = () => {
       { checkOtherImports: true }
     );
 
-    fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/getbyid`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("authToken"),
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setContributionList(data.data);
+    toast.promise(
+      fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/getbyid`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("authToken"),
+        },
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Something Went Wrong");
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          setContributionList(data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Something Went Wrong");
+        }),
+      {
+        loading: "Loading...",
+        success: "Data fetched successfully",
+        error: "Failed to fetch data",
+      }
+    );
     // eslint-disable-next-line
   }, []);
 
@@ -78,7 +81,17 @@ const Mycontributions = () => {
       toast.error("Please Fill All The Fields");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/contribute/add`,
       {
@@ -91,7 +104,6 @@ const Mycontributions = () => {
       }
     );
     const res = await data.json();
-    setLoading(false);
     if (res.success === "success") {
       setContributionList([...contributionList, contri]);
       toast.success("Contribution Added Successfully");
@@ -102,7 +114,17 @@ const Mycontributions = () => {
 
   const deleteContribution = (id) => {
     return () => {
-      setLoading(true);
+      toast.success("Please wait...", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#333",
+        },
+      });
       fetch(`${process.env.REACT_APP_DEV_URI}/api/contribute/delete/${id}`, {
         method: "DELETE",
         headers: {
@@ -138,7 +160,17 @@ const Mycontributions = () => {
       toast.error("Please Fill All The Fields");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const data = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/contribute/update/${id}`,
       {
@@ -151,7 +183,6 @@ const Mycontributions = () => {
       }
     );
     const res = await data.json();
-    setLoading(false);
     if (res.success === "success") {
       setContributionList(
         contributionList.map((item) => {

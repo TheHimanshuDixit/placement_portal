@@ -13,7 +13,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Select from "react-select";
-import GlowingLoader from "../loader";
 import { motion } from "framer-motion";
 import {
   FaChartPie,
@@ -34,10 +33,8 @@ const Dashboard = () => {
   const [years, setYears] = useState([
     { value: "Select one year", label: "Select one year" },
   ]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     fetch(`${process.env.REACT_APP_DEV_URI}/api/demographicData/dashboard`)
       .then((response) => response.json())
       .then((data) => {
@@ -54,10 +51,9 @@ const Dashboard = () => {
         );
       })
       .catch((error) => {
-        toast.error( "Error fetching data!");
+        toast.error("Error fetching data!");
         console.error("Error fetching data:", error);
-      })
-      .finally(() => setLoading(false));
+      });
     // eslint-disable-next-line
   }, []);
 
@@ -69,9 +65,7 @@ const Dashboard = () => {
     toast.success("Companies list fetched successfully!");
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 p-10">
       <Toaster />
       <motion.h1

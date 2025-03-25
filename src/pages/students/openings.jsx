@@ -31,8 +31,6 @@ const Openings = () => {
   });
   const [resume, setResume] = useState("");
   const [getResume, setGetResume] = useState("");
-  // eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
 
   // New states for filter functionality
   const [filterCompany, setFilterCompany] = useState("");
@@ -69,7 +67,6 @@ const Openings = () => {
       return item.progress === "Ongoing";
     });
     setOpen(ongoingOpen);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -139,6 +136,17 @@ const Openings = () => {
       (placed === false ||
         (placed === true && parseInt(comp) >= 1.8 * parseInt(pack)))
     ) {
+      toast.success("Please wait...", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#333",
+        },
+      });
       const formData = new FormData();
       formData.append("name", apply.name);
       formData.append("email", apply.email);
@@ -173,6 +181,17 @@ const Openings = () => {
   };
 
   const handleIt = async () => {
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/profile`,
       {

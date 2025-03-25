@@ -24,7 +24,7 @@ async function job() {
     // if only 1 day or less than 1 day is left to apply
     if (
       applyByDate - currentDate <= 86400000 &&
-      applyByDate - currentDate > 0
+      applyByDate - currentDate >= 0
     ) {
       console.log(`Sending mail for opening ${opening.jobId}`);
       // create a htmlContent for the mai which contains the opening details

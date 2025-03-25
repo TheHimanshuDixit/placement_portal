@@ -17,7 +17,7 @@ async function job() {
     const testDate = new Date(opening.test);
     const interviewDate = new Date(opening.interview);
     // if only 1 day or less than 1 day is left to apply
-    if (pptDate - currentDate <= 86400000 && pptDate - currentDate > 0) {
+    if (pptDate - currentDate <= 86400000 && pptDate - currentDate >= 0) {
       console.log(`Sending mail for opening ${opening.jobId}`);
       // create a htmlContent for the mai which contains the opening details
       const date = new Date(opening.ppt);
@@ -314,7 +314,7 @@ function eventSchedulerJob() {
   // * * => every month
   // * => every
   // every day at 12:00 AM => 0 0 0 *
-  schedule.scheduleJob("* * * * * *", job);
+  schedule.scheduleJob("0 0 0 *", job);
 }
 
 module.exports = { eventSchedulerJob };

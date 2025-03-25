@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Teamdisplay from "../../components/admin/teamDisplay";
-import GlowingLoader from "../../components/loader";
 import { motion } from "framer-motion";
 import {
   FaUserPlus,
@@ -28,26 +27,31 @@ const Addadmin = () => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [type, setType] = useState("Add");
   const [editId, setEditId] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     //eslint-disable-next-line
-    const resp = fetch(`${process.env.REACT_APP_DEV_URI}/api/team/get`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setTeamMembers(data.data);
-        setLoading(false);
+    toast.promise(
+      fetch(`${process.env.REACT_APP_DEV_URI}/api/team/get`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Something went wrong");
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setTeamMembers(data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Something went wrong");
+        }),
+      {
+        loading: "Loading...",
+        success: "Team Members Loaded Successfully",
+        error: "Something went wrong",
+      }
+    );
 
     const authToken = localStorage.getItem("authAdminToken");
     if (!authToken) {
@@ -74,7 +78,17 @@ const Addadmin = () => {
       toast.error("Please fill all the fields");
       return;
     }
-
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const formData = new FormData();
     if (img) {
       formData.append("file", img);
@@ -108,7 +122,17 @@ const Addadmin = () => {
 
   const handleEdit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const formData = new FormData();
     if (img) formData.append("file", img);
     formData.append("name", teamDetail.firstName + " " + teamDetail.lastName);
@@ -122,7 +146,6 @@ const Addadmin = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setLoading(false);
         if (data.error) {
           toast.error(data.error || "Something went wrong");
         } else {
@@ -157,9 +180,7 @@ const Addadmin = () => {
       });
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen p-8">
       <Toaster />
       <div className="max-w-screen-lg m-auto">

@@ -5,7 +5,6 @@ import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { FaCheck, FaTimes, FaUsers } from "react-icons/fa";
-import GlowingLoader from "../../components/loader";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast, Toaster } from "react-hot-toast";
@@ -18,7 +17,6 @@ const Attendance = () => {
   const [date, setDate] = useState(new Date());
   const [attendance, setAttendance] = useState({});
   const [registeredStudents, setRegisteredStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [placementEvents, setPlacementEvents] = useState([]);
   const [allCompanies, setAllCompanies] = useState([]);
 
@@ -34,7 +32,7 @@ const Attendance = () => {
       (student) => attendance[student]
     );
     if (!event) {
-      toast.error( "Please select an event to mark attendance");
+      toast.error("Please select an event to mark attendance");
       return;
     }
 
@@ -44,7 +42,17 @@ const Attendance = () => {
       date: date.toISOString(),
       studentList: attendanceData,
     };
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const result = await fetch(`${process.env.REACT_APP_DEV_URI}/api/student`, {
       method: "PUT",
       headers: {
@@ -61,12 +69,10 @@ const Attendance = () => {
     } else {
       toast.error(result.error || "Failed to mark attendance");
     }
-    setLoading(false);
   };
 
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
-    setLoading(true);
     const ongoingEvents = allCompanies.find(
       (c) => c._id === selectedOption.value
     );
@@ -86,29 +92,31 @@ const Attendance = () => {
     setRegisteredStudents(
       RS.data.map((student) => ({ id: student.email, name: student.name }))
     );
-    setLoading(false);
   };
 
+  const handleFetch = async () => {
+    const data = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
+    );
+    const openings = await data.json();
+    const ongoingEvents = openings.data.filter(
+      (opening) => opening.progress === "Ongoing"
+    );
+    setAllCompanies(ongoingEvents);
+    setCompanies(
+      ongoingEvents.map((event) => ({
+        value: event._id,
+        label: `${event.name} - ${event.jobId}`,
+      }))
+    );
+  };
   useEffect(() => {
-    const handleFetch = async () => {
-      setLoading(true);
-      const data = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
-      );
-      const openings = await data.json();
-      const ongoingEvents = openings.data.filter(
-        (opening) => opening.progress === "Ongoing"
-      );
-      setAllCompanies(ongoingEvents);
-      setCompanies(
-        ongoingEvents.map((event) => ({
-          value: event._id,
-          label: `${event.name} - ${event.jobId}`,
-        }))
-      );
-      setLoading(false);
-    };
-    handleFetch();
+    toast.promise(handleFetch(), {
+      loading: "Fetching data...",
+      success: "Data fetched successfully",
+      error: "Failed to fetch, please try again",
+    });
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -119,9 +127,7 @@ const Attendance = () => {
     else if (event.value === "interview") setDate(new Date(temp.interview));
   }, [event, company, allCompanies]);
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 p-8 flex flex-col items-center">
       <Toaster />
       <motion.h1

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Input, Ripple, initTWE } from "tw-elements";
-import GlowingLoader from "../../components/loader";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 
@@ -26,7 +25,6 @@ const Signup = () => {
   const [enrollnment, setEnrollnment] = useState("");
   const [phoneno, setPhoneno] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name === "name") {
@@ -48,7 +46,17 @@ const Signup = () => {
       toast.error("Please fill all the fields");
       return;
     }
-    setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     const response = await fetch(
       `${process.env.REACT_APP_DEV_URI}/api/auth/signu`,
       {
@@ -60,7 +68,6 @@ const Signup = () => {
       }
     );
     const data = await response.json();
-    setLoading(false);
     if (data.success === "success") {
       toast.success("Signup successful");
       localStorage.setItem("authToken", data.authToken);
@@ -70,9 +77,7 @@ const Signup = () => {
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return  (
     <div>
       <Toaster />
       <section className="my-10 mx-auto max-w-screen-xl p-10">

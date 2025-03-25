@@ -12,29 +12,35 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Dashboard from "../../components/admin/dashboard";
-import GlowingLoader from "../../components/loader";
 import { motion } from "framer-motion";
 import { FaChartLine, FaBuilding } from "react-icons/fa";
+import toast, { Toaster } from "react-hot-toast";
 
 const Record = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`${process.env.REACT_APP_DEV_URI}/api/demographicData`)
-      .then((res) => res.json())
-      .then((d) => {
-        setData(d);
-        console.log(d);
-        setLoading(false);
-      });
+    toast.promise(
+      fetch(`${process.env.REACT_APP_DEV_URI}/api/demographicData`)
+        .then((res) => res.json())
+        .then((d) => {
+          setData(d);
+          console.log(d);
+        })
+        .catch((err) => {
+          console.error(err);
+        }),
+      {
+        loading: "Loading data...",
+        success: "Data loaded successfully",
+        error: "Failed to load data",
+      }
+    );
   }, []);
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 p-10">
+    <Toaster />
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -10,7 +10,6 @@ import {
 } from "react-icons/fa";
 import { FiRefreshCw } from "react-icons/fi";
 import { toast, Toaster } from "react-hot-toast";
-import GlowingLoader from "../loader";
 
 const ViewAttendance = () => {
   const [company, setCompany] = useState(null);
@@ -18,29 +17,44 @@ const ViewAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchCompanies = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
+      );
+      const data = await response.json();
+      const allCompanies = data.data.map((event) => ({
+        value: event._id,
+        label: `${event.name} - ${event.jobId}`,
+      }));
+      setCompanies(allCompanies);
+    } catch (error) {
+      toast.error("Failed to fetch companies");
+      console.error("Failed to fetch companies", error);
+    }
+  };
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
-        );
-        const data = await response.json();
-        const allCompanies = data.data.map((event) => ({
-          value: event._id,
-          label: `${event.name} - ${event.jobId}`,
-        }));
-        setCompanies(allCompanies);
-      } catch (error) {
-        toast.error( "Failed to fetch companies");
-        console.error("Failed to fetch companies", error);
-      }
-    };
-    fetchCompanies();
+    toast.promise(fetchCompanies(), {
+      loading: "Loading companies...",
+      success: "Companies loaded successfully.",
+      error: "Failed to fetch companies. Please try again later.",
+    });
   }, []);
 
   const handleSelectChange = async (selectedOption) => {
     setCompany(selectedOption);
     setLoading(true);
+    toast.success("Please wait...", {
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+      iconTheme: {
+        primary: "#fff",
+        secondary: "#333",
+      },
+    });
     try {
       const response = await fetch(
         `${process.env.REACT_APP_DEV_URI}/api/student/${selectedOption.value}`
@@ -54,9 +68,7 @@ const ViewAttendance = () => {
     }
   };
 
-  return loading ? (
-    <GlowingLoader />
-  ) : (
+  return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 py-10 flex flex-col items-center">
       <Toaster />
       <motion.h1
