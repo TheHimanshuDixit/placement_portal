@@ -35,7 +35,7 @@ const Openings = () => {
   // New states for filter functionality
   const [filterCompany, setFilterCompany] = useState("");
   const [filterRole, setFilterRole] = useState("");
-  const [match, setMatch] = useState([]);
+  const [match, setMatch] = useState(null);
   const [alreadyApplied, setAlreadyApplied] = useState([]);
   const navigate = useNavigate();
 
@@ -95,12 +95,14 @@ const Openings = () => {
       } // Add the token to the headers
     );
     const data = await response.json();
-    setMatch(data.success);
+    setMatch(data.data);
   };
 
   const handleFetchAI = async () => {
     if (!localStorage.getItem("authToken")) {
+      toast.error("Please login to match your resume");
       navigate("/login");
+      return;
     }
     toast.promise(fetchAI(), {
       loading: "Matching your resume",
@@ -114,7 +116,8 @@ const Openings = () => {
     setApply({ ...apply, [name]: value });
   };
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     if (
       apply.name === "" ||
       apply.email === "" ||
@@ -238,6 +241,17 @@ const Openings = () => {
         item.role.toLowerCase().includes(filterRole.toLowerCase()))
     );
   });
+  const dateISOToLocaleString = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const localDateTimeString = `${hours}:${minutes}, ${day}-${month}-${year}`;
+    return localDateTimeString; // Output: 2025-03-26T16:00:00
+  };
 
   return (
     <>
@@ -479,7 +493,7 @@ const Openings = () => {
 
             {check && (
               <div className="relative p-4" style={{ minHeight: "500px" }}>
-                <ul className="w-96 text-surface dark:text-white">
+                <ul className="w-full text-surface dark:text-white">
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Name :</strong> {company.name}
                   </li>
@@ -523,11 +537,57 @@ const Openings = () => {
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Duration :</strong> {company.duration}
                   </li>
+                  {company.requirements.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Requirements :</strong>{" "}
+                      {company.requirements.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {company.jobdescription.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Job Description :</strong>{" "}
+                      {company.jobdescription.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {company.selectionprocess.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Selection Process :</strong>{" "}
+                      {company.selectionprocess.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {company.ppt && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>PPT :</strong>{" "}
+                      {company.ppt !== "To be announced"
+                        ? dateISOToLocaleString(company.ppt)
+                        : company.ppt}
+                    </li>
+                  )}
+                  {company.test && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Test :</strong>{" "}
+                      {company.test !== "To be announced"
+                        ? dateISOToLocaleString(company.test)
+                        : company.test}
+                    </li>
+                  )}
+                  {company.interview && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Interview :</strong>{" "}
+                      {company.interview !== "To be announced"
+                        ? dateISOToLocaleString(company.interview)
+                        : company.interview}
+                    </li>
+                  )}
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Apply By :</strong>{" "}
-                    {company.applyby.split("T")[1].split(".")[0] +
-                      ", " +
-                      company.applyby.split("T")[0]}
+                    {dateISOToLocaleString(company.applyby)}
                   </li>
                   <li className="w-full py-4">
                     <strong>Type :</strong> {company.type}
@@ -654,18 +714,18 @@ const Openings = () => {
                     </div>
                   </div>
                   <div>
-                    {match && match.length > 0 && (
+                    {match && (
                       <span
                         className={`text-sm mb-2 pl-2 flex justify-between items-center rounded-xl border-2 p-3 ${(() => {
-                          if (match[index].score > 80)
+                          if (match[item._id] > 80)
                             return "bg-green-200 border-green-500 text-green-500";
-                          if (match[index].score > 60)
+                          if (match[item._id] > 60)
                             return "bg-yellow-200 border-yellow-500 text-yellow-500";
-                          if (match[index].score > 40)
+                          if (match[item._id] > 40)
                             return "bg-orange-200 border-orange-500 text-orange-500";
                           return "bg-red-200 border-red-500 text-red-500";
                         })()}`}>
-                        Resume Match: 100%
+                        Resume Match: {match[item._id]}%
                       </span>
                     )}
                   </div>

@@ -65,6 +65,18 @@ const Dashboard = () => {
     toast.success("Companies list fetched successfully!");
   };
 
+    const dateISOToLocaleString = (isoString) => {
+      const date = new Date(isoString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+
+      const localDateTimeString = `${hours}:${minutes}, ${day}-${month}-${year}`;
+      return localDateTimeString; // Output: 2025-03-26T16:00:00
+    };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 p-10">
       <Toaster />
@@ -309,7 +321,7 @@ const Dashboard = () => {
                         {company.placements} students
                       </span>
                       <span className="text-gray-600 flex-1 text-right">
-                        {company.visitDate}
+                        {dateISOToLocaleString(company.visitDate)}
                       </span>
                     </motion.li>
                   ))}

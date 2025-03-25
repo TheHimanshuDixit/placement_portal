@@ -185,6 +185,7 @@ const Attendance = () => {
             value={date}
             onChange={setDate}
             className="w-full border border-gray-300 rounded-lg p-2"
+            format="dd-MM-y h:mm a"
           />
         </div>
         <div className="mt-6">

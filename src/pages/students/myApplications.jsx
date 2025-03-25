@@ -65,6 +65,18 @@ const Myapplications = () => {
     // eslint-disable-next-line
   }, []);
 
+    const dateISOToLocaleString = (isoString) => {
+      const date = new Date(isoString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+
+      const localDateTimeString = `${hours}:${minutes}, ${day}-${month}-${year}`;
+      return localDateTimeString; // Output: 2025-03-26T16:00:00
+    };
+
   return (
     <>
       {/* Modal for Company Details */}
@@ -114,7 +126,7 @@ const Myapplications = () => {
 
             {check && (
               <div className="relative p-4" style={{ minHeight: "500px" }}>
-                <ul className="w-96 text-surface dark:text-white">
+                <ul className="w-full text-surface dark:text-white">
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Name :</strong> {viewCompany.name}
                   </li>
@@ -153,11 +165,57 @@ const Myapplications = () => {
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Duration :</strong> {viewCompany.duration}
                   </li>
+                  {viewCompany.requirements.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Requirements :</strong>{" "}
+                      {viewCompany.requirements.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {viewCompany.jobdescription.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Job Description :</strong>{" "}
+                      {viewCompany.jobdescription.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {viewCompany.selectionprocess.length > 0 && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Selection Process :</strong>{" "}
+                      {viewCompany.selectionprocess.map((key) => {
+                        return key + ",";
+                      })}
+                    </li>
+                  )}
+                  {viewCompany.ppt && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>PPT :</strong>{" "}
+                      {viewCompany.ppt !== "To be announced"
+                        ? dateISOToLocaleString(viewCompany.ppt)
+                        : viewCompany.ppt}
+                    </li>
+                  )}
+                  {viewCompany.test && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Test :</strong>{" "}
+                      {viewCompany.test !== "To be announced"
+                        ? dateISOToLocaleString(viewCompany.test)
+                        : viewCompany.test}
+                    </li>
+                  )}
+                  {viewCompany.interview && (
+                    <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
+                      <strong>Interview :</strong>{" "}
+                      {viewCompany.interview !== "To be announced"
+                        ? dateISOToLocaleString(viewCompany.interview)
+                        : viewCompany.interview}
+                    </li>
+                  )}
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Apply By :</strong>{" "}
-                    {viewCompany.applyby.split("T")[1].split(".")[0] +
-                      ", " +
-                      viewCompany.applyby.split("T")[0]}
+                    {dateISOToLocaleString(viewCompany.applyby)}
                   </li>
                   <li className="w-full py-4">
                     <strong>Type :</strong> {viewCompany.type}
@@ -208,7 +266,7 @@ const Myapplications = () => {
             My Applications
           </h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-            Please review the status of your applications.
+            Please review your applications.
           </p>
         </div>
         <div className="flex flex-col mt-6">
@@ -251,9 +309,9 @@ const Myapplications = () => {
                             {company[application.company]?.jobId}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
-                            {application.date.split("T")[1].split(".")[0] +
-                              ", " +
-                              application.date.split("T")[0]}
+                            {dateISOToLocaleString(
+                              company[application.company]?.date
+                            )}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <button

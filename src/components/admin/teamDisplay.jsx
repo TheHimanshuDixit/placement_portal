@@ -22,6 +22,18 @@ const Teamdisplay = ({
     // eslint-disable-next-line
   }, []);
 
+    const dateISOToLocaleString = (isoString) => {
+      const date = new Date(isoString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+
+      const localDateTimeString = `${hours}:${minutes}, ${day}-${month}-${year}`;
+      return localDateTimeString; // Output: 2025-03-26T16:00:00
+    };
+
   const handleDelete = async (id) => {
     const x = window.confirm(
       "Are you sure you want to delete this team member?"
@@ -120,9 +132,7 @@ const Teamdisplay = ({
                 <p className="mt-1 text-xs text-gray-500">
                   Date of Joining:{" "}
                   <time dateTime={member.date}>
-                    {member.date.split("T")[0].split("-").reverse().join("-") +
-                      " " +
-                      member.date.split("T")[1].split(".")[0].slice(0, 5)}
+                    {dateISOToLocaleString(member.date)}
                   </time>
                 </p>
               </div>

@@ -85,7 +85,6 @@ const Studetails = () => {
       error: "Failed to load data",
     });
 
-    
     fetchCompData();
     fetchStudData();
     // eslint-disable-next-line
@@ -247,9 +246,10 @@ const Studetails = () => {
     }
   };
 
-  const handleClickFileUpload = async () => {
+  const handleClickFileUpload = async (e) => {
+    e.preventDefault();
     if (allStudents.length <= 0) {
-      alert("Please upload a file first");
+      toast.error("Please upload a file first");
       return;
     }
     toast.success("Please wait...", {
@@ -280,6 +280,18 @@ const Studetails = () => {
     } else {
       toast.error(res.error || "Error adding students");
     }
+  };
+
+  const dateISOToLocaleString = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const localDateTimeString = `${hours}:${minutes}, ${day}-${month}-${year}`;
+    return localDateTimeString; // Output: 2025-03-26T16:00:00
   };
 
   return (
@@ -368,13 +380,7 @@ const Studetails = () => {
                             <strong>Progress :</strong> {data.company.progress}{" "}
                             <br />
                             <strong>Applied on :</strong>{" "}
-                            {data.date
-                              .split("T")[0]
-                              .split("-")
-                              .reverse()
-                              .join("-") +
-                              " " +
-                              data.date.split("T")[1].split(".")[0].slice(0, 5)}
+                            {dateISOToLocaleString(data.date)}
                             <br />
                             <strong>Resume :</strong>{" "}
                             <Link

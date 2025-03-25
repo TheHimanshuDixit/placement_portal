@@ -38,7 +38,7 @@ const MyAttendance = () => {
             const companyName = item.company.name;
             acc[companyName] = item.event.map((e) => ({
               event: e.event,
-              date: new Date(e.date).toLocaleDateString("en-GB")+" "+new Date(e.date).toLocaleTimeString("en-GB"),
+              date: e.date,
               status: "Present",
             }));
             console.log(acc);
@@ -62,6 +62,7 @@ const MyAttendance = () => {
     if (!localStorage.getItem("authToken")) {
       toast.error("You need to login first!");
       navigate("/login");
+      return;
     }
     toast.promise(fetchData(), {
       loading: "Loading...",
@@ -80,6 +81,18 @@ const MyAttendance = () => {
     setSelectedCompany(null);
     setModalIsOpen(false);
   };
+
+    const dateISOToLocaleString = (isoString) => {
+      const date = new Date(isoString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+
+      const localDateTimeString = `${hours}:${minutes},${day}-${month}-${year}`;
+      return localDateTimeString; // Output: 2025-03-26T16:00:00
+    };
 
   const renderAttendanceTable = () => {
     const data = attendanceData[selectedCompany] || [];
@@ -103,11 +116,11 @@ const MyAttendance = () => {
               <td className="py-3 px-4 flex flex-col justify-center gap-2">
                 <div className="flex justify-center items-center gap-2">
                   <FaCalendarAlt className="text-gray-600" />{" "}
-                  {item.date.split(" ")[0]}
+                  {dateISOToLocaleString(item.date).split(",")[0]}
                 </div>
                 <div className="flex items-center justify-center gap-2">
                   <FaClock className="text-gray-600" />{" "}
-                  {item.date.split(" ")[1]}
+                  {dateISOToLocaleString(item.date).split(",")[1]}
                 </div>
               </td>
               <td className="py-3 px-4 flex items-center justify-center gap-2">
@@ -124,6 +137,7 @@ const MyAttendance = () => {
       </table>
     );
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-6 h-screen">

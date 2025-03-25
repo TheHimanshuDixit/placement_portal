@@ -34,9 +34,7 @@ const addOpening = async (req, res) => {
 
     let existingOpening = await Opening.findOne({ jobId });
     if (existingOpening) {
-      return res
-        .status(400)
-        .json({  error: "Opening already exists" });
+      return res.status(400).json({ error: "Opening already exists" });
     }
 
     const newOpening = new Opening({
@@ -182,9 +180,7 @@ const getOpeningById = async (req, res) => {
   try {
     const opening = await Opening.findOne({ jobId: req.params.oid });
     if (!opening) {
-      return res
-        .status(404)
-        .json({ error: "Opening not found" });
+      return res.status(404).json({ error: "Opening not found" });
     }
     res.json({ success: "success", data: opening });
   } catch (error) {
@@ -196,9 +192,7 @@ const deleteOpening = async (req, res) => {
   try {
     const opening = await Opening.findById(req.params.oid);
     if (!opening) {
-      return res
-        .status(404)
-        .json({ error: "Opening does not exist" });
+      return res.status(404).json({ error: "Opening does not exist" });
     }
 
     await Opening.deleteOne({ _id: req.params.oid });
@@ -216,9 +210,7 @@ const updateOpening = async (req, res) => {
   try {
     const opening = await Opening.findById(req.params.oid);
     if (!opening) {
-      return res
-        .status(404)
-        .json({ error: "Opening does not exist" });
+      return res.status(404).json({ error: "Opening does not exist" });
     }
 
     const updatedData = {
@@ -237,6 +229,7 @@ const updateOpening = async (req, res) => {
       branch: req.body.branch,
       gender: req.body.gender,
       duration: req.body.duration,
+      progress: req.body.progress ? req.body.progress : opening.progress,
       applyby: req.body.applyby,
       requirements: req.body.requirements,
       jobdescription: req.body.jobdescription,

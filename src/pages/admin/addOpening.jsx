@@ -105,7 +105,8 @@ const Addopening = () => {
     setRegList(result.data);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, e) => {
+    e.preventDefault();
     toast.success("Please wait...", {
       style: {
         borderRadius: "10px",
@@ -143,7 +144,8 @@ const Addopening = () => {
     window.scrollTo({ top: 90, behavior: "smooth" });
   };
 
-  const handleEditOpening = async () => {
+  const handleEditOpening = async (e) => {
+    e.preventDefault();
     toast.success("Please wait...", {
       style: {
         borderRadius: "10px",
@@ -199,12 +201,17 @@ const Addopening = () => {
         test: "",
         interview: "",
       });
+      window.scrollTo({
+        top: 2500,
+        behavior: "smooth",
+      });
     } else {
       toast.error(result.error || "Error in Updating");
     }
   };
 
-  const handleAddOpening = async () => {
+  const handleAddOpening = async (e) => {
+    e.preventDefault();
     if (!logo) {
       toast.error("Please upload a logo");
       return;
@@ -300,12 +307,17 @@ const Addopening = () => {
         test: "",
         interview: "",
       });
+      window.scrollTo({
+        top: 2500,
+        behavior: "smooth",
+      });
     } else {
       toast.error(result.error || "Error in Adding");
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (e) => {
+    e.preventDefault();
     toast.success("Please wait...", {
       style: {
         borderRadius: "10px",
@@ -402,7 +414,8 @@ const Addopening = () => {
     }
   };
 
-  const handleSubmitOffers = async () => {
+  const handleSubmitOffers = async (e) => {
+    e.preventDefault();
     setCheck(false);
     const emails = [];
     for (const e of Object.keys(emailOffer)) {
@@ -441,6 +454,18 @@ const Addopening = () => {
     } else {
       toast.error(result.error || "Error in Submitting Offers");
     }
+  };
+
+  const dateISOToLocaleString = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const localDateTimeString = `${hours}:${minutes}, ${day}-${month}-${year}`;
+    return localDateTimeString; // Output: 2025-03-26T16:00:00
   };
 
   return (
@@ -613,7 +638,7 @@ const Addopening = () => {
 
             {check && (
               <div className="relative p-4" style={{ minHeight: "500px" }}>
-                <ul className="w-96 text-surface dark:text-white">
+                <ul className="w-full text-surface dark:text-white">
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Name :</strong> {company.name}
                   </li>
@@ -682,24 +707,31 @@ const Addopening = () => {
                   )}
                   {company.ppt && (
                     <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                      <strong>PPT :</strong> {company.ppt}
+                      <strong>PPT :</strong>{" "}
+                      {company.ppt !== "To be announced"
+                        ? dateISOToLocaleString(company.ppt)
+                        : company.ppt}
                     </li>
                   )}
                   {company.test && (
                     <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                      <strong>Test :</strong> {company.test}
+                      <strong>Test :</strong>{" "}
+                      {company.test !== "To be announced"
+                        ? dateISOToLocaleString(company.test)
+                        : company.test}
                     </li>
                   )}
                   {company.interview && (
                     <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
-                      <strong>Interview :</strong> {company.interview}
+                      <strong>Interview :</strong>{" "}
+                      {company.interview !== "To be announced"
+                        ? dateISOToLocaleString(company.interview)
+                        : company.interview}
                     </li>
                   )}
                   <li className="w-full border-b-2 border-neutral-100 py-4 dark:border-white/10">
                     <strong>Apply By :</strong>{" "}
-                    {company.applyby.split("T")[1].split(".")[0] +
-                      ", " +
-                      company.applyby.split("T")[0]}
+                    {dateISOToLocaleString(company.applyby)}
                   </li>
                   <li className="w-full py-4">
                     <strong>Type :</strong> {company.type}

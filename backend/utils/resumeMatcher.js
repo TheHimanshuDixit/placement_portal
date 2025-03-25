@@ -22,7 +22,7 @@ const generateMatchScores = async (openings, resumeText) => {
 
     const openingsPrompt = openings
       .map((opening) => {
-        return `Id-${opening._id} Company Name-${opening.company} Role-${
+        return `Id-${opening._id} Company Name-${opening.name} Role-${
           opening.role
         } Branch-${opening.branch.join(
           " "
@@ -32,12 +32,23 @@ const generateMatchScores = async (openings, resumeText) => {
       })
       .join(", ");
 
-    const prompt = `You are well trained in resume matching and have a good understanding of the openings. I'll give you some companies details and one resume. You have to analyze the resume and openings carefully and generate a match percentage for each opening in JSON format: [{Id: id, score: percentage}]. If the data is incorrect, return null. The student's resume: ${resumeText}. These are the following openings: ${openingsPrompt}. Please generate the desired result.`;
+    const prompt = `You are well trained in resume matching and have a good understanding of the openings. I'll give you some companies details and one resume. YAnalyze the given resume and job openings carefully. Generate a match percentage for each opening in the following this format: id1:percentage number1,...... just seperated by comma no space ensure this. If the data is incorrect, return null. The student's resume: ${resumeText}. These are the following openings: ${openingsPrompt}. Please generate the desired result.`;
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
 
-    return responseText !== null ? JSON.parse(responseText) : null;
+    if (responseText === null) {
+      return null;
+    }
+
+    const arr = responseText.split(",");
+    const jsonData = {};
+    for (const item of arr) {
+      const [id, score] = item.split(":");
+      jsonData[id] = parseFloat(score);
+    }
+
+    return jsonData;
   } catch (error) {
     console.error("Error generating match scores:", error);
     return null;

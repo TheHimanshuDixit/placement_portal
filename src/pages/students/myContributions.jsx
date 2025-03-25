@@ -68,7 +68,8 @@ const Mycontributions = () => {
     console.log(contri);
   };
 
-  const addContribution = async () => {
+  const addContribution = async (e) => {
+    e.preventDefault();
     if (
       contri.question === "" ||
       contri.answer === "" ||
@@ -112,7 +113,8 @@ const Mycontributions = () => {
     }
   };
 
-  const deleteContribution = (id) => {
+  const deleteContribution = (id, e) => {
+    e.preventDefault();
     return () => {
       toast.success("Please wait...", {
         style: {
@@ -147,7 +149,8 @@ const Mycontributions = () => {
     };
   };
 
-  const editContribution = async (id) => {
+  const editContribution = async (id, e) => {
+    e.preventDefault();
     if (
       contri.question === "" ||
       contri.answer === "" ||

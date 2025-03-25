@@ -7,7 +7,7 @@ const {
 
 const matchResumeWithOpenings = async (req, res) => {
   try {
-    const companies = await Opening.find({ status: "ongoing" });
+    const companies = await Opening.find({ progress: "Ongoing" });
 
     if (!companies.length) {
       return res.status(400).json({
@@ -37,7 +37,6 @@ const matchResumeWithOpenings = async (req, res) => {
 
     // Generate AI-based match scores
     const matchResults = await generateMatchScores(companies, resumeText);
-
     if (!matchResults) {
       return res.status(400).json({
         error: "Data is not correct",

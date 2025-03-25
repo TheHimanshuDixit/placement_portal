@@ -42,6 +42,18 @@ const Openingform = ({
     }
     // eslint-disable-next-line
   }, []);
+  const dateISOToLocaleString = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    const localDateTimeString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    return localDateTimeString; // Output: 2025-03-26T16:00:00
+  };
   return (
     <div className="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen p-8">
       <div className="max-w-screen-lg m-auto">
@@ -442,14 +454,13 @@ const Openingform = ({
                     <input
                       id="applyby"
                       name="applyby"
+                      value={dateISOToLocaleString(newOpening.applyby)}
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
                         const isoFormattedDate = selectedDate.toISOString();
-                        let format = isoFormattedDate.split(".")[0];
-                        format += "Z";
                         setNewOpening({
                           ...newOpening,
-                          applyby: format,
+                          applyby: isoFormattedDate,
                         });
                       }}
                       type="datetime-local"
@@ -552,14 +563,13 @@ const Openingform = ({
                     <input
                       id="ppt"
                       name="ppt"
+                      value={dateISOToLocaleString(newOpening.ppt)}
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
                         const isoFormattedDate = selectedDate.toISOString();
-                        let format = isoFormattedDate.split(".")[0];
-                        format += "Z";
                         setNewOpening({
                           ...newOpening,
-                          ppt: format,
+                          ppt: isoFormattedDate,
                         });
                       }}
                       type="datetime-local"
@@ -580,14 +590,13 @@ const Openingform = ({
                     <input
                       id="test"
                       name="test"
+                      value={dateISOToLocaleString(newOpening.test)}
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
                         const isoFormattedDate = selectedDate.toISOString();
-                        let format = isoFormattedDate.split(".")[0];
-                        format += "Z";
                         setNewOpening({
                           ...newOpening,
-                          test: format,
+                          test: isoFormattedDate,
                         });
                       }}
                       type="datetime-local"
@@ -608,14 +617,13 @@ const Openingform = ({
                     <input
                       id="interview"
                       name="interview"
+                      value={dateISOToLocaleString(newOpening.interview)}
                       onChange={(e) => {
                         const selectedDate = new Date(e.target.value);
                         const isoFormattedDate = selectedDate.toISOString();
-                        let format = isoFormattedDate.split(".")[0];
-                        format += "Z";
                         setNewOpening({
                           ...newOpening,
-                          interview: format,
+                          interview: isoFormattedDate,
                         });
                       }}
                       type="datetime-local"
@@ -632,6 +640,10 @@ const Openingform = ({
             <button
               type="button"
               onClick={() => {
+                window.scrollTo({
+                  top: 2500,
+                  behavior: "smooth",
+                });
                 setNewOpening({
                   name: "",
                   jobId: "",

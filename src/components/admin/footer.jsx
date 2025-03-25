@@ -20,7 +20,7 @@ const Footer = () => {
         <nav className="flex flex-wrap justify-center gap-6">
           {[
             { name: "Team", path: "/addadmin" },
-            { name: "Internships/Jobs", path: "/addopenings" },
+            { name: "Internships/Jobs", path: "/addopening" },
             { name: "Students Details", path: "/studdetails" },
           ].map((item) => (
             <motion.div

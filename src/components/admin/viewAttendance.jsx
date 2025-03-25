@@ -69,6 +69,18 @@ const ViewAttendance = () => {
     }
   };
 
+  const dateISOToLocaleString = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    const localDateTimeString = `${hours}:${minutes},${day}-${month}-${year}`;
+    return localDateTimeString; // Output: 2025-03-26T16:00:00
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 py-10 flex flex-col items-center">
       <Toaster />
@@ -131,12 +143,10 @@ const ViewAttendance = () => {
                           {item.event.event}
                         </td>
                         <td className="border px-6 py-3 text-center flex items-center justify-center gap-2">
-                          <FaCalendarAlt className="text-yellow-500" />{" "}
-                          {item.event.date.split("T")[0]}{" "}
                           <FaClock className="text-yellow-500" />{" "}
-                          {item.event.date.split("T")[1]
-                            ? item.event.date.split("T")[1].split(".")[0]
-                            : ""}
+                          {dateISOToLocaleString(item.event.date).split(",")[0]}
+                          <FaCalendarAlt className="text-yellow-500" />{" "}
+                          {dateISOToLocaleString(item.event.date).split(",")[1]}
                         </td>
                         <td className="border px-6 py-3 text-center font-bold text-green-600">
                           {item.event.status === "Present" ? (
