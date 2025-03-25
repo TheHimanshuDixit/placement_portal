@@ -41,6 +41,37 @@ const Openings = () => {
   const [alreadyApplied, setAlreadyApplied] = useState([]);
   const navigate = useNavigate();
 
+  const checkApplied = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/application/get`,
+      {
+        method: "GET",
+        headers: {
+          "auth-token": localStorage.getItem("authToken"),
+        },
+      }
+    );
+    const data = await response.json();
+    setAlreadyApplied(data.data);
+  };
+
+  const getAllOpenings = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
+    );
+    const data = await response.json();
+    setAllCompany(data.data);
+    if (localStorage.getItem("authToken")) {
+      checkApplied();
+    }
+
+    let ongoingOpen = data.data.filter((item) => {
+      return item.progress === "Ongoing";
+    });
+    setOpen(ongoingOpen);
+    setLoading(false);
+  };
+
   useEffect(() => {
     initTWE(
       { Modal, Ripple, Input },
@@ -48,37 +79,12 @@ const Openings = () => {
       { checkOtherImports: true }
     );
 
-    const checkApplied = async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/application/get`,
-        {
-          method: "GET",
-          headers: {
-            "auth-token": localStorage.getItem("authToken"),
-          },
-        }
-      );
-      const data = await response.json();
-      setAlreadyApplied(data.data);
-    };
-
+    toast.promise(getAllOpenings(), {
+      loading: "Fetching Openings",
+      success: "Openings fetched successfully",
+      error: "Error fetching openings",
+    });
     // eslint-disable-next-line
-    const data = (async () => {
-      const response = await fetch(
-        `${process.env.REACT_APP_DEV_URI}/api/opening/getall`
-      );
-      const data = await response.json();
-      setAllCompany(data.data);
-      if (localStorage.getItem("authToken")) {
-        checkApplied();
-      }
-
-      let ongoingOpen = data.data.filter((item) => {
-        return item.progress === "Ongoing";
-      });
-      setOpen(ongoingOpen);
-      setLoading(false);
-    })();
   }, []);
 
   const fetchAI = async () => {
@@ -162,7 +168,7 @@ const Openings = () => {
         toast.error(data.error || "Already Applied");
       }
     } else {
-      toast.error( "You are not eligible for this company");
+      toast.error("You are not eligible for this company");
     }
   };
 
