@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MdDelete, MdModeEditOutline } from "react-icons/md";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
