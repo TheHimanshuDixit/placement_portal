@@ -740,13 +740,15 @@ const Openings = () => {
                   </div>
                   <button
                     onClick={() => {
+                      if (!localStorage.getItem("authToken")) {
+                        toast.error("Please login to apply");
+                        navigate("/login");
+                        return;
+                      }
+                      handleIt();
                       setCid(item._id);
                       setCutoff(item.cgpacritera);
                       setPack(item.ctc);
-                      if (!localStorage.getItem("authToken")) {
-                        navigate("/login");
-                      }
-                      handleIt();
                     }}
                     disabled={
                       handleCompTime(item.applyby) ||
