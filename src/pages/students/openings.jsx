@@ -97,6 +97,12 @@ const Openings = () => {
     );
     const data = await response.json();
     setMatch(data.data);
+    if(data.success === "success") {
+      toast.success("Resume matched successfully");
+    }
+    else {
+      toast.error(data.error || "Error matching your resume");
+    }
   };
 
   const handleFetchAI = async () => {
@@ -106,8 +112,8 @@ const Openings = () => {
       return;
     }
     toast.promise(fetchAI(), {
-      loading: "Matching your resume",
-      success: "Resume matched successfully",
+      loading: "Please wait matching your resume",
+      success: "Wait is over",
       error: "Error matching your resume",
     });
   };

@@ -39,7 +39,7 @@ const MyAttendance = () => {
             acc[companyName] = item.event.map((e) => ({
               event: e.event,
               date: e.date,
-              status: "Present",
+              status: e.status,
             }));
             console.log(acc);
             return acc;
